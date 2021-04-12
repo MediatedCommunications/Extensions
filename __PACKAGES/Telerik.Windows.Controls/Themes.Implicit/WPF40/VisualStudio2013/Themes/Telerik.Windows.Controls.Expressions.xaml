@@ -1,0 +1,498 @@
+<ResourceDictionary
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Expressions"
+        xmlns:expressions="clr-namespace:Telerik.Windows.Controls.Expressions;assembly=Telerik.Windows.Controls.Expressions"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:c="http://schemas.telerik.com/2008/xaml/compile"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="c">
+    <ResourceDictionary.MergedDictionaries>
+        <telerik:VisualStudio2013ResourceDictionary/>
+    </ResourceDictionary.MergedDictionaries>
+    <telerik:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <Geometry x:Key="Plus">M3,0 L5,0 L5,3 L8,3 L8,5 L5,5 L5,8 L3,8 L3,5L 0,5 L0,3 L3,3z</Geometry>
+    <Geometry x:Key="Minus">M0,0 L8,0 L8,2 L0,2z</Geometry>
+    <Geometry x:Key="Multiply">M1,0 L4,3 L7,0 L8,1 L5,4 L8,7 L7,8 L4,5 L1,8 L0,7 L3,4 L0,1z</Geometry>
+    <Geometry x:Key="Divide">M6,0 L8,0 L2,8 L0,8z</Geometry>
+    <Geometry x:Key="Percent">M6.5,5 C7.3,5 8,5.6 8,6.5 C8,7.3 7.3,8 6.5,8 C5.6,8 5,7.3 5,6.5 C5,5.6 5.6,5 6.5,5z M6,0 L8,0 L2,8 L0,8z M1.5,0 C2.3,0 3,0.6 3,1.5 C3,2.3 2.3,3 1.5,3 C0.6,3 0,2.3 0,1.5 C0,0.6 0.6,0 1.5,0z</Geometry>
+    <Geometry x:Key="Equals">M0,2 L5,2 L5,3 L0,3 z M0,0 L5,0 L5,1 L0,1 z</Geometry>
+    <Geometry x:Key="NotEquals">M3.75,0 L5,0 L4.25,1 L5,1 L5,2 L3.5,2 L2.75,3 L5,3 L5,4 L2,4 L1.25,5 L0,5 L0.75,4 L0,4 L0,3 L1.5,3 L2.25,2 L0,2 L0,1 L3,1z</Geometry>
+    <Geometry x:Key="LessThan">M0,4 L4,0 L5,0 L5,1 L2,4 L5,7 L5,8 L4,8z</Geometry>
+    <Geometry x:Key="LessThanOrEquals">M7,3 L12,3 L12,4 L7,4 z M7,1 L12,1 L12,2 L7,2 z M4,0 L5,0 L5,0.625 L2,2.5 L5,4.375 L5,5 L4,5 L0,2.5 z</Geometry>
+    <Geometry x:Key="GreaterThanOrEquals">M7,3 L12,3 L12,4 L7,4 z M7,1 L12,1 L12,2 L7,2 z M0,0 L1,0 L5,2.5 L1,5 L0,5 L0,4.375 L3,2.5 L0,0.625 z</Geometry>
+    <Geometry x:Key="GreaterThan">M0,0 L1,0 L5,4 L1,8 L0,8 L0,7 L3,4 L0,1z</Geometry>
+    <Color x:Key="FunctionColor_Foreground">#FF1795E5</Color>
+    <Color x:Key="MemberColor_Foreground">#FF8C2CBA</Color>
+    <Color x:Key="StringColor_Foreground">#FF31CA34</Color>
+    <Color x:Key="DateTimeColor_Foreground">#FFE51717</Color>
+    <Color x:Key="CaretBrush">#FF808080</Color>
+    <ControlTemplate TargetType="expressions:ExpressionTextBox" x:Key="ExpressionTextBoxTemplate">
+        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <telerik:RadRichTextBox x:Name="RichTextBox"
+                    AcceptsReturn="False"
+                    Background="{telerik:VisualStudio2013Resource ResourceKey=MainBrush}"
+                    CaretColor="{StaticResource CaretBrush}"
+                    BorderThickness="0"
+                    IsSpellCheckingEnabled="False"
+                    IsSelectionMiniToolBarEnabled="False"
+                    IsContextMenuEnabled="False"
+                    FontSize="{telerik:VisualStudio2013Resource ResourceKey=FontSize}"
+                    FontFamily="{telerik:VisualStudio2013Resource ResourceKey=FontFamily}"
+                    DocumentInheritsDefaultStyleSettings="True"/>
+        </Border>
+    </ControlTemplate>
+    <Style x:Key="ExpressionTextBoxStyle" TargetType="expressions:ExpressionTextBox">
+        <Setter Property="Template" Value="{StaticResource ExpressionTextBoxTemplate}"/>
+        <Setter Property="SyntaxColors">
+            <Setter.Value>
+                <expressions:SyntaxColors
+                        FunctionColor="{StaticResource FunctionColor_Foreground}"
+                        MemberColor="{StaticResource MemberColor_Foreground}"
+                        StringColor="{StaticResource StringColor_Foreground}"
+                        DateTimeColor="{StaticResource DateTimeColor_Foreground}"
+                        DefaultColor="{telerik:VisualStudio2013Resource ResourceKey=DefaultForegroundColor}"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <HierarchicalDataTemplate x:Key="CategoryItemTemplate" ItemsSource="{Binding ChildCategories}">
+        <TextBlock Text="{Binding Name}"/>
+    </HierarchicalDataTemplate>
+    <HierarchicalDataTemplate x:Key="FieldItemTemplate" ItemsSource="{Binding Children}">
+        <TextBlock Text="{Binding Name}"/>
+    </HierarchicalDataTemplate>
+    <ControlTemplate x:Key="RadExpressionEditorTemplate" TargetType="controls:RadExpressionEditor">
+        <Grid Background="Transparent" UseLayoutRounding="True">
+            <Border x:Name="PART_RootElement"
+                    Grid.RowSpan="5"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    UseLayoutRounding="True"
+                    SnapsToDevicePixels="True"/>
+            <Border
+                    Background="{TemplateBinding Background}"
+                    Grid.RowSpan="5"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    SnapsToDevicePixels="True">
+                <Grid x:Name="PART_ExpressionEditorGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <expressions:ExpressionTextBox x:Name="PART_ExpressionNodeEditor"/>
+                    <Border
+                            Grid.Row="1"
+                            MinHeight="30"
+                            UseLayoutRounding="True"
+                            BorderBrush="{telerik:VisualStudio2013Resource ResourceKey=BasicBrush}"
+                            BorderThickness="0 1"
+                            Background="{telerik:VisualStudio2013Resource ResourceKey=AlternativeBrush}"
+                            SnapsToDevicePixels="True">
+                        <StackPanel x:Name="CalculationPanel"
+                                Margin="0 0 13 0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal"
+                                UseLayoutRounding="True"
+                                SnapsToDevicePixels="True">
+                            <telerik:RadButton x:Name="Plus" MinWidth="20" MinHeight="20" VerticalContentAlignment="Center" Command="controls:RadExpressionEditorCommands.InsertText" CommandParameter="+">
+                                <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                    <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                        <Path Data="{StaticResource Plus}" Stretch="Fill" Width="8" Height="8" Fill="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid Visibility="{Binding IsMouseOver,ElementName=Plus,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Path Data="{StaticResource Plus}" Stretch="Fill" Width="8" Height="8" Fill="{telerik:VisualStudio2013Resource ResourceKey=MarkerBrush}" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid Visibility="{Binding IsPressed,ElementName=Plus,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Path Data="{StaticResource Plus}" Stretch="Fill" Width="8" Height="8" Fill="{telerik:VisualStudio2013Resource ResourceKey=SelectedBrush}" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                </Grid>
+                            </telerik:RadButton>
+                            <telerik:RadButton x:Name="Minus"
+                                    MinWidth="20"
+                                    MinHeight="20"
+                                    Margin="2 0 0 0"
+                                    VerticalContentAlignment="Center"
+                                    Command="controls:RadExpressionEditorCommands.InsertText"
+                                    CommandParameter="-">
+                                <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                    <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                        <Path Data="{StaticResource Minus}" Stretch="Uniform" Height="5" Fill="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}" Width="8" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid UseLayoutRounding="True" Visibility="{Binding IsMouseOver,ElementName=Minus,Converter={StaticResource BooleanToVisibilityConverter}}" SnapsToDevicePixels="True">
+                                        <Path Data="{StaticResource Minus}" Stretch="Uniform" Height="5" Fill="{telerik:VisualStudio2013Resource ResourceKey=MarkerBrush}" Width="8" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid UseLayoutRounding="True" Visibility="{Binding IsPressed,ElementName=Minus,Converter={StaticResource BooleanToVisibilityConverter}}" SnapsToDevicePixels="True">
+                                        <Path Data="{StaticResource Minus}" Stretch="Uniform" Height="5" Fill="{telerik:VisualStudio2013Resource ResourceKey=SelectedBrush}" Width="8" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                </Grid>
+                            </telerik:RadButton>
+                            <telerik:RadButton x:Name="Multiply"
+                                    MinWidth="20"
+                                    MinHeight="20"
+                                    Margin="2 0 0 0"
+                                    Padding="0"
+                                    VerticalContentAlignment="Center"
+                                    Command="controls:RadExpressionEditorCommands.InsertText"
+                                    CommandParameter="*">
+                                <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                    <Grid>
+                                        <Path Data="{StaticResource Multiply}" Fill="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}" Stretch="Fill" Width="8" Height="8" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid Visibility="{Binding IsMouseOver,ElementName=Multiply,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Path Data="{StaticResource Multiply}" Fill="{telerik:VisualStudio2013Resource ResourceKey=MarkerBrush}" Stretch="Fill" Width="8" Height="8" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid Visibility="{Binding IsPressed,ElementName=Multiply,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Path Data="{StaticResource Multiply}" Fill="{telerik:VisualStudio2013Resource ResourceKey=SelectedBrush}" Stretch="Fill" Width="8" Height="8" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                </Grid>
+                            </telerik:RadButton>
+                            <telerik:RadButton x:Name="Divide"
+                                    MinWidth="20"
+                                    MinHeight="20"
+                                    Margin="2 0 0 0"
+                                    VerticalContentAlignment="Center"
+                                    Command="controls:RadExpressionEditorCommands.InsertText"
+                                    CommandParameter="/">
+                                <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                    <Grid>
+                                        <Path
+                                                Data="{StaticResource Divide}"
+                                                Stretch="Fill"
+                                                Fill="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Width="8"
+                                                Height="8"/>
+                                    </Grid>
+                                    <Grid Visibility="{Binding IsMouseOver,ElementName=Divide,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Path
+                                                Data="{StaticResource Divide}"
+                                                Stretch="Fill"
+                                                Fill="{telerik:VisualStudio2013Resource ResourceKey=MarkerBrush}"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Width="8"
+                                                Height="8"/>
+                                    </Grid>
+                                    <Grid Visibility="{Binding IsPressed,ElementName=Divide,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Path
+                                                Data="{StaticResource Divide}"
+                                                Stretch="Fill"
+                                                Fill="{telerik:VisualStudio2013Resource ResourceKey=SelectedBrush}"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Width="8"
+                                                Height="8"/>
+                                    </Grid>
+                                </Grid>
+                            </telerik:RadButton>
+                            <telerik:RadButton x:Name="Percent"
+                                    MinWidth="20"
+                                    MinHeight="20"
+                                    Foreground="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}"
+                                    Margin="2 0 0 0"
+                                    VerticalContentAlignment="Center"
+                                    Command="controls:RadExpressionEditorCommands.InsertText"
+                                    CommandParameter="%">
+                                <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                    <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                        <Path Data="{StaticResource Percent}" Width="8" Height="8" Fill="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}" Stretch="Fill" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid UseLayoutRounding="True" Visibility="{Binding IsMouseOver,ElementName=Percent,Converter={StaticResource BooleanToVisibilityConverter}}" SnapsToDevicePixels="True">
+                                        <Path Data="{StaticResource Percent}" Width="8" Height="8" Fill="{telerik:VisualStudio2013Resource ResourceKey=MarkerBrush}" Stretch="Fill" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid Visibility="{Binding IsPressed,ElementName=Percent,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Path Data="{StaticResource Percent}" Width="8" Height="8" Fill="{telerik:VisualStudio2013Resource ResourceKey=SelectedBrush}" Stretch="Fill" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                </Grid>
+                            </telerik:RadButton>
+                            <telerik:RadButton x:Name="Equals"
+                                    MinWidth="20"
+                                    MinHeight="20"
+                                    Foreground="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}"
+                                    Margin="10 0 0 0"
+                                    VerticalContentAlignment="Center"
+                                    Command="controls:RadExpressionEditorCommands.InsertText"
+                                    CommandParameter="=">
+                                <Grid>
+                                    <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                        <Path Data="{StaticResource Equals}" Fill="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}" Width="8" Height="5" Stretch="Fill" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid Visibility="{Binding IsMouseOver,ElementName=Equals,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Path Data="{StaticResource Equals}" Fill="{telerik:VisualStudio2013Resource ResourceKey=MarkerBrush}" Width="8" Height="5" Stretch="Fill" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid Visibility="{Binding IsPressed,ElementName=Equals,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Path Data="{StaticResource Equals}" Fill="{telerik:VisualStudio2013Resource ResourceKey=SelectedBrush}" Width="8" Height="5" Stretch="Fill" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                </Grid>
+                            </telerik:RadButton>
+                            <telerik:RadButton x:Name="NotEquals"
+                                    MinWidth="20"
+                                    Foreground="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}"
+                                    MinHeight="20"
+                                    Margin="2 0 0 0"
+                                    FontSize="{telerik:VisualStudio2013Resource ResourceKey=FontSizeXS}"
+                                    FontFamily="{telerik:VisualStudio2013Resource ResourceKey=FontFamily}"
+                                    VerticalContentAlignment="Center"
+                                    Command="controls:RadExpressionEditorCommands.InsertText"
+                                    CommandParameter="&lt;&gt;">
+                                <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                    <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                        <Path Data="{StaticResource NotEquals}" Width="8" Height="9" Fill="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}" Stretch="Fill" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid UseLayoutRounding="True" Visibility="{Binding IsMouseOver,ElementName=NotEquals,Converter={StaticResource BooleanToVisibilityConverter}}" SnapsToDevicePixels="True">
+                                        <Path Data="{StaticResource NotEquals}" Width="8" Height="9" Fill="{telerik:VisualStudio2013Resource ResourceKey=MarkerBrush}" Stretch="Fill" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid UseLayoutRounding="True" Visibility="{Binding IsPressed,ElementName=NotEquals,Converter={StaticResource BooleanToVisibilityConverter}}" SnapsToDevicePixels="True">
+                                        <Path Data="{StaticResource NotEquals}" Width="8" Height="9" Fill="{telerik:VisualStudio2013Resource ResourceKey=SelectedBrush}" Stretch="Fill" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                </Grid>
+                            </telerik:RadButton>
+                            <telerik:RadButton x:Name="LessThan"
+                                    MinWidth="20"
+                                    MinHeight="20"
+                                    Margin="2 0 0 0"
+                                    Foreground="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}"
+                                    VerticalContentAlignment="Center"
+                                    Command="controls:RadExpressionEditorCommands.InsertText"
+                                    CommandParameter="&lt;">
+                                <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                    <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                        <Path Data="{StaticResource LessThan}" Fill="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}" Stretch="Fill" Width="6" Height="8" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid UseLayoutRounding="True" Visibility="{Binding IsMouseOver,ElementName=LessThan,Converter={StaticResource BooleanToVisibilityConverter}}" SnapsToDevicePixels="True">
+                                        <Path Data="{StaticResource LessThan}" Fill="{telerik:VisualStudio2013Resource ResourceKey=MarkerBrush}" Stretch="Fill" Width="6" Height="8" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid UseLayoutRounding="True" Visibility="{Binding IsPressed,ElementName=LessThan,Converter={StaticResource BooleanToVisibilityConverter}}" SnapsToDevicePixels="True">
+                                        <Path Data="{StaticResource LessThan}" Fill="{telerik:VisualStudio2013Resource ResourceKey=SelectedBrush}" Stretch="Fill" Width="6" Height="8" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                </Grid>
+                            </telerik:RadButton>
+                            <telerik:RadButton x:Name="LessThanOrEquals"
+                                    MinWidth="20"
+                                    MinHeight="20"
+                                    Margin="2 0 0 0"
+                                    Foreground="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}"
+                                    VerticalContentAlignment="Center"
+                                    Command="controls:RadExpressionEditorCommands.InsertText"
+                                    CommandParameter="&lt;=">
+                                <Grid UseLayoutRounding="True" Margin="-1 0" SnapsToDevicePixels="True">
+                                    <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                        <Path
+                                                Data="{StaticResource LessThanOrEquals}"
+                                                Fill="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}"
+                                                Width="12"
+                                                Height="8"
+                                                Stretch="Fill"
+                                                SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid UseLayoutRounding="True" Visibility="{Binding IsMouseOver,ElementName=LessThanOrEquals,Converter={StaticResource BooleanToVisibilityConverter}}" SnapsToDevicePixels="True">
+                                        <Path
+                                                Data="{StaticResource LessThanOrEquals}"
+                                                Fill="{telerik:VisualStudio2013Resource ResourceKey=MarkerBrush}"
+                                                Width="12"
+                                                Height="8"
+                                                Stretch="Fill"
+                                                SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid UseLayoutRounding="True" Visibility="{Binding IsPressed,ElementName=LessThanOrEquals,Converter={StaticResource BooleanToVisibilityConverter}}" SnapsToDevicePixels="True">
+                                        <Path
+                                                Data="{StaticResource LessThanOrEquals}"
+                                                Fill="{telerik:VisualStudio2013Resource ResourceKey=SelectedBrush}"
+                                                Width="12"
+                                                Height="8"
+                                                Stretch="Fill"
+                                                SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                </Grid>
+                            </telerik:RadButton>
+                            <telerik:RadButton x:Name="GreaterThanOrEquals"
+                                    MinHeight="20"
+                                    MinWidth="20"
+                                    Margin="2 0 0 0"
+                                    Foreground="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}"
+                                    VerticalContentAlignment="Center"
+                                    Command="controls:RadExpressionEditorCommands.InsertText"
+                                    CommandParameter="&gt;=">
+                                <Grid UseLayoutRounding="True" Margin="-1 0" SnapsToDevicePixels="True">
+                                    <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                        <Path
+                                                Data="{StaticResource GreaterThanOrEquals}"
+                                                Fill="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}"
+                                                Width="12"
+                                                Height="8"
+                                                Stretch="Fill"
+                                                SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid UseLayoutRounding="True" Visibility="{Binding IsMouseOver,ElementName=GreaterThanOrEquals,Converter={StaticResource BooleanToVisibilityConverter}}" SnapsToDevicePixels="True">
+                                        <Path
+                                                Data="{StaticResource GreaterThanOrEquals}"
+                                                Fill="{telerik:VisualStudio2013Resource ResourceKey=MarkerBrush}"
+                                                Width="12"
+                                                Height="8"
+                                                Stretch="Fill"
+                                                SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid UseLayoutRounding="True" Visibility="{Binding IsPressed,ElementName=GreaterThanOrEquals,Converter={StaticResource BooleanToVisibilityConverter}}" SnapsToDevicePixels="True">
+                                        <Path
+                                                Data="{StaticResource GreaterThanOrEquals}"
+                                                Fill="{telerik:VisualStudio2013Resource ResourceKey=SelectedBrush}"
+                                                Width="12"
+                                                Height="8"
+                                                Stretch="Fill"
+                                                SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                </Grid>
+                            </telerik:RadButton>
+                            <telerik:RadButton x:Name="GreaterThan"
+                                    MinWidth="20"
+                                    MinHeight="20"
+                                    Margin="2 0 0 0"
+                                    Foreground="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}"
+                                    VerticalContentAlignment="Center"
+                                    Command="controls:RadExpressionEditorCommands.InsertText"
+                                    CommandParameter="&gt;">
+                                <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                    <Grid UseLayoutRounding="True" SnapsToDevicePixels="True">
+                                        <Path Data="{StaticResource GreaterThan}" Fill="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}" Stretch="Fill" Width="6" Height="8" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid UseLayoutRounding="True" Visibility="{Binding IsMouseOver,ElementName=GreaterThan,Converter={StaticResource BooleanToVisibilityConverter}}" SnapsToDevicePixels="True">
+                                        <Path Data="{StaticResource GreaterThan}" Fill="{telerik:VisualStudio2013Resource ResourceKey=MarkerBrush}" Stretch="Fill" Width="6" Height="8" SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <Grid UseLayoutRounding="True" Visibility="{Binding IsPressed,ElementName=GreaterThan,Converter={StaticResource BooleanToVisibilityConverter}}" SnapsToDevicePixels="True">
+                                        <Path
+                                                Data="{StaticResource GreaterThan}"
+                                                Fill="{telerik:VisualStudio2013Resource ResourceKey=SelectedBrush}"
+                                                Stretch="Fill"
+                                                Width="6"
+                                                Height="8"
+                                                SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                </Grid>
+                            </telerik:RadButton>
+                            <telerik:RadButton x:Name="And"
+                                    Foreground="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}"
+                                    Content="And"
+                                    FontSize="{telerik:VisualStudio2013Resource ResourceKey=FontSizeXS}"
+                                    FontFamily="{telerik:VisualStudio2013Resource ResourceKey=FontFamily}"
+                                    FontWeight="Bold"
+                                    Padding="0"
+                                    MinWidth="29"
+                                    VerticalContentAlignment="Center"
+                                    MinHeight="20"
+                                    Margin="10 0 0 0"
+                                    Command="controls:RadExpressionEditorCommands.InsertText"
+                                    CommandParameter="And"/>
+                            <telerik:RadButton x:Name="Or"
+                                    Foreground="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}"
+                                    Content="Or"
+                                    FontSize="{telerik:VisualStudio2013Resource ResourceKey=FontSizeXS}"
+                                    FontFamily="{telerik:VisualStudio2013Resource ResourceKey=FontFamily}"
+                                    FontWeight="Bold"
+                                    Padding="0"
+                                    MinWidth="29"
+                                    VerticalContentAlignment="Center"
+                                    MinHeight="20"
+                                    Margin="2 0"
+                                    Command="controls:RadExpressionEditorCommands.InsertText"
+                                    CommandParameter="Or"/>
+                            <telerik:RadButton x:Name="Not"
+                                    Foreground="{telerik:VisualStudio2013Resource ResourceKey=StrongBrush}"
+                                    Content="Not"
+                                    FontSize="{telerik:VisualStudio2013Resource ResourceKey=FontSizeXS}"
+                                    FontFamily="{telerik:VisualStudio2013Resource ResourceKey=FontFamily}"
+                                    FontWeight="Bold"
+                                    Padding="0"
+                                    MinWidth="29"
+                                    VerticalContentAlignment="Center"
+                                    MinHeight="20"
+                                    Margin="0 0 2 0"
+                                    Command="controls:RadExpressionEditorCommands.InsertText"
+                                    CommandParameter="Not"/>
+                        </StackPanel>
+                    </Border>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <telerik:RadTreeView x:Name="PART_EditorCategoriesTree"
+                                BorderThickness="0 0 1 0"
+                                BorderBrush="{telerik:VisualStudio2013Resource ResourceKey=BasicBrush}"
+                                ItemsSource="{Binding Categories}"
+                                SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
+                                ItemTemplate="{StaticResource CategoryItemTemplate}"
+                                IsLineEnabled="True"/>
+                        <telerik:RadTreeView x:Name="PART_EditorItemsTree"
+                                FontWeight="Bold"
+                                BorderBrush="{telerik:VisualStudio2013Resource ResourceKey=BasicBrush}"
+                                Grid.Column="1"
+                                ItemsSource="{Binding CategoryItems}"
+                                SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                                ItemTemplate="{StaticResource FieldItemTemplate}"
+                                IsLineEnabled="True"/>
+                    </Grid>
+                    <Border x:Name="EditorInfoPanel"
+                            Grid.Row="3"
+                            BorderThickness="0 1"
+                            BorderBrush="{telerik:VisualStudio2013Resource ResourceKey=BasicBrush}"
+                            Background="{telerik:VisualStudio2013Resource ResourceKey=PrimaryBrush}"
+                            MinHeight="76">
+                        <Grid Margin="6">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                    Text="{Binding SelectedItem.QuickInfo}"
+                                    Foreground="{telerik:VisualStudio2013Resource ResourceKey=MarkerBrush}"
+                                    FontWeight="Bold"
+                                    FontSize="{telerik:VisualStudio2013Resource ResourceKey=FontSize}"
+                                    FontFamily="{telerik:VisualStudio2013Resource ResourceKey=FontFamily}"/>
+                            <TextBlock
+                                    Text="{Binding SelectedItem.Description}"
+                                    Foreground="{telerik:VisualStudio2013Resource ResourceKey=MarkerBrush}"
+                                    FontSize="{telerik:VisualStudio2013Resource ResourceKey=FontSize}"
+                                    FontFamily="{telerik:VisualStudio2013Resource ResourceKey=FontFamily}"
+                                    TextWrapping="Wrap"
+                                    Grid.Row="1"/>
+                        </Grid>
+                    </Border>
+                    <Border x:Name="EditorResultsPanel" Grid.Row="4" BorderThickness="0" Background="{telerik:VisualStudio2013Resource ResourceKey=AlternativeBrush}">
+                        <StackPanel Orientation="Horizontal" Margin="6">
+                            <TextBlock
+                                    Text="Result preview:"
+                                    Foreground="{telerik:VisualStudio2013Resource ResourceKey=MarkerBrush}"
+                                    FontSize="{telerik:VisualStudio2013Resource ResourceKey=FontSize}"
+                                    FontFamily="{telerik:VisualStudio2013Resource ResourceKey=FontFamily}"
+                                    HorizontalAlignment="Right"/>
+                            <TextBlock
+                                    Text="{Binding PreviewResult}"
+                                    Foreground="{telerik:VisualStudio2013Resource ResourceKey=MarkerBrush}"
+                                    FontSize="{telerik:VisualStudio2013Resource ResourceKey=FontSize}"
+                                    FontFamily="{telerik:VisualStudio2013Resource ResourceKey=FontFamily}"
+                                    TextAlignment="Right"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </ControlTemplate>
+    <Style x:Key="RadExpressionEditorStyle" TargetType="controls:RadExpressionEditor">
+        <Setter Property="Template" Value="{StaticResource RadExpressionEditorTemplate}"/>
+        <Setter Property="Background" Value="{telerik:VisualStudio2013Resource ResourceKey=MainBrush}"/>
+        <Setter Property="BorderBrush" Value="{telerik:VisualStudio2013Resource ResourceKey=BasicBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+    </Style>
+    <Style TargetType="controls:RadExpressionEditor" BasedOn="{StaticResource RadExpressionEditorStyle}"/>
+    <Style TargetType="expressions:ExpressionTextBox" BasedOn="{StaticResource ExpressionTextBoxStyle}"/>
+</ResourceDictionary>

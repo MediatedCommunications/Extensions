@@ -1,0 +1,442 @@
+<ResourceDictionary
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        xmlns:c="http://schemas.telerik.com/2008/xaml/compile"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="c"
+        xmlns:telerik1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
+        xmlns:helpers="clr-namespace:Telerik.Windows.Controls.Theming.Helpers;assembly=Telerik.Windows.Controls"
+        xmlns:telerikCloud="clr-namespace:Telerik.Windows.Cloud.Controls;assembly=Telerik.Windows.Cloud.Controls"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
+        xmlns:telerikCloudUpload="clr-namespace:Telerik.Windows.Cloud.Controls.Upload;assembly=Telerik.Windows.Cloud.Controls">
+    <ResourceDictionary.MergedDictionaries>
+        <telerik:Office2019ResourceDictionary/>
+    </ResourceDictionary.MergedDictionaries>
+    <sys:String x:Key="GlyphCancel"></sys:String>
+    <sys:String x:Key="GlyphCheck"></sys:String>
+    <sys:String x:Key="GlyphClose"></sys:String>
+    <sys:String x:Key="GlyphUpload"></sys:String>
+    <sys:String x:Key="GlyphWarning"></sys:String>
+    <Thickness x:Key="CloudUploadIcons_Margin">5 0 0 0</Thickness>
+    <Thickness x:Key="CloudUploadButtons_Margin">0 0 5 5</Thickness>
+    <sys:Double x:Key="CloudUploadButtons_MinWidth">90</sys:Double>
+    <telerikCloud:HumanReadableFileSizeConverter x:Key="CloudUpload_HumanReadableFileSizeConverter"/>
+    <telerikCloud:StringToFileNameConverter x:Key="CloudUpload_StringToFileNameConverter"/>
+    <telerik:FlagEnumToVisibilityConverter x:Key="CloudUpload_FlagEnumToVisibilityConverter"/>
+    <Style x:Key="RadButtonStyle" TargetType="telerik1:RadButton">
+        <Setter Property="helpers:ThemeHelper.MouseOverBrush" Value="{telerik1:Office2019Resource ResourceKey=AccentMouseOverBackgroundBrush}"/>
+        <Setter Property="helpers:ThemeHelper.FocusBrush" Value="{telerik1:Office2019Resource ResourceKey=AccentBorderBrush}"/>
+        <Setter Property="helpers:ThemeHelper.PressedBrush" Value="{telerik1:Office2019Resource ResourceKey=AccentPressedBackgroundBrush}"/>
+        <Setter Property="helpers:ThemeHelper.DisabledBrush" Value="{telerik1:Office2019Resource ResourceKey=DisabledBackgroundBrush}"/>
+        <Setter Property="FontFamily" Value="{telerik1:Office2019Resource ResourceKey=FontFamily}"/>
+        <Setter Property="FontSize" Value="{telerik1:Office2019Resource ResourceKey=FontSize}"/>
+        <Setter Property="Foreground" Value="{telerik1:Office2019Resource ResourceKey=MainForegroundBrush}"/>
+        <Setter Property="Background" Value="{telerik1:Office2019Resource ResourceKey=ButtonBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{telerik1:Office2019Resource ResourceKey=MainBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="5 0"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="MinHeight" Value="22"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="telerik1:RadButton">
+                    <Grid SnapsToDevicePixels="True">
+                        <Border x:Name="BorderVisual"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="{TemplateBinding CornerRadius}"/>
+                        <ContentPresenter x:Name="Content"
+                                TextBlock.Foreground="{TemplateBinding Foreground}"
+                                Margin="{TemplateBinding Padding}"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                RecognizesAccessKey="True"/>
+                        <Border x:Name="FocusVisual"
+                                Opacity="0"
+                                BorderThickness="{telerik1:Office2019Resource ResourceKey=FocusThickness}"
+                                BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ThemeHelper.FocusBrush)}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+
+                        <!-- background is hidden -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsBackgroundVisible" Value="False"/>
+                                <Condition Property="IsEnabled" Value="True"/>
+                                <Condition Property="IsMouseOver" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="BorderVisual" Property="Background" Value="Transparent"/>
+                            <Setter TargetName="BorderVisual" Property="BorderBrush" Value="Transparent"/>
+                        </MultiTrigger>
+
+                        <!-- General IsKeyboardFocused setters -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsKeyboardFocused" Value="True"/>
+                                <Condition Property="IsEnabled" Value="True"/>
+                                <Condition Property="IsMouseOver" Value="False"/>
+                                <Condition Property="IsPressed" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="FocusVisual" Property="Opacity" Value="1"/>
+                        </MultiTrigger>
+
+                        <!-- general setters for IsMouseOver -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{telerik1:Office2019Resource ResourceKey=HighlightedForegroundBrush}"/>
+                            <Setter TargetName="BorderVisual" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ThemeHelper.MouseOverBrush)}"/>
+                            <Setter TargetName="BorderVisual" Property="BorderBrush" Value="{telerik1:Office2019Resource ResourceKey=AccentMouseOverBorderBrush}"/>
+                        </Trigger>
+
+                        <!-- general setters for IsPressed -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Foreground" Value="{telerik1:Office2019Resource ResourceKey=HighlightedForegroundBrush}"/>
+                            <Setter TargetName="BorderVisual" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ThemeHelper.PressedBrush)}"/>
+                            <Setter TargetName="BorderVisual" Property="BorderBrush" Value="{telerik1:Office2019Resource ResourceKey=AccentBorderBrush}"/>
+                        </Trigger>
+
+                        <!-- disabled -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Content" Property="Opacity" Value="{telerik1:Office2019Resource ResourceKey=DisabledOpacity}"/>
+                            <Setter TargetName="BorderVisual" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(helpers:ThemeHelper.DisabledBrush)}"/>
+                            <Setter TargetName="BorderVisual" Property="BorderBrush" Value="{telerik1:Office2019Resource ResourceKey=DisabledBorderBrush}"/>
+                        </Trigger>
+
+                        <!-- disabled & background is hidden -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False"/>
+                                <Condition Property="IsBackgroundVisible" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="BorderVisual" Property="Background" Value="Transparent"/>
+                            <Setter TargetName="BorderVisual" Property="BorderBrush" Value="Transparent"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="telerik1:RadButton" BasedOn="{StaticResource RadButtonStyle}"/>
+    <Style x:Key="RadCloudUploadButtonStyle" TargetType="telerik:RadButton" BasedOn="{StaticResource RadButtonStyle}">
+        <Setter Property="helpers:ThemeHelper.FocusBrush" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="{telerik1:Office2019Resource ResourceKey=IconBrush}"/>
+        <Setter Property="IsBackgroundVisible" Value="False"/>
+        <Setter Property="MinWidth" Value="22"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{telerik1:Office2019Resource ResourceKey=HighlightedForegroundBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Foreground" Value="{telerik1:Office2019Resource ResourceKey=HighlightedForegroundBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="RadCloudUploadListItemStyle" TargetType="{x:Type telerikCloud:RadCloudUploadListItem}">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0 0 0 20"/>
+        <Setter Property="Foreground" Value="{telerik1:Office2019Resource ResourceKey=MainForegroundBrush}"/>
+        <Setter Property="FontSize" Value="{telerik1:Office2019Resource ResourceKey=FontSize}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type telerikCloud:RadCloudUploadListItem}">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid Margin="{TemplateBinding Padding}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid x:Name="FileInformation" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 0 0 5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding FileName, Mode=OneWay, Converter={StaticResource CloudUpload_StringToFileNameConverter}}" Margin="0 0 10 0"/>
+                                <TextBlock Grid.Column="1" Text="{Binding FileSize, Mode=OneWay, StringFormat=({0}), Converter={StaticResource CloudUpload_HumanReadableFileSizeConverter}, ConverterParameter=0.##}"/>
+                            </Grid>
+                            <telerik:RadProgressBar x:Name="ProgressBar"
+                                    Grid.Row="1"
+                                    Margin="0 5"
+                                    MinHeight="4"
+                                    VerticalAlignment="Center"
+                                    Maximum="{Binding FileSize, Mode=OneWay}"
+                                    Value="{Binding UploadedBytes, Mode=OneWay}"/>
+                            <Grid Grid.Row="1" Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0" Margin="{StaticResource CloudUploadIcons_Margin}">
+                                    <Border x:Name="CancelButtonWrapper" Visibility="Hidden">
+                                        <telerik:RadButton
+                                                Command="{Binding RequestCancelCommand}"
+                                                Style="{StaticResource RadCloudUploadButtonStyle}"
+                                                Visibility="{TemplateBinding Buttons, Converter={StaticResource CloudUpload_FlagEnumToVisibilityConverter}, ConverterParameter=Cancel}"
+                                                ToolTip="{telerik:LocalizableResource Key=CloudUploadItem_Cancel}"
+                                                VerticalAlignment="Center">
+                                            <telerik:RadGlyph Glyph="{StaticResource GlyphCancel}" FontSize="16" Foreground="{telerik1:Office2019Resource ResourceKey=IconBrush}"/>
+                                        </telerik:RadButton>
+                                    </Border>
+                                    <Grid x:Name="UploadedIcon" Visibility="Hidden" ToolTip="{telerik:LocalizableResource Key=CloudUploadItem_Uploaded}">
+                                        <telerik:RadGlyph Glyph="{StaticResource GlyphCheck}" FontSize="16" Foreground="{telerik1:Office2019Resource ResourceKey=IconBrush}"/>
+                                    </Grid>
+                                    <Grid x:Name="NotificationIcon" Visibility="Hidden" ToolTip="{Binding State}">
+                                        <telerik:RadGlyph Glyph="{StaticResource GlyphWarning}" FontSize="16" Foreground="{telerik1:Office2019Resource ResourceKey=ValidationBrush}"/>
+                                    </Grid>
+                                </Grid>
+                                <Border x:Name="UploadButtonWrapper"
+                                        Visibility="Hidden"
+                                        ToolTip="{telerik:LocalizableResource Key=CloudUploadItem_Upload}"
+                                        Margin="{StaticResource CloudUploadIcons_Margin}">
+                                    <telerik:RadButton Command="{Binding StartUploadCommand}" Style="{StaticResource RadCloudUploadButtonStyle}" Visibility="{TemplateBinding Buttons, Converter={StaticResource CloudUpload_FlagEnumToVisibilityConverter}, ConverterParameter=Upload}">
+                                        <telerik:RadGlyph Glyph="{StaticResource GlyphUpload}" FontSize="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type telerik:RadButton}},Path=Foreground}"/>
+                                    </telerik:RadButton>
+                                </Border>
+                                <telerik:RadButton
+                                        Grid.Column="2"
+                                        Style="{StaticResource RadCloudUploadButtonStyle}"
+                                        Margin="{StaticResource CloudUploadIcons_Margin}"
+                                        Command="{Binding RequestCloseCommand}"
+                                        Visibility="{TemplateBinding Buttons, Converter={StaticResource CloudUpload_FlagEnumToVisibilityConverter}, ConverterParameter=Close}"
+                                        ToolTip="{telerik:LocalizableResource Key=CloudUploadItem_Close}">
+                                    <telerik:RadGlyph Glyph="{StaticResource GlyphClose}" FontSize="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type telerik:RadButton}},Path=Foreground}"/>
+                                </telerik:RadButton>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding State}" Value="NotStarted">
+                            <Setter TargetName="UploadButtonWrapper" Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding State}" Value="Uploading">
+                            <Setter TargetName="CancelButtonWrapper" Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding State}" Value="Uploaded">
+                            <Setter TargetName="UploadedIcon" Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding State}" Value="Cancelling">
+                            <Setter TargetName="CancelButtonWrapper" Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding State}" Value="Canceled">
+                            <Setter TargetName="NotificationIcon" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="NotificationIcon" Property="ToolTip" Value="{telerik:LocalizableResource Key=CloudUploadItem_Canceled}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding State}" Value="Failed">
+                            <Setter TargetName="NotificationIcon" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="NotificationIcon" Property="ToolTip" Value="{telerik:LocalizableResource Key=CloudUploadItem_Failed}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding State}" Value="Invalid">
+                            <Setter TargetName="FileInformation" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="ProgressBar" Property="Visibility" Value="Hidden"/>
+                            <Setter TargetName="NotificationIcon" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="NotificationIcon" Property="ToolTip">
+                                <Setter.Value>
+                                    <ItemsControl ItemsSource="{Binding ValidationErrors}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="RadCloudUploadListStyle" TargetType="{x:Type telerikCloud:RadCloudUploadList}">
+        <Setter Property="mat:MaterialAssist.ShadowDepth" Value="Depth1"/>
+        <Setter Property="Background" Value="{telerik1:Office2019Resource ResourceKey=MainBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{telerik1:Office2019Resource ResourceKey=MainBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type telerikCloud:RadCloudUploadList}">
+                    <Grid>
+                        <mat:Shadow Background="{TemplateBinding Background}" ShadowDepth="{TemplateBinding mat:MaterialAssist.ShadowDepth}"/>
+                        <ScrollViewer x:Name="ScrollViewer"
+                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                            <ItemsPresenter x:Name="ItemsPresenter" Margin="{TemplateBinding Padding}"/>
+                        </ScrollViewer>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="ItemsPresenter" Property="Opacity" Value="{telerik1:Office2019Resource ResourceKey=DisabledOpacity}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="RadCloudUploadStyle" TargetType="{x:Type telerikCloud:RadCloudUpload}">
+        <Setter Property="mat:MaterialAssist.ShadowDepth" Value="Depth1"/>
+        <Setter Property="Padding" Value="10 10 10 16"/>
+        <Setter Property="Background" Value="{telerik1:Office2019Resource ResourceKey=MainBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{telerik1:Office2019Resource ResourceKey=MainBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="{telerik1:Office2019Resource ResourceKey=MainForegroundBrush}"/>
+        <Setter Property="FontSize" Value="{telerik1:Office2019Resource ResourceKey=FontSize}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type telerikCloud:RadCloudUpload}">
+                    <Grid>
+                        <mat:Shadow Background="{TemplateBinding Background}" ShadowDepth="{TemplateBinding mat:MaterialAssist.ShadowDepth}"/>
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid Margin="{TemplateBinding Padding}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <WrapPanel VerticalAlignment="Center" Margin="0 0 0 10">
+                                    <telerik:RadButton
+                                            Content="{telerik:LocalizableResource Key=CloudUpload_Browse}"
+                                            Command="{x:Static telerikCloudUpload:CloudUploadCommands.Browse}"
+                                            Visibility="{TemplateBinding Buttons, Converter={StaticResource CloudUpload_FlagEnumToVisibilityConverter}, ConverterParameter=Browse}"
+                                            MinWidth="{StaticResource CloudUploadButtons_MinWidth}"
+                                            Margin="{StaticResource CloudUploadButtons_Margin}"/>
+                                    <telerik:RadButton
+                                            Content="{telerik:LocalizableResource Key=CloudUpload_AddFiles}"
+                                            Command="{x:Static telerikCloudUpload:CloudUploadCommands.AddFiles}"
+                                            Visibility="{TemplateBinding Buttons, Converter={StaticResource CloudUpload_FlagEnumToVisibilityConverter}, ConverterParameter=AddFiles}"
+                                            MinWidth="{StaticResource CloudUploadButtons_MinWidth}"
+                                            Margin="{StaticResource CloudUploadButtons_Margin}"/>
+                                    <telerik:RadButton
+                                            Content="{telerik:LocalizableResource Key=CloudUpload_Upload}"
+                                            Command="{x:Static telerikCloudUpload:CloudUploadCommands.StartUpload}"
+                                            Visibility="{TemplateBinding Buttons, Converter={StaticResource CloudUpload_FlagEnumToVisibilityConverter}, ConverterParameter=Upload}"
+                                            MinWidth="{StaticResource CloudUploadButtons_MinWidth}"
+                                            Margin="{StaticResource CloudUploadButtons_Margin}"/>
+                                    <telerik:RadButton
+                                            Content="{telerik:LocalizableResource Key=CloudUpload_Cancel}"
+                                            Command="{x:Static telerikCloudUpload:CloudUploadCommands.RequestCancel}"
+                                            Visibility="{TemplateBinding Buttons, Converter={StaticResource CloudUpload_FlagEnumToVisibilityConverter}, ConverterParameter=Cancel}"
+                                            MinWidth="{StaticResource CloudUploadButtons_MinWidth}"
+                                            Margin="{StaticResource CloudUploadButtons_Margin}"/>
+                                    <telerik:RadButton
+                                            Content="{telerik:LocalizableResource Key=CloudUpload_ClearUploaded}"
+                                            Command="{x:Static telerikCloudUpload:CloudUploadCommands.ClearUploadedItems}"
+                                            Visibility="{TemplateBinding Buttons, Converter={StaticResource CloudUpload_FlagEnumToVisibilityConverter}, ConverterParameter=ClearUploaded}"
+                                            MinWidth="{StaticResource CloudUploadButtons_MinWidth}"
+                                            Margin="{StaticResource CloudUploadButtons_Margin}"/>
+                                </WrapPanel>
+                                <TextBlock x:Name="TotalSizeText"
+                                        Grid.Column="1"
+                                        Text="{TemplateBinding TotalSize, Converter={StaticResource CloudUpload_HumanReadableFileSizeConverter}, ConverterParameter=0.##}"
+                                        Margin="0 5 10 0"
+                                        VerticalAlignment="Top"
+                                        Foreground="{telerik1:Office2019Resource ResourceKey=AccentBorderBrush}"/>
+                                <Grid Grid.Column="2" VerticalAlignment="Top" Margin="0 5 0 0">
+                                    <Grid x:Name="UploadedIcon" Visibility="Collapsed">
+                                        <telerik:RadGlyph
+                                                Glyph="{StaticResource GlyphCheck}"
+                                                FontSize="16"
+                                                Foreground="{telerik1:Office2019Resource ResourceKey=AccentBorderBrush}"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center"/>
+                                        <Grid.ToolTip>
+                                            <StackPanel>
+                                                <TextBlock>
+                                                    <Run Text="{Binding ItemsSummary.UploadedItemsCount, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                                    <Run Text="{telerik:LocalizableResource Key=CloudUpload_UploadedFiles}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </Grid.ToolTip>
+                                    </Grid>
+                                    <Grid x:Name="NotificationIcon">
+                                        <telerik:RadGlyph
+                                                Glyph="{StaticResource GlyphWarning}"
+                                                FontSize="16"
+                                                Foreground="{telerik1:Office2019Resource ResourceKey=ValidationBrush}"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center"/>
+                                        <Grid.ToolTip>
+                                            <StackPanel>
+                                                <TextBlock x:Name="InvalidItemsTextBlock">
+                                                    <Run Text="{Binding ItemsSummary.InvalidItemsCount, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                                    <Run Text="{telerik:LocalizableResource Key=CloudUpload_InvalidFiles}"/>
+                                                </TextBlock>
+                                                <TextBlock x:Name="FailedItemsTextBlock">
+                                                    <Run Text="{Binding ItemsSummary.FailedItemsCount, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                                    <Run Text="{telerik:LocalizableResource Key=CloudUpload_FailedFiles}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </Grid.ToolTip>
+                                    </Grid>
+                                </Grid>
+                                <telerik:RadProgressBar Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Maximum="1" MinHeight="4" Value="{TemplateBinding Progress}" Margin="0 0 10 0"/>
+                                <telerik:RadButton
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        Style="{StaticResource RadCloudUploadButtonStyle}"
+                                        Command="{x:Static telerikCloudUpload:CloudUploadCommands.ClearItems}"
+                                        Visibility="{TemplateBinding Buttons, Converter={StaticResource CloudUpload_FlagEnumToVisibilityConverter}, ConverterParameter=Clear}"
+                                        ToolTip="{telerik:LocalizableResource Key=CloudUpload_ClearItems}">
+                                    <telerik:RadGlyph Glyph="{StaticResource GlyphClose}" FontSize="16" Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type telerik:RadButton}},Path=Foreground}"/>
+                                </telerik:RadButton>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding ItemsSummary.NotStartedItemsCount, RelativeSource={RelativeSource Self}}" Value="0"/>
+                                <Condition Binding="{Binding ItemsSummary.UploadingItemsCount, RelativeSource={RelativeSource Self}}" Value="0"/>
+                                <Condition Binding="{Binding ItemsSummary.CancellingItemsCount, RelativeSource={RelativeSource Self}}" Value="0"/>
+                                <Condition Binding="{Binding ItemsSummary.FailedItemsCount, RelativeSource={RelativeSource Self}}" Value="0"/>
+                                <Condition Binding="{Binding ItemsSummary.InvalidItemsCount, RelativeSource={RelativeSource Self}}" Value="0"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="UploadedIcon" Property="Visibility" Value="Visible"/>
+                        </MultiDataTrigger>
+                        <DataTrigger Binding="{Binding ItemsSummary.UploadedItemsCount, RelativeSource={RelativeSource Self}}" Value="0">
+                            <Setter TargetName="UploadedIcon" Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding ItemsSummary.InvalidItemsCount, RelativeSource={RelativeSource Self}}" Value="0"/>
+                                <Condition Binding="{Binding ItemsSummary.FailedItemsCount, RelativeSource={RelativeSource Self}}" Value="0"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="NotificationIcon" Property="Visibility" Value="Hidden"/>
+                        </MultiDataTrigger>
+                        <DataTrigger Binding="{Binding ItemsSummary.InvalidItemsCount, RelativeSource={RelativeSource Self}}" Value="0">
+                            <Setter TargetName="InvalidItemsTextBlock" Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ItemsSummary.FailedItemsCount, RelativeSource={RelativeSource Self}}" Value="0">
+                            <Setter TargetName="FailedItemsTextBlock" Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="BorderBrush" Value="{telerik1:Office2019Resource ResourceKey=DisabledBorderBrush}"/>
+                            <Setter TargetName="TotalSizeText" Property="Opacity" Value="{telerik1:Office2019Resource ResourceKey=DisabledOpacity}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="telerikCloud:RadCloudUploadListItem" BasedOn="{StaticResource RadCloudUploadListItemStyle}"/>
+    <Style TargetType="telerikCloud:RadCloudUploadList" BasedOn="{StaticResource RadCloudUploadListStyle}"/>
+    <Style TargetType="telerikCloud:RadCloudUpload" BasedOn="{StaticResource RadCloudUploadStyle}"/>
+</ResourceDictionary>

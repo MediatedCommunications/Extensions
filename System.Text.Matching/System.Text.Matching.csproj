@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\__Shared\Shared.targets" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\System.Extensions\System.Extensions.csproj" />
+  </ItemGroup>
+</Project>

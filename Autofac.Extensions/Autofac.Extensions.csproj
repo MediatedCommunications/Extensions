@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\__Shared\Shared.targets" Label="Shared" />
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Extensions\System.Extensions.csproj" />
+  </ItemGroup>
+
+
+</Project>

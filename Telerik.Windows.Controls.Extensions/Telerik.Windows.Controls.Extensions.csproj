@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\__Shared\Windows-Shared.targets" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\System.Extensions\System.Extensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Telerik.Windows.Controls">
+      <HintPath>..\__PACKAGES\Telerik.Windows.Controls\WPF50\Telerik.Windows.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.FileDialogs">
+      <HintPath>..\__PACKAGES\Telerik.Windows.Controls\WPF50\Telerik.Windows.Controls.FileDialogs.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.GridView">
+      <HintPath>..\__PACKAGES\Telerik.Windows.Controls\WPF50\Telerik.Windows.Controls.GridView.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Navigation">
+      <HintPath>..\__PACKAGES\Telerik.Windows.Controls\WPF50\Telerik.Windows.Controls.Navigation.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Data">
+      <HintPath>..\__PACKAGES\Telerik.Windows.Controls\WPF50\Telerik.Windows.Data.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <PropertyGroup>
+  </PropertyGroup>
+
+</Project>
