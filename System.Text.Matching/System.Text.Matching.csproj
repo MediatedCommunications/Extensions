@@ -3,4 +3,8 @@
   <ItemGroup>
     <ProjectReference Include="..\System.Extensions\System.Extensions.csproj" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>MC.System.Text.Matching</PackageId>
+  </PropertyGroup>
 </Project>

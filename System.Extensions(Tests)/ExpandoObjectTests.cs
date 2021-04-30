@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
 using System.Threading.Tasks;
-using System;
-using System.Linq;
 using System.Dynamic;
 
 namespace Framework.Tests {

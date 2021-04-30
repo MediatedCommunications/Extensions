@@ -12,5 +12,12 @@
     
 	  <OutputPath>..\..\__BUILD\__CURRENT</OutputPath>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageProjectUrl>https://github.com/MediatedCommunications/Extensions</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MediatedCommunications/Extensions</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  
 </Project>
 

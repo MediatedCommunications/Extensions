@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Linq;
 
 namespace System {
     public record EmailAddress : DisplayRecord {

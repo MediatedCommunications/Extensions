@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace System.Text.Matching {
+﻿namespace System.Text.Matching {
     public class HammingMatchProvider : MatchProvider {
         public static HammingMatchProvider Instance { get; private set; } = new HammingMatchProvider();
 
@@ -15,10 +9,10 @@ namespace System.Text.Matching {
             var RightLetters = Defaults.GetLetters(Right);
 
             var Distance = LevenshteinDistance.Compute(LeftLetters, RightLetters, Comparer);
-            var MatchedCount = Math.Max(0, LeftLetters.Count + RightLetters.Count - Distance);
-            var Weight = 1.0;
+            var MatchedCount = Math.Max(0, LeftLetters.Count - Distance);
+            var Weight = 0.0;
 
-            if (Distance > 0) {
+            if (Distance > 0 && MatchedCount > 0) {
                 var Top = (double)(LeftLetters.Count + RightLetters.Count - Distance);
                 var Bottom = (double)(LeftLetters.Count + RightLetters.Count);
 

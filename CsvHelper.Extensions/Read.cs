@@ -1,11 +1,13 @@
 ﻿using CsvHelper.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CsvHelper {
 
@@ -69,44 +71,60 @@ namespace CsvHelper {
             return ret;
         }
 
-        private static void GetColumnHeaders(this CsvReader This, IDictionary<int, string> OUT_ColumnHeaders) {
-            if (This.Read()) {
-                for (var i = 0; This.TryGetField<string>(i, out var value); ++i) {
-                    OUT_ColumnHeaders[i] = value;
+        public static IEnumerable<DynamicCsvRecord> DynamicRecords(this CsvReader This, bool Include_Column_Headers = true, bool Trim = true) {
+            var IndexToHeaders = ImmutableDictionary<int, string>.Empty;
+
+            if (Include_Column_Headers) {
+                var tret = new Dictionary<int, string>();
+                if (This.Read()) {
+                    for (var i = 0; i < This.Parser.Record.Length; ++i) {
+                        var value = This.Parser.Record[i];
+                        if (Trim) {
+                            value = value.TrimSafe();
+                        }
+                        
+                        tret[i] = value;
+                    }
                 }
+                IndexToHeaders = tret.ToImmutableDictionary();
             }
-        }
-
-        public static IEnumerable<string[]> AsArrays(string path, IDictionary<int, string>? OUT_ColumnHeaders = default) {
-            OUT_ColumnHeaders ??= new SortedDictionary<int, string>();
-
-            var Config = new CsvConfiguration(CultureInfo.InvariantCulture) {
-                BadDataFound = default
-            };
-
-
-            using var csv = new CsvReader(new StreamReader(path, Encoding.UTF8), Config);
             
-            csv.GetColumnHeaders(OUT_ColumnHeaders);
+            var HeadersToIndex = IndexToHeaders
+                .GroupBy(x => x.Value, x => x.Key, StringComparer.InvariantCultureIgnoreCase)
+                .ToImmutableDictionary(x => x.Key, x => x.ToImmutableList(), StringComparer.InvariantCultureIgnoreCase)
+                ;
 
-            var LastHeader = OUT_ColumnHeaders.Keys.Max();
-            
-            while (csv.Read()) {
-                var Values = new LinkedList<string>(); ;
+            var HeaderToIndex = HeadersToIndex
+                .ToImmutableDictionary(x => x.Key, x => x.Value.First(), StringComparer.InvariantCultureIgnoreCase);
 
-                for (var i = 0; i <= LastHeader; i++) {
-                    var Value = i < csv.Context.Parser.Record.Length
-                        ? csv.Context.Parser.Record[i]
-                        : ""
-                        ;
-                    Values.Add(Value);
+
+            while (This.Read()) {
+                var tret = new List<string>();
+                for (var i = 0; i < This.Parser.Record.Length; ++i) {
+                    var value = This.Parser.Record[i];
+
+                    if (Trim) {
+                        value = value.TrimSafe();
+                    }
+
+                    tret.Add(value);
                 }
+                var Values = tret.ToImmutableList();
 
-                var ret = Values.ToArray();
+                var ret = new DynamicCsvRecord() {
+                    IndexToHeaders = IndexToHeaders,
+                    HeadersToIndex = HeadersToIndex,
+                    HeaderToIndex = HeaderToIndex,
+                    Values = Values,
+                };
 
                 yield return ret;
+
             }
+
+
         }
 
     }
+
 }

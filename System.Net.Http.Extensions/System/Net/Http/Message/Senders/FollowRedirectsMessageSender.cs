@@ -1,6 +1,4 @@
-﻿using System.Net.Http.Message;
-using System.Net.Http.Message.Senders;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.Net.Http.Message.Senders {

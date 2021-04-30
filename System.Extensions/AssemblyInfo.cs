@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace System {
+﻿namespace System {
     public static partial class AssemblyInfo {
         public const string AssemblyVersionString = InternalAssemblyInfo.AssemblyVersionString;
         public const string AssemblyBuildDateString = InternalAssemblyInfo.AssemblyBuildDateString;

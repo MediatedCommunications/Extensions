@@ -10,7 +10,9 @@ namespace System {
     }
 
     public record RetryAsync<T> {
-        public Func<CancellationToken, Task<T>> Try { get; init; } = x => Task.FromResult(default(T));
+        public Func<CancellationToken, Task<T>> Try { get; init; } = x => throw new MissingMethodException();
+        public Func<CancellationToken, Task<T>> Default { get; init; } = x => throw new MissingMethodException();
+
         public Func<Exception, CancellationToken, Task> Recover { get; init; } = (x,y) => Task.CompletedTask;
         public TimeSpan DelayBeforeRecover { get; init; } = TimeSpan.Zero;
         public TimeSpan DelayAfterRecover { get; init; } = TimeSpan.FromSeconds(1);
@@ -36,9 +38,11 @@ namespace System {
                     ret = await Try(LinkedToken.Token)
                         .DefaultAwait()
                         ;
-                    Success = true;
+                    FailureException = default;
                 } catch (Exception ex) {
-                    if(Attempts != RetryAttempts) {
+                    FailureException = ExceptionDispatchInfo.Capture(ex);
+
+                    if (Attempts != RetryAttempts) {
 
                         await SafeDelay.DelayAsync(DelayBeforeRecover, LinkedToken.Token)
                             .DefaultAwait()
@@ -51,18 +55,22 @@ namespace System {
                         await SafeDelay.DelayAsync(DelayAfterRecover, LinkedToken.Token)
                             .DefaultAwait()
                             ;
-                    } else {
-                        FailureException = ExceptionDispatchInfo.Capture(ex);
                     }
 
                 }
 
             }
 
-            if(Success == false) {
+            if(FailureException is { }) {
                 if(OnFailure == RetryFailureResult.ThrowException) {
                     FailureException.Throw();
                 }
+            }
+
+            if(ret is null) {
+                ret = await Default(Token)
+                    .DefaultAwait()
+                    ;
             }
 
             return ret;

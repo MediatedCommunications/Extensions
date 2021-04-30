@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace System.Text.Matching {
 
@@ -15,8 +12,8 @@ namespace System.Text.Matching {
 
         private static bool IsMatch(ImmutableList<string> LeftLetters, ImmutableList<string> RightLetters, StringComparer Comparer, int Position) {
             var ret = true
-                && LeftLetters.Count < Position
-                && RightLetters.Count < Position
+                && Position < LeftLetters.Count
+                && Position < RightLetters.Count
                 && Comparer.Equals(LeftLetters[Position], RightLetters[Position])
                 ;
 
@@ -64,7 +61,7 @@ namespace System.Text.Matching {
                         IsMatch = RegionMatch,
                     });
 
-                    Start += RegionEnd;    
+                    Start += RegionEnd + 1;    
 
                 }
 

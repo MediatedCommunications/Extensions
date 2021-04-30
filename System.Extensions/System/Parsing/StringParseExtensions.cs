@@ -66,6 +66,10 @@ namespace System {
         }
 
 
+        public static RegexParser AsRegex(this ParseValue This, RegexOptions Options = RegexOptions.None) {
+            return new RegexParser(This.Value, Options);
+        }
+
         public static RegexMatchParser AsRegexMatches(this ParseValue This, Regex RX) {
             return new RegexMatchParser(RX, This.Value);
         }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Documents;
 
 namespace Telerik.Windows.Controls {
     public static partial class ButtonExtensions {

@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-
-namespace System.Diagnostics {
+﻿namespace System.Diagnostics {
     public class DisplayBuilderStatusRegion : DisplayBuilderRegion {
         public DisplayBuilderStatusRegion(string Format, DisplayBuilder Parent) : base(Format, Parent) {
         

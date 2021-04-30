@@ -1,7 +1,4 @@
-﻿using System.Globalization;
-using System.Text;
-using System.Text.Json;
-using System.Text.RegularExpressions;
+﻿using System.Text.Json;
 
 namespace System {
     public static class StringParseExtensions { 

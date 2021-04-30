@@ -1,6 +1,4 @@
 ﻿using System.Collections.Immutable;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace System.Text.Matching {
     public abstract class PhraseMatchProvider {

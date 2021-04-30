@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 
@@ -19,6 +18,13 @@ namespace System.Text.Matching {
     public record MatchSegment : DisplayRecord {
         public string Left { get; init; } = string.Empty;
         public string Right { get; init; } = string.Empty;
+
+        public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
+            return base.GetDebuggerDisplayBuilder(Builder)
+                .Data.Add($@"{Left}={Right}")
+                ;
+        }
+
     }
 
     public record ExactMatchSegment : MatchSegment {

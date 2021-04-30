@@ -18,4 +18,8 @@
     </Compile>
   </ItemGroup>
 
+  <PropertyGroup>
+    <PackageId>MC.System.Extensions</PackageId>
+  </PropertyGroup>
+
 </Project>

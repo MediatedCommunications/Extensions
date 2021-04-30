@@ -1,12 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>MC.CsvHelper.Extensions</PackageId>
+    <PackageProjectUrl>https://github.com/MediatedCommunications/Extensions</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MediatedCommunications/Extensions</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
   <Import Project="..\__Shared\Shared.targets" Label="Shared" />
 
   <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="26.1.0" />
+    <PackageReference Include="CsvHelper" Version="27.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\System.Extensions\System.Extensions.csproj" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>MC.CsvHelper.Extensions</PackageId>
+  </PropertyGroup>
 
 </Project>

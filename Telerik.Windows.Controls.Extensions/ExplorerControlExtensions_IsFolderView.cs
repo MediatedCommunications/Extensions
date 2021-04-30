@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Telerik.Windows.Controls;
 
 namespace Telerik.Windows.Controls {
     public static partial class ExplorerControlExtensions {
