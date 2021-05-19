@@ -1,9 +1,11 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.Extensions {
+
     [TestFixture]
     public class RangeTests {
 
@@ -19,7 +21,7 @@ namespace System.Extensions {
 
             {
                 var Expected = new[] { 1, 2, 3 };
-                var Actual = (1..3).AsEnumerable(true).ToList();
+                var Actual = (1..3).AsEnumerable().EndIs(RangeEndpoint.Inclusive).ToList();
 
                 Assert.AreEqual(Expected, Actual);
             }
@@ -33,7 +35,7 @@ namespace System.Extensions {
 
             {
                 var Expected = new[] { 3, 2, 1 };
-                var Actual = (3..1).AsEnumerable(true).ToList();
+                var Actual = (3..1).AsEnumerable().EndIs(RangeEndpoint.Inclusive).ToList();
 
                 Assert.AreEqual(Expected, Actual);
             }

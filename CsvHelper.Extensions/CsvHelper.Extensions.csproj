@@ -8,7 +8,7 @@
   <Import Project="..\__Shared\Shared.targets" Label="Shared" />
 
   <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="27.0.1" />
+    <PackageReference Include="CsvHelper" Version="27.0.3" />
   </ItemGroup>
 
   <ItemGroup>

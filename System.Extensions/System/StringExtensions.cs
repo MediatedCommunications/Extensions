@@ -47,10 +47,14 @@ namespace System {
             if(ActualStartIndex < 0) {
                 ActualStartIndex = 0;
             }
+            if(ActualStartIndex > This.Length) {
+                ActualStartIndex = This.Length;
+            }
 
             var MaxLength = Length ?? This.Length;
-            if(StartIndex + MaxLength > This.Length) {
-                MaxLength = This.Length - StartIndex;
+
+            if(ActualStartIndex + MaxLength > This.Length) {
+                MaxLength = This.Length - ActualStartIndex;
             }
 
             if(MaxLength < 0) {

@@ -20,6 +20,13 @@ namespace System.Diagnostics {
             return Parent;
         }
 
+        public DisplayBuilder AddIf(bool Condition, params object?[] Values) {
+            if (Condition) {
+                Add(Values);
+            }
+            return Parent;
+        }
+
         public DisplayBuilder Add(object? Value) {
             if (Value is { } V1 && StringValue(V1) is { } V2) {
                 var V3 = V2.Trim();
@@ -36,7 +43,7 @@ namespace System.Diagnostics {
             return Add(typeof(T));
         }
 
-        public DisplayBuilder AddIf(bool Condition, object? True, object? False) {
+        public DisplayBuilder AddCondition(bool Condition, object? True, object? False) {
             if (Condition) {
                 Add(True);
             } else {
@@ -45,13 +52,6 @@ namespace System.Diagnostics {
 
             return Parent;
         }
-
-        public DisplayBuilder AddIf(bool Condition, object? True) {
-            return AddIf(Condition, True, default);
-        }
-
-
-
 
         private static string? StringValue(object? Value) {
             var ret = default(string?);

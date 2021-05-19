@@ -44,13 +44,13 @@ namespace System.Text.Matching {
 
 
                     var LeftPart = (
-                        from x in (RegionStart..RegionEnd).AsEnumerable(true)
+                        from x in (RegionStart..RegionEnd).AsEnumerable().EndIs(RangeEndpoint.Inclusive)
                         where x < LeftLetters.Count
                         select LeftLetters[x]
                         ).Join();
 
                     var RightPart = (
-                        from x in (RegionStart..RegionEnd).AsEnumerable(true)
+                        from x in (RegionStart..RegionEnd).AsEnumerable().EndIs(RangeEndpoint.Inclusive)
                         where x < RightLetters.Count
                         select RightLetters[x]
                         ).Join();

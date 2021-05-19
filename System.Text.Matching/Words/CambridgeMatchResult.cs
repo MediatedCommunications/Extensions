@@ -15,8 +15,8 @@ namespace System.Text.Matching {
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
-                .Postfix.AddIf(FirstMatches, "FirstMatches", "!FirstMatches")
-                .Postfix.AddIf(LastMatches, "LastMatches", "!LastMatches")
+                .Postfix.AddCondition(FirstMatches, "FirstMatches", "!FirstMatches")
+                .Postfix.AddCondition(LastMatches, "LastMatches", "!LastMatches")
                 ;
         }
 

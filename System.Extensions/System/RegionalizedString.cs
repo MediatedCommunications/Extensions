@@ -29,29 +29,32 @@ namespace System {
             return !R.Equals(S);
         }
 
-        private static bool TextOperation(string? This, string? Value, Func<string, string, bool> Condition) {
+        private static bool TextOperation(string? This, string?[] Values, Func<string, string, bool> Condition) {
             var ret = false;
 
-            if (This is { } V1 && Value is { } V2 && Condition(V1, V2)) {
-                ret = true;
+            foreach (var Value in Values) {
+                if (This is { } V1 && Value is { } V2 && Condition(V1, V2)) {
+                    ret = true;
+                    break;
+                }
             }
 
             return ret;
         }
 
-        public bool StartsWith(string? CompareTo) {
+        public bool StartsWith(params string?[] CompareTo) {
             return TextOperation(Value, CompareTo, (x, y) => x.StartsWith(y, Comparison));
         }
 
-        public bool EndsWith(string? CompareTo) {
+        public bool EndsWith(params string?[] CompareTo) {
             return TextOperation(Value, CompareTo, (x, y) => x.EndsWith(y, Comparison));
         }
 
-        public bool Contains(string? CompareTo) {
+        public bool Contains(params string?[] CompareTo) {
             return TextOperation(Value, CompareTo, (x, y) => x.Contains(y, Comparison));
         }
 
-        public bool Equals(string? CompareTo) {
+        public bool Equals(params string?[] CompareTo) {
             return TextOperation(Value, CompareTo, (x, y) => x.Equals(y, Comparison));
         }
 

@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <PropertyGroup>
+    <PackageId>MC.Telerik.Windows.Controls.Extensions</PackageId>
   </PropertyGroup>
 
 </Project>
