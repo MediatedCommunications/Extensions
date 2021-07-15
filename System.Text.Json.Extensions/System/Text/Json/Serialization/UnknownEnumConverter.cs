@@ -14,9 +14,11 @@ namespace System.Text.Json.Serialization {
 
         }
 
-        public UnknownEnumConverter(string? Default) {
-            if (Enum.TryParse<T>(Default, out var V1)) {
-                this.Default = V1;
+        public UnknownEnumConverter(params string?[] Defaults) {
+            foreach (var Default in Defaults) {
+                if (Enum.TryParse<T>(Default, out var V1)) {
+                    this.Default = V1;
+                }
             }
 
         }
@@ -56,14 +58,21 @@ namespace System.Text.Json.Serialization {
 
     public class UnknownEnumConverter : JsonConverterFactory {
 
-        protected string Default { get; set; }
+        protected string?[] Defaults { get; set; }
 
         /// <summary>
         /// Constructor. Creates the <see cref="UnknownEnumConverter"/> with the
         /// default naming policy and allows integer values.
         /// </summary>
-        public UnknownEnumConverter(string? Default = default) {
-            this.Default = Default ?? nameof(Default);
+        public UnknownEnumConverter(params string?[] Defaults) {
+            if(Defaults.Length == 0) {
+                Defaults = new[] {
+                    "Default",
+                    "Unknown",
+                };
+            }
+
+            this.Defaults = Defaults;
         }
 
         /// <inheritdoc />
@@ -77,7 +86,7 @@ namespace System.Text.Json.Serialization {
                 typeof(UnknownEnumConverter<>).MakeGenericType(typeToConvert),
                 BindingFlags.Instance | BindingFlags.Public,
                 binder: null,
-                new object?[] { Default },
+                new object?[] { Defaults },
 
                 culture: null)!;
 

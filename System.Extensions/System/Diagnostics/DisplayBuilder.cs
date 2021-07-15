@@ -1,4 +1,6 @@
-﻿namespace System.Diagnostics {
+﻿using System.Collections.Generic;
+
+namespace System.Diagnostics {
 
     [DebuggerDisplay(DebuggerDisplay)]
     public class DisplayBuilder : IGetDebuggerDisplay {
@@ -17,8 +19,8 @@
             this.Postfix = new DisplayBuilderRegion("({0})", this);
         }
 
-        public DisplayBuilder Add(params IGetDebuggerDisplayBuilder[] Items) {
-            foreach (var item in Items) {
+        public DisplayBuilder Add(params IGetDebuggerDisplayBuilder?[] Items) {
+            foreach (var item in Items.WhereIsNotNull()) {
                 item.GetDebuggerDisplayBuilder(this);
             }
 

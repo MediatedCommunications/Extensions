@@ -19,6 +19,33 @@ namespace System.Net.Http.Message {
             return ret;
         }
 
+        public static MessageBuilder Cookie(this MessageBuilder This, IEnumerable<KeyValuePair<string, string?>>? Values = default, bool Encode = true, bool? Enabled = default) {
+            return This.Add(new AddCookieModifier(Values, Encode, Enabled));
+        }
+
+        public static MessageBuilder Cookie(this MessageBuilder This, string Name, string? Value, bool Encode = true, bool? Enabled = default) {
+            var Values = new Dictionary<string, string?>() {
+                [Name] = Value,
+            };
+
+            return Cookie(This, Values, Encode, Enabled);
+        }
+
+        
+
+        public static MessageBuilder Accept(this MessageBuilder This, string Value, bool? RemoveFirst = default, bool? Enabled = default) {
+            return Accept(This, new string[] { Value }, RemoveFirst, Enabled);
+        }
+
+        public static MessageBuilder UserAgent(this MessageBuilder This, string? Value = default, bool? RemoveFirst = default, bool? Enabled = default) {
+            return This.Add(new SetUserAgentHeaderModifier(Value, RemoveFirst, Enabled));
+        }
+
+
+        public static MessageBuilder Accept(this MessageBuilder This, IEnumerable<string> Values, bool? RemoveFirst = default, bool? Enabled = default) {
+            return This.Add(new SetAcceptHeaderModifier(Values, RemoveFirst, Enabled));
+        }
+
         public static MessageBuilder MessageHeaders(this MessageBuilder This, string Name, string? Value, bool? RemoveFirst = default, bool? Enabled = default) {
             return This.Add(new SetMessageHeadersModifier(Name, Value, RemoveFirst, Enabled));
         }
@@ -35,8 +62,12 @@ namespace System.Net.Http.Message {
             return This.Add(new SetContentHeadersModifier(Values, RemoveFirst, Enabled));
         }
 
-        public static MessageBuilder BearerAuthorization(this MessageBuilder This, string? Bearer, bool? Enabled = default) {
-            return This.Add(new SetAuthorizationBearerMessageModifier(Bearer, Enabled));
+        public static MessageBuilder BearerAuthorization(this MessageBuilder This, string? Value, bool? Enabled = default) {
+            return This.Add(new SetAuthorizationBearerMessageModifier(Value, Enabled));
+        }
+
+        public static MessageBuilder BasicAuthorization(this MessageBuilder This, string? Value, bool? Enabled = default) {
+            return This.Add(new SetAuthorizationBasicMessageModifier(Value, Enabled));
         }
 
         public static MessageBuilder ActionAuthorization(this MessageBuilder This, Func<HttpRequestMessage, Task> Action, bool? Enabled = default) {

@@ -26,13 +26,13 @@ namespace System.Text.Matching {
 
         }
 
-        public override PhraseMatchResult Match(ImmutableList<string> Left, ImmutableList<string> Right, StringComparer Comparer) {
+        public override PhraseMatchResult<TLeft, TRight> Match<TLeft, TRight>(TokenizeResult<TLeft> Left, TokenizeResult<TRight> Right, StringComparer Comparer) {
             var Matches = new List<MatchResult>();
 
             var Matchers = Options.Providers;
 
-            var MyLeft = Left;
-            var MyRight = Right;
+            var MyLeft = Left.Tokens;
+            var MyRight = Right.Tokens;
 
             while (MyLeft.Count > 0 && MyRight.Count > 0) {
                 var AllMatches = (
@@ -66,10 +66,7 @@ namespace System.Text.Matching {
                 select V
                 ).Sum();
 
-            var ret = new PhraseMatchResult() {
-                Weight = Weight,
-                Matches = Matches.ToImmutableList(),
-            };
+            var ret = PhraseMatchResult.Create(Matches.ToImmutableList(), Weight, Left, Right);
 
             return ret;
         }

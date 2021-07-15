@@ -9,7 +9,7 @@ namespace System {
                 NewSeparator += Separator;
             }
 
-            var ret = string.Join(NewSeparator, This.EmptyIfNull());
+            var ret = string.Join(NewSeparator, This.Coalesce());
 
             return ret;
         }

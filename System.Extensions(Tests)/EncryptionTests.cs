@@ -10,7 +10,7 @@ namespace System.Extensions {
         public Task Test1() {
             var OriginalPassword = "12345";
             var OriginalText = "This is a test";
-            var OriginalBytes = System.Text.Encoding.UTF8.GetBytes(OriginalText);
+            var OriginalBytes = Text.Encoding.UTF8.GetBytes(OriginalText);
             var OriginalSalt = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, };
 
             for (var i = 0; i < OriginalPassword.Length; i++) {

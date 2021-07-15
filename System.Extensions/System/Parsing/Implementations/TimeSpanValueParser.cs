@@ -11,9 +11,9 @@
             Result = TimeSpan.Zero;
 
             if(Format == TimeSpanFormat.TimeSpan) {
-                ret = TimeSpan.TryParse(Value, out Result);
+                ret = TimeSpan.TryParse(Input, out Result);
             } else if(Format is TimeSpanFormat.Days or TimeSpanFormat.Hours or TimeSpanFormat.Minutes or TimeSpanFormat.Seconds or TimeSpanFormat.Milliseconds) {
-                if (Value.Parse().AsDouble().TryGetValue(out var Double)) {
+                if (Input.Parse().AsDouble().TryGetValue(out var Double)) {
                     ret = true;
                     Result = Format switch {
                         TimeSpanFormat.Days => TimeSpan.FromDays(Double),
@@ -24,7 +24,7 @@
                     };
                 }
             } else if(Format == TimeSpanFormat.Ticks) {
-                if(Value.Parse().AsLong().TryGetValue(out var Long)) {
+                if(Input.Parse().AsLong().TryGetValue(out var Long)) {
                     ret = true;
                     Result = TimeSpan.FromTicks(Long);
                 }

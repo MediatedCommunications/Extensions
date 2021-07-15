@@ -12,7 +12,12 @@ namespace System.Text.Matching {
             this.Options = Options ?? new();
         }
 
-        public override ImmutableList<string> Tokenize(string Input) {
+        /// <summary>
+        /// Split text into a series of words using the specified settings.
+        /// </summary>
+        /// <param name="Input"></param>
+        /// <returns></returns>
+        protected override ImmutableList<string> TokenizeInternal(string Input) {
             var ret = new List<string>();
             var Buffer = new StringBuilder();
 
@@ -31,7 +36,7 @@ namespace System.Text.Matching {
                     Buffer.Append(item);
                 } else if (Action == CharacterAction.IgnoreInWord) {
                     //Do nothing;
-                } else {
+                } else if (Action == CharacterAction.StartNewWord) {
                     AddBuffer();
                 }
             }

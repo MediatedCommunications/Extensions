@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,27 +9,45 @@ namespace System.Collections.Generic {
 
     public static class EnumerableExtensions {
 
-        public static IEnumerable<T> Append<T>(this IEnumerable<T> This, params T[] Values) {
-            return This.Append(Values.AsEnumerable());
+        public static IEnumerable<T> SelectMany<T>(this IEnumerable<IEnumerable<T>> This) {
+            return This.SelectMany(x => x);
         }
 
-        public static IEnumerable<T> Append<T>(this IEnumerable<T> This, params IEnumerable<T>[] Values) {
+        public static IEnumerable<T> Concat<T>(this IEnumerable<T> This, params T[] Values) {
+            return This.Concat(Values.AsEnumerable());
+        }
+
+        public static IEnumerable<T> Concat<T>(this IEnumerable<T> This, params IEnumerable<T>[] Values) {
+            var NewValues = new List<IEnumerable<T>>() {
+                This,
+                Values
+            };
+
+            return Concat(NewValues);
+
+        }
+
+        public static IEnumerable<T> Concat<T>(this IEnumerable<IEnumerable<T>> This) {
+            var ret = Enumerable.Empty<T>();
 
             foreach (var item in This) {
-                yield return item;
-            }
-
-            foreach (var Group in Values) {
-                foreach (var Item in Group) {
-                    yield return Item;
+                if(item == null) {
+                    throw new NullReferenceException();
                 }
+
+                if(ret == Enumerable.Empty<T>()) {
+                    ret = item;
+                } else {
+                    ret = Enumerable.Concat(ret, item);
+                }
+
             }
 
+            return ret;
         }
 
-
         public static IEnumerable<T> GetRange<T>(this IEnumerable<T>? source, Range Values) {
-            var IE = source.EmptyIfNull();
+            var IE = source.Coalesce();
             var Count = IE.Count();
             var Start = Values.Start.GetOffset(Count);
             var Finish = Values.End.GetOffset(Count);
@@ -43,27 +63,52 @@ namespace System.Collections.Generic {
         }
 
 
-        public static IEnumerable<WithIndexItem<T>> WithIndexes<T>(this IEnumerable<T>? source) {
-            var Index = -1L;
-            foreach (var Item in source.EmptyIfNull()) {
-                Index += 1;
+        public static IEnumerable<WithIndexItem<T>> WithIndexes<T>(this IEnumerable<T>? source, int FirstIndex = 0) {
+            var Index = FirstIndex;
+            foreach (var Item in source.Coalesce()) {
                 var ret = WithIndexItem.Create(Index, Item);
-
                 yield return ret;
+
+                Index += 1;
             }
         }
 
-        public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T>? source) {
-            var ret = Enumerable.Empty<T>();
-            
-            if(source is { } V1) {
-                ret = V1;
+        public static IEnumerable<T> Coalesce<T>(this IEnumerable<T>? source) {
+            return Coalesce(source, Enumerable.Empty<T>());
+        }
+
+        public static IEnumerable<T> Coalesce<T>(this IEnumerable<T>? source, params T[] Values) {
+            return Coalesce(source, Values.AsEnumerable());
+        }
+
+        public static IEnumerable<T> Coalesce<T>(this IEnumerable<T>? source, params IEnumerable<T>?[] Values) {
+            var ret = source is { } V1
+                ? V1
+                : Values.CoalesceInternal()
+                ;
+
+            return ret;
+
+        }
+
+        private static IEnumerable<T> CoalesceInternal<T>(this IEnumerable<IEnumerable<T>?>? This) {
+            var ret = default(IEnumerable<T>?);
+
+            if (This is { } V1) {
+                foreach (var item in V1) {
+                    if (item is { } V2) {
+                        ret = V2;
+                        break;
+                    }
+                }
             }
+
+            ret ??= Enumerable.Empty<T>();
 
             return ret;
         }
 
-        public static async IAsyncEnumerable<T> EmptyIfNull<T>(this IAsyncEnumerable<T>? source) {
+        public static async IAsyncEnumerable<T> Coalesce<T>(this IAsyncEnumerable<T>? source) {
            
             if(source is { }) {
                 await foreach (var item in source.DefaultAwait()) {
@@ -74,7 +119,7 @@ namespace System.Collections.Generic {
 
 
         public static void ForEach<T>(this IEnumerable<T>? This, Action<T> Action) {
-            foreach (var item in This.EmptyIfNull()) {
+            foreach (var item in This.Coalesce()) {
                 Action(item);
             }
         }
@@ -82,7 +127,7 @@ namespace System.Collections.Generic {
         public static void ForEach<T>(this IEnumerable<T>? This, Action<T, int> Action) {
             var index = -1;
             
-            foreach (var item in This.EmptyIfNull()) {
+            foreach (var item in This.Coalesce()) {
                 index += 1;
                 Action(item, index);
             }
@@ -94,7 +139,7 @@ namespace System.Collections.Generic {
 
         public static async IAsyncEnumerable<TOutput> AsAsyncEnumerable<TInput, TOutput>(this IEnumerable<TInput> This, Func<TInput, Task<TOutput>> Convert) {
 
-            foreach (var item in This.EmptyIfNull()) {
+            foreach (var item in This.Coalesce()) {
                 var Converted = await Convert(item)
                     .DefaultAwait()
                     ;
@@ -104,7 +149,125 @@ namespace System.Collections.Generic {
 
         }
 
-        public static async Task ConvertAsync<TInput>(this IAsyncEnumerable<TInput> This, Func<TInput, Task> Convert, Func<long>? Proposed_Concurrency = default, Func<TimeSpan?>? Evaluate_Concurrency = default) {
+        public static IAsyncEnumerable<TInput> MergeAsync<TInput>(this IEnumerable<IAsyncEnumerable<TInput>> This, Func<int>? Proposed_Concurrency = default, Func<TimeSpan?>? Evaluate_Concurrency = default) {
+            return This.AsAsyncEnumerable().MergeAsync(Proposed_Concurrency, Evaluate_Concurrency);
+        }
+
+        public static async IAsyncEnumerable<TInput> MergeAsync<TInput>(this IAsyncEnumerable<IAsyncEnumerable<TInput>> This, Func<int>? Proposed_Concurrency = default, Func<TimeSpan?>? Evaluate_Concurrency = default) {
+            int Concurrency_Min() => 1;
+            int Concurrency_Max() => 32;
+            int Concurrency_Default() => 1;
+            var Concurrency = Proposed_Concurrency ?? Concurrency_Default;
+
+            Task DelayTask_Create() {
+                var Duration = Evaluate_Concurrency?.Invoke() ?? TimeSpan.FromSeconds(1);
+
+                return SafeDelay.DelayAsync(Duration);
+            }
+
+            Task DelayTask_Create_Async() {
+                return Task.Run(() => DelayTask_Create());
+            }
+
+            var DelayTask = default(Task?);
+
+            var Children = new Dictionary<IAsyncEnumerator<TInput>, Task<bool>?>();
+
+            var Source = This.GetAsyncEnumerator();
+            var SourceEnded = false;
+            while (!SourceEnded || Children.Count > 0) {
+
+                //Initialize our items
+                if (!SourceEnded) {
+                    var Threads = Math.Clamp(Concurrency(), Concurrency_Min(), Concurrency_Max());
+
+                    while (!SourceEnded && Children.Count < Threads) {
+                        SourceEnded = !await Source.MoveNextAsync()
+                            .DefaultAwait()
+                            ;
+
+                        if (!SourceEnded) {
+                            var IE = Source.Current.GetAsyncEnumerator();
+                            Children[IE] = default;
+                        } else {
+
+                        }
+
+                    }
+                }
+
+                var ItemsToAdvance = (
+                    from x in Children
+                    where x.Value?.IsCompleted ?? true
+                    select x
+                    ).ToList();
+
+                var ValuesToReturn = new List<TInput>();
+
+                foreach (var item in ItemsToAdvance) {
+
+                    var ShouldAdvance = true;
+
+                    if (item.Value is { } V1) {
+                        var tret = await V1
+                            .DefaultAwait()
+                            ;
+
+                        if (tret) {
+                            ValuesToReturn.Add(item.Key.Current);
+                        } else {
+                            ShouldAdvance = false;
+                        }
+                    }
+                    var ItemKey = item.Key;
+
+                    if (ShouldAdvance) {
+  
+
+                        Children[ItemKey] = Task.Run(async () => {
+                            var tret = false;
+                            try {
+                                tret = await ItemKey.MoveNextAsync()
+                                    .DefaultAwait()
+                                    ;
+                            } catch (Exception ex) {
+                                ex.Ignore();
+                            }
+
+                            return tret;
+                        });
+                    } else {
+                        Children.Remove(ItemKey);
+                    }
+                }
+
+                foreach (var item in ValuesToReturn) {
+                    yield return item;
+                }
+
+                var Tasks = (from x in Children select (Task)x.Value).ToList();
+                if (!SourceEnded) {
+                    DelayTask ??= DelayTask_Create_Async();
+                    Tasks.Add(DelayTask);
+                }
+
+                if (Tasks.Count > 0) {
+
+                    var CompletedTask = await Task.WhenAny(Tasks)
+                        .DefaultAwait()
+                        ;
+
+                    if (CompletedTask == DelayTask && !SourceEnded) {
+                        DelayTask = DelayTask_Create_Async();
+                    }
+
+                }
+
+            }
+
+        }
+
+        public static async Task ConvertAsync<TInput>(this IAsyncEnumerable<TInput> This, Func<TInput, Task> Convert, Func<int>? Proposed_Concurrency = default, Func<TimeSpan?>? Evaluate_Concurrency = default) {
 
             async Task<bool> NewConvert(TInput Input) {
                 await Convert(Input)
@@ -121,10 +284,10 @@ namespace System.Collections.Generic {
         }
 
 
-        public static async IAsyncEnumerable<TOutput> ConvertAsync<TInput, TOutput>(this IAsyncEnumerable<TInput> This, Func<TInput, Task<TOutput>> Convert, Func<long>? Proposed_Concurrency = default, Func<TimeSpan?>? Evaluate_Concurrency = default) {
-            long Concurrency_Min() => 1;
-            long Concurrency_Max() => 32;
-            long Concurrency_Default() => 1;
+        public static async IAsyncEnumerable<TOutput> ConvertAsync<TInput, TOutput>(this IAsyncEnumerable<TInput> This, Func<TInput, Task<TOutput>> Convert, Func<int>? Proposed_Concurrency = default, Func<TimeSpan?>? Evaluate_Concurrency = default) {
+            int Concurrency_Min() => 1;
+            int Concurrency_Max() => 32;
+            int Concurrency_Default() => 1;
 
             Task DelayTask_Create() {
                 var Duration = Evaluate_Concurrency?.Invoke() ?? TimeSpan.FromSeconds(1);
@@ -145,7 +308,7 @@ namespace System.Collections.Generic {
             var DelayTask = DelayTask_Create_Async();
             AllTasks.Add(DelayTask);
 
-            await foreach (var item in This.EmptyIfNull().DefaultAwait()) {
+            await foreach (var item in This.Coalesce().DefaultAwait()) {
 
                 var NewTask = Task.Run(() => Convert(item));
                 AllTasks.Add(NewTask);
@@ -204,7 +367,7 @@ namespace System.Collections.Generic {
                 yield break;
             }
 
-            foreach (var item in This.EmptyIfNull()) {
+            foreach (var item in This.Coalesce()) {
                 yield return item;
 
                 if (CancelWhen()) {
@@ -223,7 +386,7 @@ namespace System.Collections.Generic {
                 yield break;
             }
 
-            await foreach (var item in This.EmptyIfNull().DefaultAwait()) {
+            await foreach (var item in This.Coalesce().DefaultAwait()) {
                 yield return item;
 
                 if (CancelWhen()) {
@@ -237,40 +400,46 @@ namespace System.Collections.Generic {
             return This.WithGracefulCancellation(() => Token.ShouldStop());
         }
 
-        public static IEnumerable<LinkedList<T>> BatchEvery<T>(this IEnumerable<T>? This, int Count = 1000) {
-            if(Count <= 0) {
-                Count = 1;
+        public static IEnumerable<T> Partition<T>(this IEnumerable<T>? This, int Partitions = 2) {
+            if(Partitions <= 0) {
+                throw new ArgumentOutOfRangeException(nameof(Partitions));
             }
 
-            var ret = new LinkedList<T>();
+            var Queues = new List<Queue<T>>();
+            while(Queues.Count < Partitions) {
+                Queues.Add(new Queue<T>());
+            }
 
-            foreach (var item in This.EmptyIfNull()) {
-                ret.Add(item);
+            foreach (var (Index, Item) in This.Coalesce().WithIndexes()) {
+                var Bucket = (int)(Index % Queues.Count);
 
-                if(ret.Count >= Count) {
-                    yield return ret;
-                    ret = new LinkedList<T>();
+                Queues[Bucket].Enqueue(Item);
+            }
+
+            foreach (var Queue in Queues) {
+                while(Queue.TryDequeue(out var Item)) {
+                    yield return Item;
                 }
             }
 
-            if (ret.Count > 0) {
-                yield return ret;
-            }
+
+
         }
 
-        public static async IAsyncEnumerable<LinkedList<T>> BatchEvery<T>(this IAsyncEnumerable<T>? This, int Count = 1000) {
+
+        public static async IAsyncEnumerable<LinkedList<T>> Chunk<T>(this IAsyncEnumerable<T>? This, long Count = 1000) {
             if (Count <= 0) {
                 Count = 1;
             }
 
             var ret = new LinkedList<T>();
 
-            await foreach (var item in This.EmptyIfNull().DefaultAwait()) {
+            await foreach (var item in This.Coalesce().DefaultAwait()) {
                 ret.Add(item);
 
                 if (ret.Count >= Count) {
                     yield return ret;
-                    ret = new LinkedList<T>();
+                    ret = new();
                 }
             }
 
@@ -302,7 +471,7 @@ namespace System.Collections.Generic {
         public static async Task ForEachAsync<T>(this IAsyncEnumerable<T>? This, Func<T, long, Task> Action) {
             var Count = 0;
 
-            await foreach (var item in This.EmptyIfNull().DefaultAwait()) {
+            await foreach (var item in This.Coalesce().DefaultAwait()) {
                 await Action(item, Count)
                     .DefaultAwait()
                     ;

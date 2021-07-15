@@ -36,7 +36,7 @@ namespace System.Security {
 
 
         public string Encrypt(string plainText) {
-            var Bytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            var Bytes = Encoding.UTF8.GetBytes(plainText);
             var EncryptedBytes = Encrypt(Bytes);
             var EncryptedString = Convert.ToBase64String(EncryptedBytes);
             var ret = EncryptedString;
@@ -46,7 +46,7 @@ namespace System.Security {
         public string Decrypt(string cipherText) {
             var EncryptedBytes = Convert.FromBase64String(cipherText);
             var DecryptedBytes = Decrypt(EncryptedBytes);
-            var DecryptedString = System.Text.Encoding.UTF8.GetString(DecryptedBytes);
+            var DecryptedString = Encoding.UTF8.GetString(DecryptedBytes);
             var ret = DecryptedString;
             return ret;
         }

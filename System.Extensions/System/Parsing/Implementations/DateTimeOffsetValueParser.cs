@@ -13,7 +13,7 @@ namespace System {
         }
 
         public override bool TryGetValue(out DateTimeOffset Result) {
-            return DateTimeOffset.TryParse(Value, FormatProvider, Style, out Result);
+            return DateTimeOffset.TryParse(Input, FormatProvider, Style, out Result);
         }
     }
 
@@ -38,7 +38,7 @@ namespace System {
         }
 
         public override Regex GetValue() {
-            return new Regex(this.Value.Coalesce(), Options);
+            return new Regex(this.Input.Coalesce(), Options);
         }
     }
 

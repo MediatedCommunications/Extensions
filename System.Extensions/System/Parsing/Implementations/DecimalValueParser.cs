@@ -4,7 +4,7 @@
         }
 
         public override bool TryGetValue(out decimal Result) {
-            return decimal.TryParse(Value, out Result);
+            return decimal.TryParse(Input, out Result);
         }
     }
 

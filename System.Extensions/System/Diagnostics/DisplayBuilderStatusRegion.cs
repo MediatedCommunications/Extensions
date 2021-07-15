@@ -28,6 +28,22 @@
             return AddIf(Value, "Deleted");
         }
 
+        public DisplayBuilder IsNotPrivate(bool Value) {
+            return IsPrivate(!Value);
+        }
+
+        public DisplayBuilder IsPrivate(bool Value) {
+            return AddIf(Value, "Private");
+        }
+
+        public DisplayBuilder IsNotArchived(bool Value) {
+            return IsArchived(!Value);
+        }
+
+        public DisplayBuilder IsArchived(bool Value) {
+            return AddIf(Value, "Archived");
+        }
+
         public DisplayBuilder IsNotRequired(bool Value) {
             return IsRequired(!Value);
         }
@@ -42,6 +58,14 @@
 
         public DisplayBuilder IsNotRedacted(bool Value) {
             return IsRedacted(!Value);
+        }
+
+        public DisplayBuilder IsOwner(bool Value) {
+            return AddIf(Value, "Owner");
+        }
+
+        public DisplayBuilder IsNotOwner(bool Value) {
+            return IsOwner(!Value);
         }
 
         public DisplayBuilder IsDefault(bool Value) {

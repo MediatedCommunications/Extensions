@@ -10,7 +10,7 @@ namespace System.Extensions {
 
         [Test]
         public Task Test1() {
-            var Engine = new System.Security.Licensing.LicenseEngine<TestLicense>();
+            var Engine = new MyLicenseEngine();
             var Feature1 = new TestLicense() {
                 Owner = "Tony Valenti",
                 Id = "Abacus",
@@ -19,13 +19,19 @@ namespace System.Extensions {
 
             };
 
-            var License = Engine.Create(Feature1);
+            var License = Engine.CreateInternal(Feature1);
 
             var Feature2 = Engine.Load(License);
 
             Assert.AreEqual(Feature1, Feature2);
 
             return Task.CompletedTask;
+        }
+    }
+
+    public class MyLicenseEngine : LicenseEngine<TestLicense> {
+        public string CreateInternal(TestLicense License) {
+            return this.Create(License);
         }
     }
 

@@ -4,7 +4,7 @@
         }
 
         public override bool TryGetValue(out long Result) {
-            return long.TryParse(Value, out Result);
+            return long.TryParse(Input, out Result);
         }
     }
 

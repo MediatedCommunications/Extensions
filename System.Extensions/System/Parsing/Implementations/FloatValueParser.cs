@@ -4,7 +4,7 @@
         }
 
         public override bool TryGetValue(out float Result) {
-            return float.TryParse(Value, out Result);
+            return float.TryParse(Input, out Result);
         }
     }
 

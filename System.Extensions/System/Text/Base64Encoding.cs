@@ -38,11 +38,11 @@ namespace System.Text {
 
 
         public static string RemoveInvalidCharacters(string Input) {
-            var ret = (
+            var ret = StringExtensions_Join.Join((
                 from x in Input
                 where IsValidCharacter(x)
                 select x
-                ).Join();
+                ));
 
             return ret;
         }
@@ -55,7 +55,7 @@ namespace System.Text {
         }
 
         public static byte[] ConvertFromString(string Input) {
-            var ret = System.Convert.FromBase64String(Input);
+            var ret = Convert.FromBase64String(Input);
             return ret;
         }
 
@@ -77,7 +77,7 @@ namespace System.Text {
         }
 
         public static string ConvertToString(byte[] Input) {
-            var ret = System.Convert.ToBase64String(Input);
+            var ret = Convert.ToBase64String(Input);
             return ret;
         }
 

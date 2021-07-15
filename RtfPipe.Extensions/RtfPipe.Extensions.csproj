@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\__Shared\Shared.targets" Label="Shared" />
+  <ItemGroup>
+    <PackageReference Include="BracketPipe" Version="0.7.7232.28997" />
+    <!--
+    <PackageReference Include="RtfPipe" Version="2.0.7677.4303" />
+    -->
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\TonyValenti\RtfPipe\RtfPipe\RtfPipe.csproj" />
+    <ProjectReference Include="..\System.Extensions\System.Extensions.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>MC.RtfPipe.Extensions</PackageId>
+  </PropertyGroup>
+
+</Project>

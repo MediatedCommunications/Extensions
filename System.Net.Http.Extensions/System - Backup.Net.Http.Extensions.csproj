@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\__Shared\Shared.targets" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\System.Extensions\System.Extensions.csproj" />
+    <ProjectReference Include="..\System.Text.Json.Extensions\System.Text.Json.Extensions.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>MC.System.Net.Http.Extensions</PackageId>
+  </PropertyGroup>
+</Project>

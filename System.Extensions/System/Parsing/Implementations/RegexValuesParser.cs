@@ -14,7 +14,7 @@ namespace System {
 
         public override bool TryGetValue([NotNullWhen(true)] out LinkedList<string>? Result) {
             var tret = new LinkedList<string>();
-            if (Value is { } V1) {
+            if (Input is { } V1) {
                 foreach (var item in Regex.Matches(V1).OfType<Match>()) {
                     tret.Add(item.Value);
                 }

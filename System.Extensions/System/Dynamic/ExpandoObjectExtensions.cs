@@ -44,7 +44,7 @@ namespace System.Dynamic {
         public static ExpandoObject Merge(this IEnumerable<ExpandoObject?>? This) {
             var ret = new ExpandoObject();
 
-            var Values = This.EmptyIfNull().WhereIsNotNull().ToLinkedList();
+            var Values = This.Coalesce().WhereIsNotNull().ToLinkedList();
 
             foreach (var Value in Values) {
                 MergeInto(ret, Value);
@@ -82,7 +82,7 @@ namespace System.Dynamic {
             var ret = new ExpandoObject();
             MergeInto(ret, This);
 
-            foreach (var item in Values.EmptyIfNull().WhereIsNotNull()) {
+            foreach (var item in Values.Coalesce().WhereIsNotNull()) {
                 var Converted = ConvertToExpandoObject(item);
                 MergeInto(ret, Converted);
             }

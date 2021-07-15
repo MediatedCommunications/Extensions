@@ -2,15 +2,15 @@
 
 namespace System {
     public abstract record StructParser<T> : DisplayRecord where T : struct {
-        public string? Value { get; init; }
+        public string? Input { get; init; }
 
-        public StructParser(string? Value) {
-            this.Value = Value;
+        public StructParser(string? Input) {
+            this.Input = Input;
         }
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
-                .Data.Add(Value)
+                .Data.Add(Input)
                 ;
         }
 
@@ -26,7 +26,7 @@ namespace System {
                 ret = true;
                 Result = NewResult;
             } else {
-                Value.Ignore();
+                Input.Ignore();
             }
 
             return ret;

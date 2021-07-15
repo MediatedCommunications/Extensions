@@ -24,7 +24,7 @@ namespace System {
             var FoundNumber = "";
             var FoundExtension = "";
 
-            var CleanedUpText = Value
+            var CleanedUpText = Input
                 .TrimSafe()
                 .Replace(@"(", "")
                 .Replace(@")", "")
@@ -79,7 +79,7 @@ namespace System {
             //Parse the extension
 
             if (RemainingText.Length > 0) {
-                FoundExtension = RemainingText.WhereIsDigit().AsString();
+                FoundExtension = RemainingText.WhereIs(CharType.Digit);
             }
 
 

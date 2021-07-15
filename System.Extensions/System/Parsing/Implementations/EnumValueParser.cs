@@ -4,7 +4,7 @@
         }
 
         public override bool TryGetValue(out T Result) {
-            return Enum.TryParse(Value, true, out Result);
+            return Enum.TryParse(Input, true, out Result);
         }
     }
 

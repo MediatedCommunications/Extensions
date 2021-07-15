@@ -14,8 +14,8 @@ namespace System {
             Result = default;
 
             try {
-                if (Value is { }) {
-                    Result = Serializer.Deserialize<TJson>(Value);
+                if (Input is { }) {
+                    Result = Serializer.Deserialize<TJson>(Input);
                     ret = true;
                 }
             } catch (Exception ex) {

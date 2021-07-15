@@ -5,15 +5,15 @@ namespace System {
 
     public abstract record ClassParser<T> : DisplayRecord where T : class {
 
-        public string? Value { get; init; }
+        public string? Input { get; init; }
         
-        public ClassParser(string? Value) {
-            this.Value = Value;
+        public ClassParser(string? Input) {
+            this.Input = Input;
         }
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
-                .Data.Add(Value)
+                .Data.Add(Input)
                 ;
         }
 

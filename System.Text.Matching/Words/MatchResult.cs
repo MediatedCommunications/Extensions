@@ -19,7 +19,7 @@ namespace System.Text.Matching {
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
-                .Data.Add($@"{Left}={Right}")
+                .Data.AddPair(Left, Right)
                 .Postfix.Add($@"{Weight} / {RelativeWeight}")
                 ;
         }
@@ -33,7 +33,7 @@ namespace System.Text.Matching {
             var Left = LeftO as MatchResult;
             var Right = RightO as MatchResult;
 
-            if (Object.ReferenceEquals(Left, Right)) {
+            if (ReferenceEquals(Left, Right)) {
                 return 0;
             } else if (Left == null) {
                 return -1;

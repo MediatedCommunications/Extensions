@@ -181,7 +181,7 @@ namespace System.IO {
         }
 
         public TemporaryFileStream Open(FileMode mode) {
-            return OpenInternal(mode, (mode == FileMode.Append ? FileAccess.Write : FileAccess.ReadWrite), GetShare(FileShare.None));
+            return OpenInternal(mode, mode == FileMode.Append ? FileAccess.Write : FileAccess.ReadWrite, GetShare(FileShare.None));
         }
 
         public TemporaryFileStream Open(FileMode mode, FileAccess access) {

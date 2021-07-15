@@ -145,7 +145,7 @@ namespace System.Threading.Tasks {
         public static Concurrent ForEach<T>(IEnumerable<T>? Items, Func<T, CancellationToken, Task> Action) {
             var ToDo = new List<Func<CancellationToken, Task>>();
 
-            foreach (var item in Items.EmptyIfNull()) {
+            foreach (var item in Items.Coalesce()) {
                 ToDo.Add(x => Action(item, x));
             }
 

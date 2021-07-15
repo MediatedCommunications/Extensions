@@ -18,7 +18,7 @@ namespace System.Threading.Tasks {
                 });
             }
 
-            foreach (var item in This.EmptyIfNull().WhereIsNotNull()) {
+            foreach (var item in This.Coalesce().WhereIsNotNull()) {
                 ret.Add(() => TaskRunner(item));
             }
 
@@ -28,7 +28,7 @@ namespace System.Threading.Tasks {
 
         public static Task WhenAllAsync(this IEnumerable<Action?>? This, CancellationToken Token = default) {
             var Tasks = (
-                from x in This.EmptyIfNull().WhereIsNotNull()
+                from x in This.Coalesce().WhereIsNotNull()
                 let tret = Task.Run(x)
                 select tret
                 ).ToLinkedList();
@@ -39,7 +39,7 @@ namespace System.Threading.Tasks {
         public static Task WhenAllAsync(this IEnumerable<Func<Task?>?>? This, CancellationToken Token = default) {
             var Tasks = new List<Task?>();
 
-            foreach (var item in This.EmptyIfNull()) {
+            foreach (var item in This.Coalesce()) {
                 var Task = item?.Invoke();
                 Tasks.Add(Task);
             }
@@ -50,22 +50,34 @@ namespace System.Threading.Tasks {
 
 
         public static async Task WhenAllAsync(this IEnumerable<Task?>? This, CancellationToken Token = default) {
-            var AggregateToken = CancellationTokenSource.CreateLinkedTokenSource(Token);
 
-            var DelayTask = SafeDelay.DelayAsync(AggregateToken.Token);
 
-            var Tasks = This.EmptyIfNull().WhereIsNotNull().ToLinkedList();
-            var MultiTask = Task.WhenAll(Tasks);
+            if (Token == default) {
+                var Tasks = This.Coalesce().WhereIsNotNull().ToLinkedList();
+                var MultiTask = Task.WhenAll(Tasks);
+                await MultiTask
+                    .DefaultAwait()
+                    ;
 
-            var CompletedTask = await Task.WhenAny(
-                DelayTask,
-                MultiTask
-                );
+            } else {
 
-            AggregateToken.Cancel();
+                var AggregateToken = CancellationTokenSource.CreateLinkedTokenSource(Token);
+                var DelayTask = SafeDelay.DelayAsync(AggregateToken.Token);
 
-            CompletedTask.Ignore();
+                var Tasks = This.Coalesce().WhereIsNotNull().ToLinkedList();
+                var MultiTask = Task.WhenAll(Tasks);
 
+                var CompletedTask = await Task.WhenAny(
+                    DelayTask,
+                    MultiTask
+                    ).DefaultAwait();
+                
+                CompletedTask.Ignore();
+
+                AggregateToken.Cancel();
+
+                
+            }
         }
 
         public static async Task<Task> WhenAnyAsync(this IEnumerable<Task?> This, CancellationToken Token = default) {
@@ -81,7 +93,9 @@ namespace System.Threading.Tasks {
             }
 
 
-            var CompletedTask = await Task.WhenAny(Tasks);
+            var CompletedTask = await Task.WhenAny(Tasks)
+                .DefaultAwait()
+                ;
 
             AggregateToken?.Cancel();
 

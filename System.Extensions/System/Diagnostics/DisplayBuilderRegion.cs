@@ -27,6 +27,42 @@ namespace System.Diagnostics {
             return Parent;
         }
 
+
+        public DisplayBuilder AddPair(bool Condition, string Name, object? Value) {
+
+            if (Condition) {
+                AddPair(Name, Value);
+            }
+
+            return Parent;
+        }
+
+        public DisplayBuilder AddPair<TValue>(IEnumerable<KeyValuePair<string, TValue>>? Values) {
+            foreach (var item in Values.Coalesce()) {
+                AddPair(item.Key, item.Value);
+            }
+
+            return Parent;
+        }
+
+        public DisplayBuilder AddPair(string Name, object? Value) {
+            
+            if(Value is { } V1 &&  StringValue(V1) is { } V2) {
+                Add($@"{Name}: {V2}");
+            }
+            
+            return Parent;
+        }
+
+        public DisplayBuilder AddMapping(object? Before, object? After) {
+            var V1 = StringValue(Before);
+            var V2 = StringValue(After);
+            
+            Add($@"'{V1}' => '{V2}'");
+
+            return Parent;
+        }
+
         public DisplayBuilder Add(object? Value) {
             if (Value is { } V1 && StringValue(V1) is { } V2) {
                 var V3 = V2.Trim();

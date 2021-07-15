@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace System.Security.Licensing {
@@ -9,33 +10,67 @@ namespace System.Security.Licensing {
 
         public ImmutableList<T> Licenses { get; private set; } = ImmutableList<T>.Empty;
 
+        private void AddLicense(T? License) {
+            if(License is { }) {
+                Licenses = Licenses.Add(License);
+            }
+        }
+
+        private void RemoveLicense(T? License) {
+            if (License is { }) {
+                Licenses = Licenses.Remove(License);
+            }
+        }
+
+
         public T Load(string Key) {
-            var Data = Preview(Key);
+            var ret = Preview(Key);
 
-            Licenses = Licenses.Add(Data);
+            AddLicense(ret);
 
-            return Data;
+            return ret;
         }
 
-        public void Unload(T License) {
-            Licenses = Licenses.Remove(License);
+        public bool TryLoad(string LicenseText, [NotNullWhen(true)] out T? License) {
+            var ret = TryPreview(LicenseText, out License);
+
+            AddLicense(License);
+
+            return ret;
         }
 
 
-        private T Preview(string License) {
+        public void Unload(T? License) {
+            RemoveLicense(License);
+        }
+
+        
+        public bool TryPreview(string LicenseText, [NotNullWhen(true)] out T? License) {
+            var ret = false;
+            License = default(T?);
+
             try {
-                var EncryptedString = License;
+                var EncryptedString = LicenseText;
                 var EncryptedBytes = Decode(EncryptedString);
                 var DecryptedBytes = Decrypt(EncryptedBytes);
-                var DecryptedJson = System.Text.Encoding.UTF8.GetString(DecryptedBytes);
-                var ret = System.Text.Json.JsonSerializer.Deserialize<T>(DecryptedJson);
+                var DecryptedJson = Encoding.UTF8.GetString(DecryptedBytes);
+                License = Text.Json.JsonSerializer.Deserialize<T>(DecryptedJson);
+            } catch(Exception ex) {
+                ex.Ignore();
+            }
 
-                if(ret == default) {
-                    throw new InvalidLicenseException();
-                }
+            if(License is { }) {
+                ret = true;
+            }
 
+
+            return ret;
+        }
+
+        public T Preview(string LicenseText) {
+            if (TryPreview(LicenseText, out var ret)) {
                 return ret;
-            } catch {
+            } else {
                 throw new InvalidLicenseException();
             }
         }
@@ -59,9 +94,9 @@ namespace System.Security.Licensing {
         }
 
 
-        internal string Create(T License) {
-            var DecryptedJson = System.Text.Json.JsonSerializer.Serialize(License);
-            var DecryptedBytes = System.Text.Encoding.UTF8.GetBytes(DecryptedJson);
+        protected string Create(T License) {
+            var DecryptedJson = Text.Json.JsonSerializer.Serialize(License);
+            var DecryptedBytes = Encoding.UTF8.GetBytes(DecryptedJson);
             var EncryptedBytes = Encrypt(DecryptedBytes);
             var EncryptedString = Encode(EncryptedBytes);
             var ret = EncryptedString;

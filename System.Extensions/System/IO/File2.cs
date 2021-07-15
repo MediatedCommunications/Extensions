@@ -1,32 +1,44 @@
-﻿namespace System.IO {
+﻿using System.Linq;
+
+namespace System.IO {
+
+    public enum TransferOptions {
+        Copy,
+        Move,
+        Overwrite,
+        CreatePath
+    }
+
     public static class File2 {
 
-        public static bool IsTemporaryName(string FileName) {
+        public static void Transfer(string SourceFile, string DestFile, params TransferOptions[] Options) {
+            var Move = false;
+            var Overwrite = false;
 
-            var ext = FileName.Parse().AsPath().DotExtension.AsText();
+            if (Options.Contains(TransferOptions.Move)) {
+                Move = true;
+            }
 
-            var ret = false
-                || ext.EndsWith(".crdownload")
-                || ext.EndsWith(".tmp")
-                || ext.EndsWith(".temp")
-                || ext.StartsWith("~")
-                || ext.StartsWith("._")
-                ;
+            if (Options.Contains(TransferOptions.Overwrite)) {
+                Overwrite = true;
+            }
 
-            return ret;
+            if (Options.Contains(TransferOptions.CreatePath)) {
+                var Folder = DestFile.Parse().AsPath().Directory;
+
+                Directory.CreateDirectory(Folder);
+            }
+
+            if (Move) {
+                File.Move(SourceFile, DestFile, Overwrite);
+            } else {
+                File.Copy(SourceFile, DestFile, Overwrite);
+            }
+
+
         }
 
-        public static bool IsSystemGeneratedName(string FileName) {
-            var FN = FileName.Parse().AsPath().FileName.AsText();
 
-            var ret = false
-                || FN.Equals("desktop.ini")
-                || FN.Equals("thumbs.db")
-                || FN.Equals(".ds_store")
-                ;
-
-            return ret;
-        }
 
     }
 }

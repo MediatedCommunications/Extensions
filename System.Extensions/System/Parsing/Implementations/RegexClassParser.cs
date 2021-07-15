@@ -16,7 +16,7 @@ namespace System {
             var ret = false;
             Result = default;
 
-            var MatchParser = new RegexMatchParser(Regex, Value);
+            var MatchParser = new RegexMatchParser(Regex, Input);
 
             if (MatchParser.TryGetValue(out var Matches)) {
                 var TResult = new LinkedList<TResult>();

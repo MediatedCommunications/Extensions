@@ -80,9 +80,102 @@ namespace System.IO {
             ret = RemoveInvalidCharacters(ret);
             ret = ReplaceInvalidNames(ret);
 
+            return ret;
+        }
+
+        public static string SafeFileName(params string[] Values) {
+            var ret = (
+                from x in Values
+                let v = SafeFileName(x)
+                where v.IsNotBlank()
+                select v
+            ).Coalesce();
 
             return ret;
         }
+
+        public static FileSystemAttributes GetAttributes(string Path) {
+            var ret = FileSystemAttributes.None;
+            if (File.Exists(Path)) {
+                var Info = new FileInfo(Path);
+                var Attribs = Info.Attributes;
+
+                ret = Attribs.ToFileSystemAttributes();
+
+                if(Info.Length == 0) {
+                    ret |= FileSystemAttributes.Empty;
+                }
+
+            } else if (Directory.Exists(Path)) {
+                var Info = new DirectoryInfo(Path);
+                var Attribs = Info.Attributes;
+
+                ret = Attribs.ToFileSystemAttributes();
+
+                if (!Directory.EnumerateFileSystemEntries(Path, "*", SearchOption.TopDirectoryOnly).Any()) {
+                    ret |= FileSystemAttributes.Empty | FileSystemAttributes.EmptyTree;
+                } else if (!Directory.EnumerateFiles(Path, "*", SearchOption.AllDirectories).Any()) {
+                    ret |= FileSystemAttributes.EmptyTree;
+                }
+
+            } else {
+                throw new FileNotFoundException(default, Path);
+            }
+
+            if (IsTemporaryName(Path)) {
+                ret |= FileSystemAttributes.Temporary;
+            }
+
+            if (IsSystemName(Path)){
+                ret |= FileSystemAttributes.System;
+            }
+
+            if (IsHiddenName(Path)) {
+                ret |= FileSystemAttributes.Hidden;
+            }
+
+            ret = ret.ComputeNormal();
+
+            return ret;
+        }
+
+        public static bool IsTemporaryName(string FileName) {
+
+            var ext = FileName.Parse().AsPath().DotExtension.AsText();
+
+            var ret = false
+                || ext.EndsWith(".crdownload")
+                || ext.EndsWith(".tmp")
+                || ext.EndsWith(".temp")
+                || ext.StartsWith("~")
+                || ext.StartsWith("._")
+                ;
+
+            return ret;
+        }
+
+        public static bool IsSystemName(string FileName) {
+            var FN = FileName.Parse().AsPath().FileName.AsText();
+
+            var ret = false
+                || FN.Equals("desktop.ini")
+                || FN.Equals("thumbs.db")
+                || FN.Equals(".ds_store")
+                ;
+
+            return ret;
+        }
+
+        public static bool IsHiddenName(string FileName) {
+            var FN = FileName.Parse().AsPath().FileName.AsText();
+
+            var ret = false
+                || FN.StartsWith(".")
+                ;
+
+            return ret;
+        }
+
 
     }
 }

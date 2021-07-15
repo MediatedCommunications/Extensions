@@ -11,7 +11,7 @@ namespace System {
         }
 
         public override bool TryGetValue([NotNullWhen(true)] out MemoryStream? Result) {
-            Result = Encoding.GetBytes(Value.ToStringSafe()).ToMemoryStream();
+            Result = Encoding.GetBytes(Input.ToStringSafe()).ToMemoryStream();
 
             return true;
         }

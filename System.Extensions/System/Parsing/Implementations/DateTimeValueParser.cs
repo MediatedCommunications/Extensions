@@ -4,7 +4,7 @@
         }
 
         public override bool TryGetValue(out DateTime Result) {
-            return DateTime.TryParse(Value, out Result);
+            return DateTime.TryParse(Input, out Result);
         }
     }
 

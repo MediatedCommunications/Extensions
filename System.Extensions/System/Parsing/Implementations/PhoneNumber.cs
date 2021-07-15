@@ -71,9 +71,9 @@ namespace System {
         }
 
         public PhoneNumber Normalize() {
-            var NewCountryCode = CountryCode.WhereIsDigit().AsString();
-            var NewNumber = Number.WhereIsDigit().AsString();
-            var NewExtension = Extension.WhereIsDigit().AsString();
+            var NewCountryCode = CountryCode.WhereIs(CharType.Digit);
+            var NewNumber = Number.WhereIs(CharType.Digit);
+            var NewExtension = Extension.WhereIs(CharType.Digit);
 
             if (NewNumber.IsNotBlank()) {
                 var SegmentSizes = new Dictionary<int, int>() {

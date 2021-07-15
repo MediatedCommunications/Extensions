@@ -20,7 +20,7 @@ namespace System {
 
 
         public PhoneNumberCountryCode(string Number, string Name) {
-            this.Number = Number.WhereIsDigit().AsString();
+            this.Number = Number.WhereIs(CharType.Digit);
             this.Name = Name.TrimSafe();
         }
         public static PhoneNumberCountryCode Create(string Number, string Name) {

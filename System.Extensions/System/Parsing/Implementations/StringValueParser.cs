@@ -8,7 +8,7 @@ namespace System {
         public override bool TryGetValue([NotNullWhen(true)] out string? Result) {
             bool ret;
 
-            (Result, ret) = Value is { } V1
+            (Result, ret) = Input is { } V1
                 ? (V1, true)
                 : (default, false)
                 ;

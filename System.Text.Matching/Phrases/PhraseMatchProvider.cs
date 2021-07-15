@@ -1,4 +1,6 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 
 namespace System.Text.Matching {
     public abstract class PhraseMatchProvider {
@@ -14,7 +16,22 @@ namespace System.Text.Matching {
 
         }
 
-        public abstract PhraseMatchResult Match(ImmutableList<string> Left, ImmutableList<string> Right, StringComparer Comparer);
+        public ImmutableList<PhraseMatchResult<TLeft, TRight>> Match<TLeft, TRight>(TokenizeResult<TLeft> Left, IEnumerable<TokenizeResult<TRight>> Right, StringComparer Comparer) {
+            var SW = System.Diagnostics.Stopwatch.StartNew();
+            var ret = (
+                from x in Right.AsParallel()
+                let MyMatch = Match(Left, x, Comparer)
+                orderby MyMatch.Weight descending
+                select MyMatch
+                ).ToImmutableList();
+
+            SW.Stop();
+
+            return ret;
+
+        }
+
+        public abstract PhraseMatchResult<TLeft, TRight> Match<TLeft, TRight>(TokenizeResult<TLeft> Left, TokenizeResult<TRight> Right, StringComparer Comparer);
 
     }
 

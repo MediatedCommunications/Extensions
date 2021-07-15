@@ -21,7 +21,7 @@ namespace System.Text.Matching {
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
-                .Data.Add($@"{Left}={Right}")
+                .Data.AddPair(Left, Right)
                 ;
         }
 
@@ -37,7 +37,7 @@ namespace System.Text.Matching {
 
             var InvalidMatchChar = OptionalInvalidMatchChar ?? 'X';
 
-            foreach (var Segment in This.EmptyIfNull()) {
+            foreach (var Segment in This.Coalesce()) {
 
                 var Length = Math.Max(Segment.Left.Length, Segment.Right.Length);
 
