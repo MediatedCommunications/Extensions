@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using System.Diagnostics;
-using System.Runtime.Intrinsics;
 using System.Security.Licensing;
 using System.Threading.Tasks;
 

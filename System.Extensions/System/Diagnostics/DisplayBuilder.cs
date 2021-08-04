@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace System.Diagnostics {
 
@@ -20,13 +21,16 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder Add(params IGetDebuggerDisplayBuilder?[] Items) {
+            return Add(Items.AsEnumerable());
+        }
+
+        public DisplayBuilder Add(IEnumerable<IGetDebuggerDisplayBuilder?> Items) {
             foreach (var item in Items.WhereIsNotNull()) {
                 item.GetDebuggerDisplayBuilder(this);
             }
 
             return this;
         }
-
 
         public DisplayBuilderRegion Id { get; private set; }
         public DisplayBuilderRegion Type { get; private set; }

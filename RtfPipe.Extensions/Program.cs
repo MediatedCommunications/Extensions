@@ -1,5 +1,4 @@
 ﻿using BracketPipe;
-using System;
 
 namespace RtfPipe {
     public static class RtfConvert {

@@ -87,6 +87,10 @@ namespace System.Net.Http.Message {
             return This.Add(new SetFormContentMessageModifier(Content, Enabled));
         }
 
+        public static MessageBuilder MultiPartContent(this MessageBuilder This, IEnumerable<KeyValuePair<string, string>> Content, bool? Enabled = default) {
+            return This.Add(new SetMultiPartFormContentMessageModifier(Content, Enabled));
+        }
+
         public static MessageBuilder MultiPartContent(this MessageBuilder This, Func<MultipartFormDataContent> Content, bool? Enabled = default) {
             return This.Add(new SetMultiPartFormContentMessageModifier(Content, Enabled));
         }

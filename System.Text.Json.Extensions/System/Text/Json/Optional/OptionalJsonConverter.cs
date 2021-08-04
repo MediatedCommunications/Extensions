@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace System.Text.Json {
     public class OptionalJsonConverter<T> : JsonConverter<Optional<T>> {

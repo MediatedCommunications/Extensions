@@ -20,6 +20,47 @@
             return AddIf(Value, "Hidden");
         }
 
+        public DisplayBuilder IsNotLocked(bool Value) {
+            return IsLocked(!Value);
+        }
+
+        public DisplayBuilder IsApproved(bool Value) {
+            return AddIf(Value, "Approved");
+        }
+
+        public DisplayBuilder IsNotApproved(bool Value) {
+            return IsApproved(!Value);
+        }
+
+        public DisplayBuilder IsCurrent(bool Value) {
+            return AddIf(Value, "Current");
+        }
+
+        public DisplayBuilder IsNotCurrent(bool Value) {
+            return IsCurrent(!Value);
+        }
+
+        public DisplayBuilder IsFavorite(bool Value) {
+            return AddIf(Value, "Favorite");
+        }
+
+        public DisplayBuilder IsNotFavorite(bool Value) {
+            return IsFavorite(!Value);
+        }
+
+        public DisplayBuilder IsSigned(bool Value) {
+            return AddIf(Value, "Signed");
+        }
+
+        public DisplayBuilder IsNotSigned(bool Value) {
+            return AddIf(Value, "UNSIGNED");
+        }
+
+
+        public DisplayBuilder IsLocked(bool Value) {
+            return AddIf(Value, "Locked");
+        }
+
         public DisplayBuilder IsNotDeleted(bool Value) {
             return IsDeleted(!Value);
         }
