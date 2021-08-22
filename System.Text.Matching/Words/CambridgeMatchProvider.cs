@@ -2,7 +2,8 @@
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace System.Text.Matching {
+namespace System.Text.Matching
+{
     public class CambridgeMatchProvider : MatchProvider {
 
         public static CambridgeMatchProvider Instance { get; private set; } = new CambridgeMatchProvider();

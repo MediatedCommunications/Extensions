@@ -5,7 +5,8 @@ using System.Net.Http.Message.Modifiers;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace System.Net.Http.Message {
+namespace System.Net.Http.Message
+{
     public static class MessageBuilderExtensions { 
 
         public static MessageBuilder AsMessageBuilder(this IMessageModifier This) {

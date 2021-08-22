@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 
-namespace System.Collections.Generic {
+namespace System.Collections.Generic
+{
     public static class EnumerableExtensions_Struct {
         
         public static IEnumerable<T> WhereIsNotNull<T>(this IEnumerable<T?>? This) where T : struct {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace System.Reflection {
+namespace System.Reflection
+{
 
     public static class LocalAssemblies {
         

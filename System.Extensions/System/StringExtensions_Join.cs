@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace System {
+namespace System
+{
     public static class StringExtensions_Join {
         private const string Join_DefaultSeparator = "";
         public static string Join<T>(this IEnumerable<T>? This, string Separator = Join_DefaultSeparator, int RepeatSeparator = 1) {

@@ -2,7 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
-namespace System {
+namespace System
+{
     public abstract record RegexClassParser<TResult> : ListParser<TResult> {
         protected Regex Regex { get; init; }
         private TryGetValue<Match, TResult> ClassParser { get; init; }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace System.Reflection {
+namespace System.Reflection
+{
     public static class AssemblyLoader {
         public static List<Assembly> Load(params string[] FileNames) {
             var ret = new List<Assembly>();

@@ -1,7 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace System.Net.Http.Message.Senders {
+namespace System.Net.Http.Message.Senders
+{
     public record FollowRedirectsMessageSender : DelegatingMessageSender<IMessageModifier, HttpResponseMessage> {
         public int MaxRedirects { get; init; }
         public Func<HttpResponseMessage, bool> ShouldFollowRedirect { get; init; }

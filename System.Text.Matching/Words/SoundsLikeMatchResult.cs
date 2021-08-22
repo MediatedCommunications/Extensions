@@ -7,7 +7,7 @@ namespace System.Text.Matching {
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
-                .Postfix.AddPair(LeftCode, RightCode)
+                .Postfix.AddPair(RightCode, LeftCode)
                 ;
         }
 

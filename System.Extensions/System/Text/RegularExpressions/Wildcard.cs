@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace System.Text.RegularExpressions {
+namespace System.Text.RegularExpressions
+{
     public static class Wildcard {
 
         private static readonly HashSet<char> MatchAll_FileSystem = new() { '*' };

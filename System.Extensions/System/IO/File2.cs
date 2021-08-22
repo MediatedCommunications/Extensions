@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 
-namespace System.IO {
+namespace System.IO
+{
 
     public enum TransferOptions {
         Copy,

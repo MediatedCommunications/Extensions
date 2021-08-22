@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace System.Text {
+namespace System.Text
+{
     public static class Base64Encoding {
         public static ImmutableHashSet<char> ValidCharacters { get; }
 

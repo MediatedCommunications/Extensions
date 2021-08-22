@@ -2,7 +2,8 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace System.Net.Http.Message.Modifiers {
+namespace System.Net.Http.Message.Modifiers
+{
     public record MessageBuilder : MessageModifier {
         public MessageBuilder(bool? Enabled = default) : base(Enabled) {
         }

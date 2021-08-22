@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace System {
+namespace System
+{
     public static class DelegateExtensions {
 
         public static IEnumerable<T> GetInvocations<T>(this T? This) where T : Delegate {

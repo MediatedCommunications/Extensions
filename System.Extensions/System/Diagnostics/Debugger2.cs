@@ -22,5 +22,31 @@ namespace System.Diagnostics {
             }
         }
 
+        [DebuggerHidden, Pure]
+        [Obsolete("Do not use this in production")]
+        public static void WaitForAttach(long DelayInMs)
+        {
+            var TS = TimeSpan.FromMilliseconds(DelayInMs);
+
+            WaitForAttach(TS);
+        }
+
+        [DebuggerHidden, Pure]
+        [Obsolete("Do not use this in production")]
+        public static void WaitForAttach(TimeSpan TS)
+        {
+            var SW = System.Diagnostics.Stopwatch.StartNew();
+            while(SW.Elapsed < TS && !Debugger.IsAttached)
+            {
+                Thread.Yield();
+            }
+
+            if (Debugger.IsAttached)
+            {
+                Debugger.Break();
+            }
+
+        }
+
     }
 }

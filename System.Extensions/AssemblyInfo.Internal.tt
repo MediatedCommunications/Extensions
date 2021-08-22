@@ -9,11 +9,14 @@
 
 	var Date = DateTimeOffset.Now.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo);
 
-    var Major = (DateTime.Now.Year % 100).ToString("00");
-    var Minor = DateTime.Now.Month.ToString("00");
-    var Revision = DateTime.Now.Day.ToString("00");
+    var VersionDate = DateTime.Now.AddDays(0);
 
-    var Version = String.Format("{0:00}.{1:00}.{2:00}", Major, Minor, Revision);
+    var Major = (VersionDate.Year % 100);
+    var Minor = VersionDate.Month;
+    var Build = VersionDate.Day;
+    var Revision = (VersionDate.Hour * 60) + VersionDate.Minute;
+
+    var Version = String.Format("{0:00}.{1:00}.{2:00}.{3:0000}", Major, Minor, Build, Revision);
 
 #>
 

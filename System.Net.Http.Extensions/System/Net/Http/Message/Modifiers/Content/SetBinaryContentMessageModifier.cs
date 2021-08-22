@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 
-namespace System.Net.Http.Message.Modifiers {
+namespace System.Net.Http.Message.Modifiers
+{
     public record SetBinaryContentMessageModifier : SetContentMessageModifier {
         public ArraySegment<byte> Content { get; init; }
 

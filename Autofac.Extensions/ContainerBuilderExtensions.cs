@@ -1,8 +1,8 @@
 ﻿using Autofac.Builder;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Autofac {
+namespace Autofac
+{
     public static class ContainerBuilderExtensions {
 
         public static IRegistrationBuilder<Task<T>, SimpleActivatorData, SingleRegistrationStyle> RegisterAsync<T>(this ContainerBuilder This)

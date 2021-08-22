@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace System.Text.Json.Serialization {
+namespace System.Text.Json.Serialization
+{
 
     /// <summary>
     /// Used to convert a list to another class type (usually a dictionary)

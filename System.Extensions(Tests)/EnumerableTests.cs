@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace System.Extensions {
+namespace System.Extensions
+{
 
     [TestFixture]
     public class EnumerableTests {

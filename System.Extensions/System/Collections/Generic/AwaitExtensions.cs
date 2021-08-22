@@ -1,7 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace System.Collections.Generic {
+namespace System.Collections.Generic
+{
 
     public static class AwaitExtensions {
         private const bool __ContinueOnAnyThread = false;

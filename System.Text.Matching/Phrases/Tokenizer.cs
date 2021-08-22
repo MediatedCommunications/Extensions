@@ -3,7 +3,8 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 
-namespace System.Text.Matching {
+namespace System.Text.Matching
+{
     public abstract class Tokenizer {
         protected abstract ImmutableList<string> TokenizeInternal(string Input);
 

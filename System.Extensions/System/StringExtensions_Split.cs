@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 
-namespace System {
+namespace System
+{
     public static class StringExtensions_Split {
         private const StringSplitOptions Split_DefaultOptions = StringSplitOptions.RemoveEmptyEntries;
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace System {
+namespace System
+{
     public static class TypeExtensions {
         public static HashSet<Type> AllBaseTypes(this Type? Type) {
             var ret = new HashSet<Type>();

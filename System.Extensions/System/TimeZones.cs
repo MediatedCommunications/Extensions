@@ -3,7 +3,8 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace System {
+namespace System
+{
     public static class TimeZones {
 
         public static ImmutableDictionary<string, TimeZoneInfo> SystemTimeZones { get; private set; }
@@ -11,10 +12,10 @@ namespace System {
         public static ImmutableDictionary<string, TimeZoneInfo> AllAmericanTimeZones { get; private set; }
         public static ImmutableDictionary<string, TimeZoneInfo> OnlyAmericanTimeZones { get; private set; }
 
-        private static Regex DisplayNameOnlyRegex;
+        private static readonly Regex DisplayNameOnlyRegex;
 
         static TimeZones() {
-            DisplayNameOnlyRegex = new Regex(@"^\((UTC)([+-]?)((\d+)\:(\d+))?\)\W*(?<Name>.*)$", RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace | RegexOptions.IgnoreCase);
+            DisplayNameOnlyRegex = new Regex(@"^\((UTC)([+-]?)((\d+)\:(\d+))?\)\W*(?<Name>.*)$", System.Text.RegularExpressions.RegularExpressions.Options);
 
             SystemTimeZones = CreateSystemTimeZones();
             {

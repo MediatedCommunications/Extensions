@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 
 namespace Telerik.Windows.Controls {
@@ -36,10 +37,12 @@ namespace Telerik.Windows.Controls {
 
                     if (URL.IsNotNullOrEmpty()) {
                         try {
-                            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo() {
-                                FileName = URL,
-                                UseShellExecute = true,
-                            });
+                            var PSI = new ProcessStartInfo
+                            {
+                                FileName = URL
+                            };
+                            
+                            PSI.ShellExecute();
 
                         } catch (Exception ex) {
                             ex.Ignore();

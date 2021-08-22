@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace System.Net.Http.Message.Senders {
+namespace System.Net.Http.Message.Senders
+{
     public static class MessageSenderExtensions {
         public static IEnumerable<IMessageSender<TRequest, TResponse>> GetEnumerable<TRequest, TResponse>(this IMessageSender<TRequest, TResponse> This) {
             var start = This;

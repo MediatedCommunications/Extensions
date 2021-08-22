@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace System {
+namespace System
+{
     public abstract record ListParser<T> : DefaultClassParser<LinkedList<T>>, IEnumerable<T> {
         public ListParser(string? Value) : base(Value) {
 

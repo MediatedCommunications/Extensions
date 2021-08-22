@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace System.Diagnostics {
+namespace System.Diagnostics
+{
     public static class TypeNameExtensions {
 
         public static string GetFriendlyName(this Type This) {

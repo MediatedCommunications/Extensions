@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace CsvHelper {
+namespace CsvHelper
+{
     public static class Write {
 
         public static string ToString<T>(IEnumerable<T> Records, CsvConfiguration? Config = default) {

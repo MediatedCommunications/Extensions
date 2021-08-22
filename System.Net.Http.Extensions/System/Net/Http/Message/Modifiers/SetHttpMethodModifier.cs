@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace System.Net.Http.Message.Modifiers {
+namespace System.Net.Http.Message.Modifiers
+{
     public record SetHttpMethodModifier : MessageModifier {
         public HttpMethod Method { get; init; }
 

@@ -2,7 +2,8 @@
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 
-namespace System.Net.Http.Message.Modifiers {
+namespace System.Net.Http.Message.Modifiers
+{
     public record SetMultiPartFormContentMessageModifier : SetContentMessageModifier {
         public Func<MultipartFormDataContent> Content { get; init; }
 

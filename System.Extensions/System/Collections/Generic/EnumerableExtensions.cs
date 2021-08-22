@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace System.Collections.Generic {
+namespace System.Collections.Generic
+{
 
     public static class EnumerableExtensions {
+
+        public static bool IsEmpty<T>(this IEnumerable<T> This)
+        {
+            return !This.Any();
+        }
 
         public static IEnumerable<T> SelectMany<T>(this IEnumerable<IEnumerable<T>> This) {
             return This.SelectMany(x => x);

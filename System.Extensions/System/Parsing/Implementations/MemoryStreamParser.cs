@@ -2,7 +2,8 @@
 using System.IO;
 using System.Text;
 
-namespace System {
+namespace System
+{
     public record MemoryStreamParser : DefaultClassParser<MemoryStream> {
         public Encoding Encoding { get; init; }
 

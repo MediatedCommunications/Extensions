@@ -2,7 +2,8 @@
 using System.Diagnostics;
 using System.Linq;
 
-namespace System {
+namespace System
+{
 
     [Flags]
     public enum PhoneNumberFields {

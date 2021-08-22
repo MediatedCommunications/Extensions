@@ -5,7 +5,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace System.Net.Http.Message.Senders {
+namespace System.Net.Http.Message.Senders
+{
     public record RetryOnHttpStatusCodes : RetryDelegatingMessageSender {
 
         public ImmutableList<HttpStatusCode> StatusCodes { get; init; } = ImmutableList<HttpStatusCode>.Empty;

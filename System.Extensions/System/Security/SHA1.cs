@@ -1,7 +1,8 @@
 ﻿using System.IO;
 using System.Text;
 
-namespace System.Security {
+namespace System.Security
+{
     public static class SHA1 {
 
         public static string FromFile(string filePath) {

@@ -2,7 +2,8 @@
 using System.Security;
 using System.Threading.Tasks;
 
-namespace System.Extensions {
+namespace System.Extensions
+{
     [TestFixture]
     public class EncryptionTests {
 
@@ -24,7 +25,7 @@ namespace System.Extensions {
                     for (var k = 0; k < OriginalSalt.Length; k++) {
                         var Salt = OriginalSalt[0..k];
 
-                        var MyAES = new AES(Password, Salt);
+                        var MyAES = new AesEncryptor(Password, Salt);
 
                         {
                             var Encrypted = MyAES.Encrypt(Bytes);

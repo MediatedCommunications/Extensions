@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace System.Net.Http.Message.Senders {
+namespace System.Net.Http.Message.Senders
+{
     public abstract record DelegatingMessageSender<TRequest, TResponse> : MessageSender<TRequest, TResponse> {
         public IMessageSender<TRequest, TResponse> Child { get; init; }
 

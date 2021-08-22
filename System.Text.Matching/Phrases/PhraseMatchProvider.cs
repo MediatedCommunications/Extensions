@@ -2,7 +2,8 @@
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace System.Text.Matching {
+namespace System.Text.Matching
+{
     public abstract class PhraseMatchProvider {
         public PhraseMatchResult Match(string Left, string Right, StringComparer? OptionalComparer = default, Tokenizer? OptionalTokenizer = default) {
             var Tokenizer = Defaults.GetTokenizer(OptionalTokenizer);

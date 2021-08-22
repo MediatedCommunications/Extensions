@@ -7,7 +7,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
-namespace System.Text.Json {
+namespace System.Text.Json
+{
     [MulticastAttributeUsage(Inheritance = MulticastInheritance.Multicast)]
     [PSerializable]
     public class OptionalJsonIgnoreAttribute : TypeLevelAspect, IAspectProvider {

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace System.Threading.Tasks {
+namespace System.Threading.Tasks
+{
     public static class TaskExtensions {
 
         public static List<Func<Task?>?> AsThreadedTasks(this IEnumerable<Func<Task?>?>? This) {

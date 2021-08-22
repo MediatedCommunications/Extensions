@@ -1,10 +1,11 @@
 ﻿using NUnit.Framework;
-using System.Threading.Tasks;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Framework.Tests {
+namespace Framework.Tests
+{
     [TestFixture]
     public class EmailParserTests {
 

@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
-namespace System.Diagnostics {
+namespace System.Diagnostics
+{
     [DebuggerDisplay(DisplayBuilder.DebuggerDisplay)]
     public class DisplayBuilderRegion : IGetDebuggerDisplay {
         public List<string> Values { get; private set; } = new List<string>();
@@ -13,9 +17,33 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder Add(params object?[] Values) {
-            foreach (var Value in Values) {
+            foreach (var Value in Values)
+            {
                 Add(Value);
             }
+
+            return Parent;
+        }
+
+        public DisplayBuilder Add<T>(ICollection<T>? Values) {
+            foreach (var Value in Values.Coalesce())
+            {
+                Add(Value);
+            }
+
+            return Parent;
+        }
+
+
+        public DisplayBuilder AddCount<T>(IEnumerable<T> Item, [CallerArgumentExpression("Item")] string? Name = default)
+        {
+            var ActualCount = Item.Count();
+            var ActualName = new[] { 
+                Name, 
+                "Items" 
+            }.WhereIsNotBlank().Coalesce();
+
+            Add($@"{ActualCount} {ActualName}");
 
             return Parent;
         }
@@ -28,27 +56,31 @@ namespace System.Diagnostics {
         }
 
 
-        public DisplayBuilder AddPair(bool Condition, string Name, object? Value) {
-
-            if (Condition) {
-                AddPair(Name, Value);
-            }
-
-            return Parent;
-        }
-
         public DisplayBuilder AddPair<TValue>(IEnumerable<KeyValuePair<string, TValue>>? Values) {
             foreach (var item in Values.Coalesce()) {
-                AddPair(item.Key, item.Value);
+                AddPair(item.Value, item.Key);
             }
 
             return Parent;
         }
 
-        public DisplayBuilder AddPair(string Name, object? Value) {
-            
-            if(Value is { } V1 &&  StringValue(V1) is { } V2) {
+        public DisplayBuilder AddPair(bool Condition, object? Value, [CallerArgumentExpression("Value")] string? Name = default) {
+
+            if (Condition) {
+                AddPair(Value, Name);
+            }
+
+            return Parent;
+        }
+
+        public DisplayBuilder AddPair(object? Value, [CallerArgumentExpression("Value")] string? Name = default) {
+
+            if (Name.IsBlank()) {
+                Add(Value);
+
+            } else if (Value is { } V1 &&  StringValue(V1) is { } V2) {
                 Add($@"{Name}: {V2}");
+
             }
             
             return Parent;
@@ -97,6 +129,7 @@ namespace System.Diagnostics {
 
             } else if (Value is Type V2) {
                 ret = V2.GetFriendlyName();
+
             } else if(Value is decimal V3) {
                 ret = V3.Format().AsCurrency();
             } else if (Value is { } V9) {

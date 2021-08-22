@@ -1,9 +1,10 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+using System.Linq;
 
-namespace System.Net.Http.Message.Modifiers {
+namespace System.Net.Http.Message.Modifiers
+{
     public record SetFormContentMessageModifier : SetContentMessageModifier {
         public ImmutableList<KeyValuePair<string, string>> Content { get; init; }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 
-namespace Autofac {
+namespace Autofac
+{
     public static class ContainerExtensions {
 
         public static object? SafeResolve(this IContainer This, Type T) {

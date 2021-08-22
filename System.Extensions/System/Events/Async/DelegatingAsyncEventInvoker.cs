@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 
-namespace System.Events.Async {
+namespace System.Events.Async
+{
     internal class DelegatingAsyncEventInvoker<TSender, TArgs>
     : IAsyncEventInvoker<TSender, TArgs> {
 

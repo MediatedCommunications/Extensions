@@ -1,7 +1,8 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
 
-namespace System.Text.Matching {
+namespace System.Text.Matching
+{
     public static class Defaults {
         public static StringComparer GetComparer(StringComparer? OptionalComparer) {
             var ret = OptionalComparer ?? StringComparer.InvariantCultureIgnoreCase;

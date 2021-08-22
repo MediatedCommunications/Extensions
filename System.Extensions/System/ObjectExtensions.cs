@@ -17,7 +17,7 @@
     }
 
     internal class Null {
-        internal static Type Type { get; } = typeof(Null);
+        static internal Type Type { get; } = typeof(Null);
     }
 
 }

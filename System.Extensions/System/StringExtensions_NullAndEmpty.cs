@@ -2,7 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace System {
+namespace System
+{
 
     public static class StringExtensions_NullAndEmpty {
         public static bool IsNullOrEmpty([NotNullWhen(false)] this string? This) {

@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\__Shared\Shared.targets" Label="Shared" />
+
+  <PropertyGroup>
+    <PackageId>MC.System.Windows.UiAutomation.Extensions</PackageId>
+  </PropertyGroup>
+
+</Project>

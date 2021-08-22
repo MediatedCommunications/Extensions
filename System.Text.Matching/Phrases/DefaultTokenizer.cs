@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace System.Text.Matching {
+namespace System.Text.Matching
+{
     public class DefaultTokenizer : Tokenizer {
 
         public static DefaultTokenizer Instance { get; private set; } = new();

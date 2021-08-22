@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace System {
+namespace System
+{
 
     [TestFixture]
     public class TypeFriendlyNameTests {

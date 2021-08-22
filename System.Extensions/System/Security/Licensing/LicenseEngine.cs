@@ -1,109 +1,200 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
-namespace System.Security.Licensing {
-    public class LicenseEngine<T> 
-        where T : DisplayRecord
+namespace System.Security.Licensing
+{
+
+    public class LicenseEngine<TCompiled> 
+        where TCompiled : DisplayRecord
         {
 
-        public ImmutableList<T> Licenses { get; private set; } = ImmutableList<T>.Empty;
+        public ImmutableList<TCompiled> Licenses { get; private set; } = ImmutableList<TCompiled>.Empty;
 
-        private void AddLicense(T? License) {
-            if(License is { }) {
-                Licenses = Licenses.Add(License);
+        protected ImmutableArray<LicenseFormatBase<TCompiled>> LicenseFormats { get; }
+
+        public LicenseEngine()
+        {
+            this.LicenseFormats = InitializeLicenseFormats()
+                .ToImmutableArray()
+                ;
+
+        }
+
+        protected virtual IEnumerable<LicenseFormatBase<TCompiled>> InitializeLicenseFormats()
+        {
+            yield return Licensing.LicenseFormats.Default<TCompiled>.Instance;
+        }
+
+
+        private void AddLicense(TCompiled? License) {
+            if(License is { } V1 && !Licenses.Contains(V1)) {
+                Licenses = Licenses.Add(V1);
             }
         }
 
-        private void RemoveLicense(T? License) {
+        private void RemoveLicense(TCompiled? License) {
             if (License is { }) {
                 Licenses = Licenses.Remove(License);
             }
         }
 
 
-        public T Load(string Key) {
-            var ret = Preview(Key);
+        public TCompiled Load(string Key) {
+            var ret = Parse(Key);
 
+            var Errors = Validate(ret).ToList();
+            
+            if(Errors.Count > 0)
+            {
+                throw new AggregateException(Errors);
+            }
+            
             AddLicense(ret);
 
             return ret;
         }
 
-        public bool TryLoad(string LicenseText, [NotNullWhen(true)] out T? License) {
-            var ret = TryPreview(LicenseText, out License);
 
-            AddLicense(License);
+        public bool TryLoad(string LicenseText, [NotNullWhen(true)] out TCompiled? License)
+        {
+            return TryLoad(LicenseText, out License, out _);
+        }
+
+        public bool TryLoad(string LicenseText, [NotNullWhen(true)] out TCompiled? License, out ImmutableArray<Exception> Errors) {
+            var ret = false;
+
+            if(TryParse(LicenseText, out License, out Errors))
+            {
+                if (TryValidate(License, out Errors))
+                {
+                    AddLicense(License);
+                    ret = true;
+                }
+            }
+
+            return ret;
+        }
+
+        public TCompiled? TryLoad(string LicenseText)
+        {
+            TryLoad(LicenseText, out var ret);
 
             return ret;
         }
 
 
-        public void Unload(T? License) {
+
+        public void Unload(TCompiled? License) {
             RemoveLicense(License);
         }
 
-        
-        public bool TryPreview(string LicenseText, [NotNullWhen(true)] out T? License) {
-            var ret = false;
-            License = default(T?);
 
-            try {
-                var EncryptedString = LicenseText;
-                var EncryptedBytes = Decode(EncryptedString);
-                var DecryptedBytes = Decrypt(EncryptedBytes);
-                var DecryptedJson = Encoding.UTF8.GetString(DecryptedBytes);
-                License = Text.Json.JsonSerializer.Deserialize<T>(DecryptedJson);
-            } catch(Exception ex) {
+
+        protected string Create(TCompiled License)
+        {
+            var ret = LicenseFormats.First().Create(License);
+
+            return ret;
+
+        }
+
+        public virtual IEnumerable<Exception> Validate(TCompiled License) {
+            yield break;
+        }
+
+        public bool TryValidate(TCompiled? License)
+        {
+            return TryValidate(License, out _);
+        }
+
+        public bool TryValidate(TCompiled? License, out ImmutableArray<Exception> Errors)
+        {
+            var ret = false;
+            Errors = ImmutableArray<Exception>.Empty;
+
+            try
+            {
+                if (License is { })
+                {
+                    Errors = Validate(License).ToImmutableArray();
+
+                    if (Errors.IsEmpty) {
+                        ret = true;
+                    }
+                    
+                }
+            } catch(Exception ex)
+            {
                 ex.Ignore();
             }
 
-            if(License is { }) {
-                ret = true;
-            }
+            return ret;
+        }
 
+        public bool TryParse(string LicenseText){
+            return TryParse(LicenseText, out _);
+        }
+
+        public bool TryParse(string LicenseText, [NotNullWhen(true)] out TCompiled? License) {
+            return TryParse(LicenseText, out License, out _);
+        }
+
+        public bool TryParse(string LicenseText, [NotNullWhen(true)] out TCompiled? License, out ImmutableArray<Exception> Errors)
+        {
+            var ret = false;
+            License = default;
+            Errors = ImmutableArray<Exception>.Empty;
+
+            foreach (var Format in LicenseFormats)
+            {
+                try
+                {
+                    License = Format.Parse(LicenseText);
+                    ret = true;
+                    break;
+                } catch (Exception ex)
+                {
+                    ex.Ignore();
+                }
+            }
+            if(ret == false)
+            {
+                if (LicenseText.IsBlank())
+                {
+                    Errors = new Exception[]
+                    {
+                        new NoLicenseException(),
+                    }.ToImmutableArray();
+                } else
+                {
+                    Errors = new Exception[]
+                    {
+                    new InvalidLicenseException(),
+                    }.ToImmutableArray();
+                }
+            }
 
             return ret;
         }
 
-        public T Preview(string LicenseText) {
-            if (TryPreview(LicenseText, out var ret)) {
+        public TCompiled Parse(string LicenseText)
+        {
+            if(TryParse(LicenseText, out var ret, out var Errors))
+            {
                 return ret;
-            } else {
-                throw new InvalidLicenseException();
+            } else
+            {
+                throw new AggregateException(Errors);
             }
-        }
-
-        protected virtual byte[] Encrypt(byte[] Input) {
-            return AES.Default.Encrypt(Input);
-        }
-
-        protected virtual byte[] Decrypt(byte[] Input) {
-            return AES.Default.Decrypt(Input);
-        }
-
-        protected virtual string Encode(byte[] Input) {
-            var ret = Base64Encoding.ConvertToStringFormatted(Input);
-            return ret;
-        }
-
-        protected virtual byte[] Decode(string Input) {
-            var ret = Base64Encoding.ConvertFromStringFormatted(Input);
-            return ret;
-        }
-
-
-        protected string Create(T License) {
-            var DecryptedJson = Text.Json.JsonSerializer.Serialize(License);
-            var DecryptedBytes = Encoding.UTF8.GetBytes(DecryptedJson);
-            var EncryptedBytes = Encrypt(DecryptedBytes);
-            var EncryptedString = Encode(EncryptedBytes);
-            var ret = EncryptedString;
-
-            return ret;
 
         }
+
 
     }
 

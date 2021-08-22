@@ -2,7 +2,8 @@
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace System.Text.Matching {
+namespace System.Text.Matching
+{
     public class DefaultPhraseMatchProvider : PhraseMatchProvider {
         public static DefaultPhraseMatchProvider Default { get; private set; } = new();
 

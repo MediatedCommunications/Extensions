@@ -1,8 +1,9 @@
 ﻿using NUnit.Framework;
-using System.Threading.Tasks;
 using System.Dynamic;
+using System.Threading.Tasks;
 
-namespace Framework.Tests {
+namespace Framework.Tests
+{
     [TestFixture]
     public class ExpandoObjectTests {
 

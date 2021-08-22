@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\__Shared\Shared.targets" Label="Shared" />
+    
+    <PropertyGroup>
+      <PackageId>MC.PostSharp.Extensions</PackageId>
+      <PackageProjectUrl>https://github.com/MediatedCommunications/Extensions</PackageProjectUrl>
+      <RepositoryUrl>https://github.com/MediatedCommunications/Extensions</RepositoryUrl>
+      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="PostSharp" Version="6.9.7" />
+    </ItemGroup>
+  
+
+</Project>

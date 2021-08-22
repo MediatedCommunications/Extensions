@@ -1,7 +1,8 @@
 ﻿using NUnit.Framework;
 using System.Threading.Tasks;
 
-namespace System.Text.Json.Serialization {
+namespace System.Text.Json.Serialization
+{
 
     [TestFixture]
     public class DateFunctionEpochConverterTests {

@@ -2,7 +2,8 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace System.Threading.Channels {
+namespace System.Threading.Channels
+{
     public static class ChannelReaderExtensions {
 
         public static async IAsyncEnumerable<T> WithGracefulCancellation<T>(this ChannelReader<T> This, [EnumeratorCancellation] CancellationToken Token = default) {

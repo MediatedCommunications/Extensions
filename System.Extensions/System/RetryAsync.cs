@@ -2,7 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace System {
+namespace System
+{
 
     public enum RetryFailureResult {
         ReturnDefault,

@@ -3,7 +3,8 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 
-namespace System.Net.Http.Message.Senders {
+namespace System.Net.Http.Message.Senders
+{
     public abstract record RetryDelegatingMessageSender : DelegatingMessageSender<IMessageModifier, HttpResponseMessage> {
 
         public RetryDelegatingMessageSender(IEnumerable<TimeSpan>? Attempts, IMessageSender<IMessageModifier, HttpResponseMessage>? Child = default) : base(Child) {

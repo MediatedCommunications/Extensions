@@ -1,7 +1,8 @@
 ﻿using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace System.Net.Http.Message.Modifiers {
+namespace System.Net.Http.Message.Modifiers
+{
 
     public record SetJsonContentMessageModifier : SetContentMessageModifier {
         public object? Content { get; init; }

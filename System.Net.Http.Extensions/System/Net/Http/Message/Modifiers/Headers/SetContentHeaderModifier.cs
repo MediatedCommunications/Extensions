@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace System.Net.Http.Message.Modifiers {
+namespace System.Net.Http.Message.Modifiers
+{
 
     public record SetContentHeadersModifier : SetHeadersModifier {
         public SetContentHeadersModifier(IEnumerable<KeyValuePair<string, string?>> Values, bool? RemoveFirst = default, bool? Enabled = default) : base(Values, RemoveFirst, Enabled) {

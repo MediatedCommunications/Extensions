@@ -2,7 +2,8 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 
-namespace System.Text.Matching {
+namespace System.Text.Matching
+{
     public record ExactMatchResult : MatchResult {
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
@@ -21,7 +22,7 @@ namespace System.Text.Matching {
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
-                .Data.AddPair(Left, Right)
+                .Data.AddPair(Right, Left)
                 ;
         }
 

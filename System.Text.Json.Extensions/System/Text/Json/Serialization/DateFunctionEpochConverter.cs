@@ -1,16 +1,11 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace System.Text.Json.Serialization {
+namespace System.Text.Json.Serialization
+{
     public class DateFunctionEpochConverter : JsonConverter<DateTimeOffset> {
-        const string Value = "VALUE";
-        static Regex RX = new Regex($@"Date \((?<{Value}> (-)? \d+  )\)", RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace | RegexOptions.IgnoreCase);
-
-        public override bool HandleNull {
-            get {
-                return base.HandleNull;
-            }
-        }
+        private const string Value = "VALUE";
+        private static readonly Regex RX = new($@"Date \((?<{Value}> (-)? \d+  )\)", System.Text.RegularExpressions.RegularExpressions.Options);
 
         public static bool TryParse(string Input, out DateTimeOffset Output) {
             var tret = default(DateTimeOffset);

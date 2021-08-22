@@ -2,7 +2,8 @@
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace System {
+namespace System
+{
 
     public static class StringExtensions {
 
@@ -95,14 +96,14 @@ namespace System {
         }
 
 
-        delegate bool TrimMethod(string Element, ref string Input);
+        private delegate bool TrimMethod(string Element, ref string Input);
 
         private static string TrimInternal(this string? This, IEnumerable<string?>? ItemsToTrim, TrimMethod Method) {
             var ret = This.Coalesce();
             while (true) {
                 var Changed = false;
 
-                foreach (var item in ItemsToTrim.Coalesce<string>().WhereIsNotNullOrEmpty()) {
+                foreach (var item in ItemsToTrim.Coalesce<string?>().WhereIsNotNullOrEmpty()) {
 
                     if(Method(item, ref ret)) {
                         Changed = true;

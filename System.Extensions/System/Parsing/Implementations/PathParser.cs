@@ -2,7 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 
-namespace System {
+namespace System
+{
     public record PathParser : DisplayRecord {
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {

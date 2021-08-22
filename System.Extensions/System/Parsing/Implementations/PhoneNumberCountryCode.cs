@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace System {
+namespace System
+{
     public record PhoneNumberCountryCode : DisplayRecord {
         public string Name { get; init; } = string.Empty;
         public string Number { get; init; } = string.Empty;

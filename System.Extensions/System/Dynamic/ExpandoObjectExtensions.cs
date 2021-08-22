@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace System.Dynamic {
+namespace System.Dynamic
+{
 
     public static class ExpandoObjectExtensions {
 

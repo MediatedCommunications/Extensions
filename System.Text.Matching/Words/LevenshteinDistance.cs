@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace System.Text.Matching {
+namespace System.Text.Matching
+{
     public static class LevenshteinDistance {
         public static int Compute<T>(IList<T> s, IList<T> t, IComparer<T> Comparer) {
             

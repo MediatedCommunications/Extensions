@@ -1,6 +1,7 @@
 ﻿using System;
 
-namespace CsvHelper.Configuration {
+namespace CsvHelper.Configuration
+{
     public static class CsvConfigurationHelpers {
 
         public static class MissingFieldFound {

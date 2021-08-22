@@ -1,7 +1,8 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
 
-namespace System.Collections.Generic {
+namespace System.Collections.Generic
+{
     public static class CollectionExtensions {
 
         public static ImmutableList<T> Add<T>(this ImmutableList<T> This, params T[] Group) {

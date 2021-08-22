@@ -2,7 +2,8 @@
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace System.IO {
+namespace System.IO
+{
     public static class FileSystem {
 
         public static ImmutableHashSet<string> InvalidFileNameChars { get; private set; } = Path.GetInvalidFileNameChars().Select(x => x.ToString()).ToImmutableHashSet();

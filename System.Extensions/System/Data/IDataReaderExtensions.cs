@@ -1,7 +1,8 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
 
-namespace System.Data {
+namespace System.Data
+{
     public static class IDataReaderExtensions {
 
         public static ImmutableHashSet<string> GetColumnNames(this IDataReader This) {

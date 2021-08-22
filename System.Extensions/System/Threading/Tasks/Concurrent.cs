@@ -3,7 +3,8 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace System.Threading.Tasks {
+namespace System.Threading.Tasks
+{
 
     public enum ConcurrentWhenCanceled {
         AbandonChildTasks,

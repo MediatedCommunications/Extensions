@@ -1,7 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace System.IO {
+namespace System.IO
+{
     public class TemporaryFileStream : FileStream {
         private TemporaryFile? Internals { get; set; }
 

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace System.Net.Http.Message.Senders {
+namespace System.Net.Http.Message.Senders
+{
     public record HttpClientMessageSender : MessageSender<IMessageModifier, HttpResponseMessage> {
         public HttpClient Client { get; init; }
         public HttpCompletionOption CompletionOption { get; init; }

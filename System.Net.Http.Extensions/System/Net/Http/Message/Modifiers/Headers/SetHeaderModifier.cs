@@ -2,7 +2,8 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 
-namespace System.Net.Http.Message.Modifiers {
+namespace System.Net.Http.Message.Modifiers
+{
     public abstract record SetHeaderModifier : MessageModifier {
         public string Name { get; init; }
         public string? Value { get; init; }

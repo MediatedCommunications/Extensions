@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Net.Http.Message.Senders;
+﻿using System.Net.Http.Message.Senders;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace System.Net.Http.Message {
+namespace System.Net.Http.Message
+{
     public static class IMessageModifierExtensions {
 
         public static async Task<HttpRequestMessage> ToMessageAsync(this IMessageModifier This) {

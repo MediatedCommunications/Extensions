@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 
-namespace Autofac {
+namespace Autofac
+{
     public interface IInitializeAsync {
         Task InitializeAsync();
     }

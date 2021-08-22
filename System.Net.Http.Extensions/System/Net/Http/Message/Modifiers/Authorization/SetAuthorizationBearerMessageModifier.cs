@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 
-namespace System.Net.Http.Message.Modifiers {
+namespace System.Net.Http.Message.Modifiers
+{
     public record SetAuthorizationBearerMessageModifier : SetAuthorizationValueMessageModifier {
 
         public SetAuthorizationBearerMessageModifier(string? Value, bool? Enabled = default) : base(Value, Enabled) {

@@ -2,7 +2,8 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace System.Extensions {
+namespace System.Extensions
+{
     [TestFixture]
     public class FileSystemTests {
         [Test]

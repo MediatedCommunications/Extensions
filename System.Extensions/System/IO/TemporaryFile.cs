@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace System.IO {
+namespace System.IO
+{
 
     public class TemporaryFile : DisplayClass, IDisposable {
         public string FullPath { get; private set; }

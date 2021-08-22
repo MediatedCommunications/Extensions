@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Net.Http.Message.Senders;
+using System.Linq;
 
-namespace System.Net.Http.Message {
+namespace System.Net.Http.Message
+{
     public static class MessageSenderExtensions {
         public static DelegatingMessageSender<IMessageModifier, HttpResponseMessage> RetryOnHttpException(this DelegatingMessageSender<IMessageModifier, HttpResponseMessage> This, IEnumerable<TimeSpan>? Attempts = default) {
             return This.Add(new RetryOnHttpException(Attempts));

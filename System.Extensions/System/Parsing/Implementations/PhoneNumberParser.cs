@@ -2,7 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace System {
+namespace System
+{
     public record PhoneNumberParser : DefaultClassParser<PhoneNumber> {
         public PhoneNumberParser(string? Value) : base(Value) {
         

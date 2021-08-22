@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 
-namespace System.Text.Matching {
+namespace System.Text.Matching
+{
 
     [TestFixture]
     public class Tests {
@@ -32,6 +33,8 @@ namespace System.Text.Matching {
             var Words2 = Tokenizer.Tokenize(Name);
 
             var Match = MatchProvider.Match(Words1, Words2, StringComparer.InvariantCultureIgnoreCase);
+
+            Match.Ignore();
 
 
             return Task.CompletedTask;

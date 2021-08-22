@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace CsvHelper {
+namespace CsvHelper
+{
     public static class DynamicCsvRecordExtensions {
 
         public static string TryGetValue(this DynamicCsvRecord This, string Column) {

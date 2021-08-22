@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace System.Events.Async {
+namespace System.Events.Async
+{
 
     public class AsyncFunction<TSender, TData, TResult> 
         : AsyncMulticastDelegate<TSender, FunctionEventArgs<TData, TResult>>

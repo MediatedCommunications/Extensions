@@ -1,19 +1,25 @@
-﻿using System.Security.Cryptography;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
-namespace System.Security {
+namespace System.Security
+{
 
-    public class AES {
+    public record AesEncryptor : Encryptor {
 
-        public static AES Default { get; } = new();
+        public static AesEncryptor Default { get; } = new();
 
-        protected virtual byte[] SafeSalt(byte[]? Value) {
-            var Size = Math.Max(8, Value?.Length ?? 0);
+        protected virtual byte[] SafeSalt(IEnumerable<byte>? Value) {
+            var VV = Value.Coalesce().ToArray();
+            
+            var Size = Math.Max(8, VV.Length);
             var ret = new byte[Size];
-            if (Value is { }) {
-                Value.CopyTo(ret, 0);
-            }
+
+            VV.CopyTo(ret, 0);
+            
 
             return ret;
         }
@@ -25,13 +31,13 @@ namespace System.Security {
         protected string Password { get; }
         protected byte[] Salt { get; }
 
-        public AES(string? Password = default, byte[]? Salt = default) {
+        public AesEncryptor(string? Password = default, IEnumerable<byte>? Salt = default) {
             this.Password = SafePassword(Password);
             this.Salt = SafeSalt(Salt);
         }
 
 
-        public string Encrypt(string plainText) {
+        public override string Encrypt(string plainText) {
             var Bytes = Encoding.UTF8.GetBytes(plainText);
             var EncryptedBytes = Encrypt(Bytes);
             var EncryptedString = Convert.ToBase64String(EncryptedBytes);
@@ -39,19 +45,19 @@ namespace System.Security {
             return ret;
         }
 
-        public string Decrypt(string cipherText) {
+        public override string Decrypt(string cipherText) {
             var EncryptedBytes = Convert.FromBase64String(cipherText);
             var DecryptedBytes = Decrypt(EncryptedBytes);
             var DecryptedString = Encoding.UTF8.GetString(DecryptedBytes);
             var ret = DecryptedString;
             return ret;
         }
-        public byte[] Encrypt(byte[] Value) {
+        public override byte[] Encrypt(byte[] Value) {
             var NewSafeSalt = Salt;
             var NewSafePassword = Password;
             using var Key = new Rfc2898DeriveBytes(NewSafePassword, NewSafeSalt);
 
-            using var aes = new RijndaelManaged();
+            using var aes = Aes.Create();
             using var ms = new MemoryStream();
 
             aes.Key = Key.GetBytes(aes.KeySize / 8);
@@ -69,12 +75,12 @@ namespace System.Security {
             return ret;
         }
 
-        public byte[] Decrypt(byte[] Value) {
+        public override byte[] Decrypt(byte[] Value) {
             var NewSafeSalt = Salt;
             var NewSafePassword = Password;
             using var Key = new Rfc2898DeriveBytes(NewSafePassword, NewSafeSalt);
 
-            using var aes = new RijndaelManaged();
+            using var aes = Aes.Create();
             using var ms = Value.ToMemoryStream();
 
             aes.Key = Key.GetBytes(aes.KeySize / 8);
@@ -88,17 +94,29 @@ namespace System.Security {
         }
 
         private static byte[] ReadByteArray(Stream s) {
+            byte[] ret;
+
             var rawLength = new byte[sizeof(int)];
             if (s.Read(rawLength, 0, rawLength.Length) != rawLength.Length) {
-                throw new SystemException("Stream did not contain properly formatted byte array");
+                throw new FormatException("Stream did not contain properly formatted byte array");
             }
 
-            var buffer = new byte[BitConverter.ToInt32(rawLength, 0)];
-            if (s.Read(buffer, 0, buffer.Length) != buffer.Length) {
-                throw new SystemException("Did not read byte array properly");
+            var BufferSize = BitConverter.ToInt32(rawLength, 0);
+            var MinSize = 0;
+            var MaxSize = Array.MaxLength;
+
+            if(BufferSize < MinSize || BufferSize > MaxSize) {
+                throw new ArgumentOutOfRangeException(nameof(BufferSize), BufferSize, $@"Must be between {MinSize} and {MaxSize}");
             }
 
-            return buffer;
+            var buffer = new byte[BufferSize];
+            if (s.Read(buffer, 0, buffer.Length) == buffer.Length) {
+                ret = buffer;
+            } else {
+                throw new System.IO.IOException("Did not properly read byte array");
+            }
+            
+            return ret;
         }
 
     }

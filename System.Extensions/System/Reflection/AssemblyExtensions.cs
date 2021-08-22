@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace System.Reflection {
+namespace System.Reflection
+{
     public static class AssemblyExtensions {
 
         public static List<Type> GetTypesSafe(this IEnumerable<Assembly> This) {

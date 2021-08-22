@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace System.Collections.Concurrent {
+namespace System.Collections.Concurrent
+{
     public static class EnumerableExtensions_ToCollections {
 
         public static ConcurrentStack<T> ToConcurrentStack<T>(this IEnumerable<T>? This) {

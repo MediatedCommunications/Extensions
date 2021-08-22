@@ -4,13 +4,14 @@ using System.Text.RegularExpressions;
 namespace System {
 
     public record EmailAddressParser : RegexClassParser<EmailAddress> {
-        private static readonly Regex REGEX_EMAIL = new($@"\b(?<{nameof(EmailAddress.Mailbox)}>(   ([A-Z0-9]+) ([._+-][A-Z0-9]+)*)    )@(?<{nameof(EmailAddress.Domain)}>(([A-Z0-9-]+\.)+([A-Z]{{2,}})))\b", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+        private static readonly Regex REGEX_EMAIL = new($@"\b(?<{nameof(EmailAddress.Mailbox)}>(   ([A-Z0-9]+) ([._+-][A-Z0-9]+)*)    )@(?<{nameof(EmailAddress.Domain)}>(([A-Z0-9-]+\.)+([A-Z]{{2,}})))\b", System.Text.RegularExpressions.RegularExpressions.Options);
+        private static readonly string AliasSeparator = "+";
 
         public EmailAddressParser(string? Value) : base(REGEX_EMAIL, ClassParser, Value) {
 
         }
 
-        static bool ClassParser(Match Input, [NotNullWhen(true)] out EmailAddress? Result) {
+        private static bool ClassParser(Match Input, [NotNullWhen(true)] out EmailAddress? Result) {
             var ret = false;
             Result = default;
 
@@ -21,8 +22,8 @@ namespace System {
                 var Mailbox = FullMailbox;
                 var Alias = default(string?);
 
-                if (Mailbox.Contains("+")) {
-                    var Parts = Mailbox.Split('+', 2);
+                if (Mailbox.Contains(AliasSeparator)) {
+                    var Parts = Mailbox.Split(AliasSeparator, 2);
                     Mailbox = Parts[0].Coalesce();
                     Alias = Parts[1].Coalesce();
                 }

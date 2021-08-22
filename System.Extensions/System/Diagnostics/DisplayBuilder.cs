@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace System.Diagnostics {
+namespace System.Diagnostics
+{
 
     [DebuggerDisplay(DebuggerDisplay)]
     public class DisplayBuilder : IGetDebuggerDisplay {

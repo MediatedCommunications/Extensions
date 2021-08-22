@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace System.Text.Json.Serialization {
+namespace System.Text.Json.Serialization
+{
     public class ItemToListSerializer : JsonConverterFactory {
         public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options) {
             var ret = default(JsonConverter?);

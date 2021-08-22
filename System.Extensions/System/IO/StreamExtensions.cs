@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 
-namespace System.IO {
+namespace System.IO
+{
     public static class StreamExtensions {
 
         public static StreamReader ToStreamReader(this Stream This) {

@@ -3,7 +3,8 @@ using System.Diagnostics;
 using System.Security.Licensing;
 using System.Threading.Tasks;
 
-namespace System.Extensions {
+namespace System.Extensions
+{
     [TestFixture]
     public class LicenseTests {
 
@@ -29,7 +30,7 @@ namespace System.Extensions {
     }
 
     public class MyLicenseEngine : LicenseEngine<TestLicense> {
-        public string CreateInternal(TestLicense License) {
+        internal string CreateInternal(TestLicense License) {
             return this.Create(License);
         }
     }
