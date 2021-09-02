@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\__Shared\Shared.targets" Label="Shared" />
+
+  <PropertyGroup>
+    <PackageId>MC.Microsoft.EntityFrameworkCore.Extensions</PackageId>
+  </PropertyGroup>
+
+</Project>

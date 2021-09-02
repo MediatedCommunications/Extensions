@@ -46,7 +46,7 @@ namespace System.Diagnostics
         }
 
 
-        private static readonly Dictionary<TypeCode, string> TypeAliases = new Dictionary<TypeCode, string>() {
+        private static readonly Dictionary<TypeCode, string> TypeAliases = new() {
             [TypeCode.Empty] = "void",
             [TypeCode.DBNull] = "DBNull",
             [TypeCode.Boolean] = "bool",

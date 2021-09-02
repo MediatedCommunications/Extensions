@@ -23,7 +23,7 @@
 
 using System;
 
-    static partial class InternalAssemblyInfo {
+    static internal partial class InternalAssemblyInfo {
 
 		public const string AssemblyBuildDateString = "<#= Date #>" ;
 		public static DateTimeOffset AssemblyBuildDate {get; private set;} = DateTimeOffset.Parse(AssemblyBuildDateString, System.Globalization.DateTimeFormatInfo.InvariantInfo);

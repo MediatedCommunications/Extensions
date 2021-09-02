@@ -78,6 +78,7 @@ namespace System.Security
         public override byte[] Decrypt(byte[] Value) {
             var NewSafeSalt = Salt;
             var NewSafePassword = Password;
+
             using var Key = new Rfc2898DeriveBytes(NewSafePassword, NewSafeSalt);
 
             using var aes = Aes.Create();
@@ -105,17 +106,24 @@ namespace System.Security
             var MinSize = 0;
             var MaxSize = Array.MaxLength;
 
-            if(BufferSize < MinSize || BufferSize > MaxSize) {
-                throw new ArgumentOutOfRangeException(nameof(BufferSize), BufferSize, $@"Must be between {MinSize} and {MaxSize}");
-            }
+            var buffer = CreateBuffer(BufferSize, MinSize, MaxSize);
 
-            var buffer = new byte[BufferSize];
             if (s.Read(buffer, 0, buffer.Length) == buffer.Length) {
                 ret = buffer;
             } else {
                 throw new System.IO.IOException("Did not properly read byte array");
             }
             
+            return ret;
+        }
+
+        private static byte[] CreateBuffer(int Size, int MinSize, int MaxSize) {
+            if (Size < MinSize || Size > MaxSize) {
+                throw new ArgumentOutOfRangeException(nameof(Size), Size, $@"Must be between {MinSize} and {MaxSize}");
+            }
+
+            var ret = new byte[Size];
+
             return ret;
         }
 

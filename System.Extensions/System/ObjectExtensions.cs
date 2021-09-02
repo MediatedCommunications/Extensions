@@ -16,8 +16,26 @@
 
     }
 
-    internal class Null {
-        static internal Type Type { get; } = typeof(Null);
+    public class Null {
+        static Null() {
+            Type = typeof(Null);
+            Instance = new();
+        }
+
+        public static Type Type { get; } 
+        public static Null Instance { get; }
     }
+
+    public class Null<T> : Null {
+        static Null() {
+            Type = typeof(Null<T>);
+            Instance = new();
+        }
+
+        public static new Type Type { get; }
+        public static new Null<T> Instance { get; }
+
+    }
+
 
 }

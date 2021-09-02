@@ -108,6 +108,31 @@ namespace System.Security.Licensing
             yield break;
         }
 
+
+        public bool TryValidate(string LicenseText) {
+            return TryValidate(LicenseText, out _);
+        }
+
+        public bool TryValidate(string LicenseText, [NotNullWhen(true)] out TCompiled? License) {
+            return TryValidate(LicenseText, out License, out _);
+        }
+
+        public bool TryValidate(string LicenseText, [NotNullWhen(true)] out TCompiled? License, out ImmutableArray<Exception> Errors) {
+            var ret = false;
+            License = default;
+
+            if (TryParse(LicenseText, out var ActualLicense, out Errors)) {
+                if(TryValidate(ActualLicense, out Errors)) {
+                    License = ActualLicense;
+                    ret = true;
+                }
+            }
+
+            return ret;
+        }
+
+
+
         public bool TryValidate(TCompiled? License)
         {
             return TryValidate(License, out _);

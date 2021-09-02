@@ -35,17 +35,23 @@ namespace System.Diagnostics
         }
 
 
+        public DisplayBuilder AddCount(long Count, [CallerArgumentExpression("Count")] string? Name = default) {
+
+            var ActualCount = Count;
+            
+            var ActualName = new[] {
+                Name,
+                "Items"
+            }.WhereIsNotBlank().Coalesce();
+
+            return Add($@"{ActualCount} {ActualName}");
+        }
+
         public DisplayBuilder AddCount<T>(IEnumerable<T> Item, [CallerArgumentExpression("Item")] string? Name = default)
         {
             var ActualCount = Item.Count();
-            var ActualName = new[] { 
-                Name, 
-                "Items" 
-            }.WhereIsNotBlank().Coalesce();
 
-            Add($@"{ActualCount} {ActualName}");
-
-            return Parent;
+            return AddCount(ActualCount, Name);
         }
 
         public DisplayBuilder AddIf(bool Condition, params object?[] Values) {
