@@ -99,6 +99,12 @@ namespace System.IO
             return Create(FolderName, FileName, Extension, true);
         }
 
+        public static TemporaryFile Create(System.SpecialFolder? Folder, string? FileName = default, string? Extension = default, bool? Lock = default) {
+            var FolderName = (Folder ?? System.SpecialFolders.Local.CommonDocuments).GetPath();
+
+            return Create(FolderName, FileName, Extension, Lock);
+        }
+
         public static TemporaryFile Create(string? FolderName = default, string? FileName = default, string? Extension = default, bool? Lock = default) {
             var ActualFolderName = new[] { FolderName, Path.GetTempPath() }.WhereIsNotBlank().Coalesce();
             var ActualFileName = new[] { FileName, $@"{Guid.NewGuid()}" }.WhereIsNotBlank().Coalesce();

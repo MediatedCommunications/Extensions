@@ -14,9 +14,7 @@ namespace System.Events.Async
             this.Invoker = new DelegatingAsyncEventInvoker<TSender, TData>(this);
         }
 
-        public virtual async Task InvokeAsync(TSender sender, TData data) {
-            var args = MethodEventArgs.Create(data);
-
+        public virtual async Task InvokeAsync(TSender sender, MethodEventArgs<TData> args) {
             var ToInvoke = this.HandlerInvocationList;
 
             foreach (var item in ToInvoke) {
@@ -38,6 +36,12 @@ namespace System.Events.Async
                 }
 
             }
+        }
+
+        public virtual Task InvokeAsync(TSender sender, TData data) {
+            var args = MethodEventArgs.Create(data);
+
+            return InvokeAsync(sender, args);
         }
 
     }

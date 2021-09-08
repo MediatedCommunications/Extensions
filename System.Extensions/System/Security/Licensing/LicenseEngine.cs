@@ -7,16 +7,22 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace System.Security.Licensing
-{
+namespace System.Security.Licensing {
 
-    public class LicenseEngine<TCompiled> 
+
+    public class LicenseEngine<TCompiled> : DisplayClass 
         where TCompiled : DisplayRecord
         {
 
         public ImmutableList<TCompiled> Licenses { get; private set; } = ImmutableList<TCompiled>.Empty;
 
         protected ImmutableArray<LicenseFormatBase<TCompiled>> LicenseFormats { get; }
+
+        public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
+            return base.GetDebuggerDisplayBuilder(Builder)
+                .Data.AddCount(Licenses)
+                ;
+        }
 
         public LicenseEngine()
         {

@@ -18,10 +18,7 @@ namespace System.Events.Async
 
         }
 
-        public virtual async Task<TResult?> InvokeAsync(TSender sender, TData data) {
-            var ret = DefaultResult;
-
-            var args = FunctionEventArgs.Create(data, DefaultResult);
+        public virtual async Task InvokeAsync(TSender sender, FunctionEventArgs<TData, TResult> args) {
 
             var ToInvoke = this.HandlerInvocationList;
 
@@ -39,12 +36,27 @@ namespace System.Events.Async
 
                 }
 
-                ret = args.Result;
                 if (args.Handled) {
                     break;
                 }
 
             }
+
+        }
+
+        public virtual async Task<TResult?> InvokeAsync(TSender sender, TData data) {
+            var ret = DefaultResult;
+
+            var args = FunctionEventArgs.Create(data, DefaultResult);
+
+            await InvokeAsync(sender, args)
+                .DefaultAwait()
+                ;
+
+            if (args.Handled) {
+                ret = args.Result;
+            }
+
 
             return ret;
         }

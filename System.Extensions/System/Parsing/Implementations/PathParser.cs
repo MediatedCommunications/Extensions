@@ -175,7 +175,12 @@ namespace System
 
         public PathParser WithExtension(string? NewValue) {
             if (NewValue is { }) {
-                NewValue = "." + NewValue;
+                if(NewValue.Length > 0) {
+                    if (!NewValue.StartsWith(".")) {
+                        NewValue = "." + NewValue;
+                    }
+                }
+                
             }
 
             return WithFileName($@"{Name}{NewValue}");
