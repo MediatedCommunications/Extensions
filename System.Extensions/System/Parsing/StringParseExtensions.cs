@@ -13,48 +13,73 @@ namespace System {
             return new StringValueParser(This.Value);
         }
 
-        public static GuidValueParser AsGuid(this ParseValue This) {
-            return new GuidValueParser(This.Value);
+        public static GuidStructParser AsGuid(this ParseValue This) {
+            return new GuidStructParser() {
+                Input = This.Value
+            };
         }
 
-        public static BoolValueParser AsBool(this ParseValue This) {
-            return new BoolValueParser(This.Value);
+        public static BoolStructParser AsBool(this ParseValue This) {
+            return new BoolStructParser() {
+                Input = This.Value
+            };
         }
 
-        public static IntValueParser AsInt(this ParseValue This) {
-            return new IntValueParser(This.Value);
+        public static IntStructParser AsInt(this ParseValue This) {
+            return new IntStructParser() {
+                Input = This.Value
+            };
         }
 
-        public static LongValueParser AsLong(this ParseValue This) {
-            return new LongValueParser(This.Value);
+        public static LongStructParser AsLong(this ParseValue This) {
+            return new LongStructParser() {
+                Input = This.Value
+            };
         }
 
-        public static FloatValueParser AsFloat(this ParseValue This) {
-            return new FloatValueParser(This.Value);
+        public static FloatStructParser AsFloat(this ParseValue This) {
+            return new FloatStructParser() {
+                Input = This.Value,
+            };
         }
 
-        public static DecimalValueParser AsDecimal(this ParseValue This) {
-            return new DecimalValueParser(This.Value);
+        public static DecimalStructParser AsDecimal(this ParseValue This) {
+            return new DecimalStructParser() {
+                Input = This.Value
+            };
         }
 
         public static DoubleValueParser AsDouble(this ParseValue This) {
-            return new DoubleValueParser(This.Value);
+            return new DoubleValueParser() {
+                Input = This.Value
+            };
         }
 
-        public static EnumValueParser<T> AsEnum<T>(this ParseValue This) where T : struct {
-            return new EnumValueParser<T>(This.Value);
+        public static EnumStructParser<T> AsEnum<T>(this ParseValue This) where T : struct {
+            return new EnumStructParser<T>() {
+                Input = This.Value
+            };
         }
 
-        public static TimeSpanValueParser AsTimeSpan(this ParseValue This, TimeSpanFormat Format = TimeSpanFormat.TimeSpan) {
-            return new TimeSpanValueParser(Format, This.Value);
+        public static TimeSpanStructParser AsTimeSpan(this ParseValue This, TimeSpanFormat Format = TimeSpanFormat.TimeSpan) {
+            return new TimeSpanStructParser() {
+                Input = This.Value,
+                Format = Format,
+            };
         }
 
         public static DateTimeValueParser AsDateTime(this ParseValue This) {
-            return new DateTimeValueParser(This.Value);
+            return new DateTimeValueParser() {
+                Input = This.Value
+            };
         }
 
-        public static DateTimeOffsetValueParser AsDateTimeOffset(this ParseValue This, DateTimeStyles Style = default, IFormatProvider? FormatProvider = default) {
-            return new DateTimeOffsetValueParser(This.Value, Style, FormatProvider);
+        public static DateTimeOffsetStructParser AsDateTimeOffset(this ParseValue This, DateTimeStyles Style = default, IFormatProvider? FormatProvider = default) {
+            return new DateTimeOffsetStructParser() {
+                Input = This.Value,
+                Style = Style,
+                FormatProvider = FormatProvider,
+            };
         }
 
         public static KeyValueRegexParser AsKeyValueRegexMatches(this ParseValue This, Regex RX) {

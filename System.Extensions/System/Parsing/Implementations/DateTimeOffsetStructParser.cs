@@ -3,14 +3,9 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace System {
-    public record DateTimeOffsetValueParser : StructParser<DateTimeOffset> {
+    public record DateTimeOffsetStructParser : StructParser<DateTimeOffset> {
         public IFormatProvider? FormatProvider { get; init; }
         public DateTimeStyles Style {get; init ;}
-
-        public DateTimeOffsetValueParser(string? Value, DateTimeStyles Style = default, IFormatProvider? FormatProvider = default) : base(Value) {
-            this.FormatProvider = FormatProvider;
-            this.Style = Style;
-        }
 
         public override bool TryGetValue(out DateTimeOffset Result) {
             return DateTimeOffset.TryParse(Input, FormatProvider, Style, out Result);

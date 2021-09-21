@@ -4,10 +4,6 @@ namespace System {
     public abstract record StructParser<T> : DisplayRecord where T : struct {
         public string? Input { get; init; }
 
-        public StructParser(string? Input) {
-            this.Input = Input;
-        }
-
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
                 .Data.Add(Input)

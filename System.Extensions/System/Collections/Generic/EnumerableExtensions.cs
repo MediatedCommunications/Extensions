@@ -16,6 +16,22 @@ namespace System.Collections.Generic
             return This.SelectMany(x => x);
         }
 
+        public static async IAsyncEnumerable<T> SelectMany<T>(this IAsyncEnumerable<IEnumerable<T>> This) {
+            await foreach (var Parent in This) {
+                foreach (var Child in Parent) {
+                    yield return Child;
+                }
+            }
+        }
+
+        public static async IAsyncEnumerable<T> SelectMany<T>(this IEnumerable<IAsyncEnumerable<T>> This) {
+            foreach (var Parent in This) {
+                await foreach(var Child in Parent) {
+                    yield return Child;
+                }
+            }
+        }
+
         public static IEnumerable<T> Concat<T>(this IEnumerable<T> This, params T[] Values) {
             return This.Concat(Values.AsEnumerable());
         }

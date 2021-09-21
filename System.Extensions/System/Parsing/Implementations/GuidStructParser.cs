@@ -1,8 +1,5 @@
 ﻿namespace System {
-    public record GuidValueParser : StructParser<Guid> {
-        public GuidValueParser(string? Value) : base(Value) {
-        
-        }
+    public record GuidStructParser : StructParser<Guid> {
 
         public override bool TryGetValue(out Guid Result) {
             return Guid.TryParse(Input, out Result);

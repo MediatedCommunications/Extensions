@@ -1,8 +1,6 @@
 ﻿namespace System {
-    public record DecimalValueParser : StructParser<decimal> {
-        public DecimalValueParser(string? Value) : base(Value) {
-        }
-
+    public record DecimalStructParser : StructParser<decimal> {
+        
         public override bool TryGetValue(out decimal Result) {
             return decimal.TryParse(Input, out Result);
         }

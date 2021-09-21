@@ -1,8 +1,5 @@
 ﻿namespace System {
-    public record BoolValueParser : StructParser<bool> {
-        public BoolValueParser(string? Value) : base(Value) {
-        
-        }
+    public record BoolStructParser : StructParser<bool> {
 
         public override bool TryGetValue(out bool Result) {
             var ret = false;
