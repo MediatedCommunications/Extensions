@@ -27,6 +27,11 @@ namespace System.Text {
                 ret = NewName;
             }
 
+            if(ret.Length <= 2)
+            {
+
+            }
+
             return ret;
         }
 

@@ -68,6 +68,7 @@ namespace System.IO
             try {
                 File.Delete(FullPath);
                 
+                
             } catch (Exception ex) {
                 ex.Ignore();
             }

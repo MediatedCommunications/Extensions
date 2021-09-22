@@ -5,23 +5,11 @@ using System.Threading.Tasks;
 namespace System
 {
 
-    public enum RetryFailureResult {
-        ReturnDefault,
-        ThrowException,
-    }
-
-    public record RetryAsync<T> {
+    public record RetryAsync<T> : RetryBase {
         public Func<CancellationToken, Task<T>> Try { get; init; } = x => throw new MissingMethodException();
         public Func<CancellationToken, Task<T>> Default { get; init; } = x => throw new MissingMethodException();
 
         public Func<Exception, CancellationToken, Task> Recover { get; init; } = (x,y) => Task.CompletedTask;
-        public TimeSpan DelayBeforeRecover { get; init; } = TimeSpan.Zero;
-        public TimeSpan DelayAfterRecover { get; init; } = TimeSpan.FromSeconds(1);
-
-        public long RetryAttempts { get; init; } = 3;
-
-        public RetryFailureResult OnFailure { get; init; } = RetryFailureResult.ReturnDefault;
-        public CancellationToken Token { get; init; } = default;
 
         public async Task<T> InvokeAsync(CancellationToken Token = default) {
             var LinkedToken = CancellationTokenSource.CreateLinkedTokenSource(Token, this.Token);
@@ -40,6 +28,7 @@ namespace System
                         .DefaultAwait()
                         ;
                     FailureException = default;
+                    Success = true;
                 } catch (Exception ex) {
                     FailureException = ExceptionDispatchInfo.Capture(ex);
 
