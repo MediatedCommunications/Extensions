@@ -90,7 +90,7 @@ where T : class {
         public DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return Builder
                 .Data.Add(Value)
-                .Postfix.AddIf(HasBeenSet, "HasBeenSet")
+                .Postfix.If(HasBeenSet).Add("HasBeenSet")
                 ;
         }
     }

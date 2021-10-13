@@ -95,7 +95,34 @@ namespace System.IO
             return ret;
         }
 
-        public static FileSystemAttributes GetAttributes(string Path) {
+
+        public static FileSystemAttributes GetAttributesFromName(string Name) {
+            var ret = GetAttributesFromNameInternal(Name);
+            
+            ret = ret.ComputeNormal();
+
+            return ret;
+        }
+
+        private static FileSystemAttributes GetAttributesFromNameInternal(string Name) {
+            var ret = FileSystemAttributes.None;
+            
+            if (IsTemporaryName(Name)) {
+                ret |= FileSystemAttributes.Temporary;
+            }
+
+            if (IsSystemName(Name)) {
+                ret |= FileSystemAttributes.System;
+            }
+
+            if (IsHiddenName(Name)) {
+                ret |= FileSystemAttributes.Hidden;
+            }
+
+            return ret;
+        }
+
+        public static FileSystemAttributes GetAttributesFromPath(string Path) {
             var ret = FileSystemAttributes.None;
             if (File.Exists(Path)) {
                 var Info = new FileInfo(Path);
@@ -123,18 +150,8 @@ namespace System.IO
                 throw new FileNotFoundException(default, Path);
             }
 
-            if (IsTemporaryName(Path)) {
-                ret |= FileSystemAttributes.Temporary;
-            }
-
-            if (IsSystemName(Path)){
-                ret |= FileSystemAttributes.System;
-            }
-
-            if (IsHiddenName(Path)) {
-                ret |= FileSystemAttributes.Hidden;
-            }
-
+            ret |= GetAttributesFromNameInternal(Path);
+            
             ret = ret.ComputeNormal();
 
             return ret;

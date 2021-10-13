@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace System.Net.Http.Message.Senders
 {
-    public record FollowRedirectsMessageSender : DelegatingMessageSender<IMessageModifier, HttpResponseMessage> {
+    public record FollowRedirectsMessageSender : DelegatingHttpMessageSender {
         public int MaxRedirects { get; init; }
         public Func<HttpResponseMessage, bool> ShouldFollowRedirect { get; init; }
 
@@ -16,12 +16,12 @@ namespace System.Net.Http.Message.Senders
             return ret;
         }
 
-        public FollowRedirectsMessageSender(Func<HttpResponseMessage, bool>? ShouldFollowRedirect = default, int? MaxRedirects = default, IMessageSender<IMessageModifier, HttpResponseMessage>? Child = default) : base(Child) {
+        public FollowRedirectsMessageSender(Func<HttpResponseMessage, bool>? ShouldFollowRedirect = default, int? MaxRedirects = default, IHttpMessageSender? Child = default) : base(Child) {
             this.MaxRedirects = MaxRedirects ?? 50;
             this.ShouldFollowRedirect = ShouldFollowRedirect ?? ShouldFollowLocation;
         }
 
-        public override async Task<HttpResponseMessage> SendAsync(IMessageModifier Message, CancellationToken Token) {
+        public override async Task<HttpResponseMessage> SendAsync(IHttpRequestMessageBuilder Message, CancellationToken Token) {
             var Original = await base.SendAsync(Message, Token)
                 .DefaultAwait()
                 ;

@@ -7,11 +7,8 @@ using System.Linq;
 namespace System
 {
     public record RegexMatchParser : ListParser<Match> {
-        public RegexMatchParser(Regex Regex, string? Value) : base(Value) {
-            this.Regex = Regex;
-        }
 
-        public Regex Regex { get; init; }
+        public Regex Regex { get; init; } = RegularExpressions.None;
 
         public override bool TryGetValue([NotNullWhen(true)] out LinkedList<Match>? Result) {
             var tret = new LinkedList<Match>();

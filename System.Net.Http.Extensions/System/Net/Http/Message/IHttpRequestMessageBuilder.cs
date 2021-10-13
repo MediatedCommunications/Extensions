@@ -2,7 +2,7 @@
 
 namespace System.Net.Http.Message
 {
-    public interface IMessageModifier {
+    public interface IHttpRequestMessageBuilder {
         Task ModifyAsync(HttpRequestMessage Message);
     }
 }

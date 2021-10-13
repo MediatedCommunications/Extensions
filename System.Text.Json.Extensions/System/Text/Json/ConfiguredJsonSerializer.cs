@@ -38,22 +38,6 @@
             JsonSerializer.Serialize(Writer, Value, Options);
         }
 
-
-        static ConfiguredJsonSerializer() {
-            Default = new ConfiguredJsonSerializer(DefaultOptions());
-        }
-
-        public static ConfiguredJsonSerializer Default { get; private set; } 
-
-        private static JsonSerializerOptions DefaultOptions() {
-            var ret = new JsonSerializerOptions() {
-                AllowTrailingCommas = true,
-                PropertyNameCaseInsensitive = true,
-            };
-
-            return ret;
-        }
-
-
     }
+
 }

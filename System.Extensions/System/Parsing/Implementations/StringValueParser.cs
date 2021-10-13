@@ -2,8 +2,6 @@
 
 namespace System {
     public record StringValueParser : DefaultClassParser<string> {
-        public StringValueParser(string? Value) : base(Value) {
-        }
 
         public override bool TryGetValue([NotNullWhen(true)] out string? Result) {
             bool ret;

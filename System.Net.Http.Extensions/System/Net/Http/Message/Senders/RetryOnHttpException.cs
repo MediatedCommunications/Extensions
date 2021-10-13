@@ -6,11 +6,11 @@ namespace System.Net.Http.Message.Senders
 {
     public record RetryOnHttpException : RetryDelegatingMessageSender {
 
-        public RetryOnHttpException(IEnumerable<TimeSpan>? Attempts, IMessageSender<IMessageModifier, HttpResponseMessage>? Child = default) : base(Attempts, Child) {
+        public RetryOnHttpException(IEnumerable<TimeSpan>? Attempts, IHttpMessageSender? Child = default) : base(Attempts, Child) {
 
         }
 
-        public override async Task<HttpResponseMessage> SendAsync(IMessageModifier Message, CancellationToken Token) {
+        public override async Task<HttpResponseMessage> SendAsync(IHttpRequestMessageBuilder Message, CancellationToken Token) {
             var Index = -1;
             while (true) {
                 try {

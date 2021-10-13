@@ -11,12 +11,25 @@ namespace System
 
         public Action<Exception, CancellationToken> Recover { get; init; } = (x, y) => { };
 
+        public RetryResult<T> TryInvoke(CancellationToken Token = default) {
+            return TryInvoke(false, Token);
+        }
 
-        public T Invoke(CancellationToken Token = default)
-        {
+        public T Invoke(CancellationToken Token = default) { 
+            var tret = TryInvoke(true, Token);
+
+            var ret = tret.Result;
+
+            return ret;
+        }
+
+        private RetryResult<T> TryInvoke(bool CanThrowException, CancellationToken Token) {
             var LinkedToken = CancellationTokenSource.CreateLinkedTokenSource(Token, this.Token);
 
-            var ret = default(T);
+            var Result_Success = false;
+            var Result_Exception = default(Exception?);
+            var Result_Value = default(T)!;
+
             var Attempts = 0;
             var Success = false;
 
@@ -28,7 +41,14 @@ namespace System
                 {
                     Attempts += 1;
 
-                    ret = Try(LinkedToken.Token);
+                    var tret = Try(LinkedToken.Token);
+
+
+                    Result_Success = true;
+                    Result_Value = tret;
+                    Result_Exception = default;
+
+
                     FailureException = default;
                     Success = true;
                 } catch (Exception ex)
@@ -51,19 +71,25 @@ namespace System
 
             }
 
-            if (FailureException is { })
-            {
-                if (OnFailure == RetryFailureResult.ThrowException)
-                {
+            if (FailureException is { }) {
+                Result_Success = false;
+                Result_Exception = FailureException.SourceException;
+
+                if (CanThrowException && OnFailure == RetryFailureResult.ThrowException) {
                     FailureException.Throw();
                 }
             }
 
-            if (ret is null)
-            {
-                ret = Default(Token)
+            if (!Success) {
+                Result_Value = Default(Token)
                     ;
             }
+
+            var ret = new RetryResult<T>(Result_Value) {
+                Exception = Result_Exception,
+                Result = Result_Value,
+                Success = Success,
+            };
 
             return ret;
 

@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -10,7 +12,9 @@ namespace System {
         }
 
         public static StringValueParser AsString(this ParseValue This) {
-            return new StringValueParser(This.Value);
+            return new StringValueParser() {
+                Input = This.Value,
+            };
         }
 
         public static GuidStructParser AsGuid(this ParseValue This) {
@@ -83,48 +87,85 @@ namespace System {
         }
 
         public static KeyValueRegexParser AsKeyValueRegexMatches(this ParseValue This, Regex RX) {
-            return new KeyValueRegexParser(RX, This.Value);
+            return new KeyValueRegexParser() {
+                Input = This.Value,
+                Regex = RX,
+            };
         }
 
-        public static KeyValueRegexParser AsKeyValueRegexMatches(this ParseValue This, string RX) {
-            return new KeyValueRegexParser(new Regex(RX), This.Value);
+        public static KeyValueRegexParser AsKeyValueRegexMatches(this ParseValue This, string RX, RegexOptions? Options = default) {
+            return new KeyValueRegexParser() {
+                Input = This.Value,
+                Regex = new Regex(RX, Options ?? RegularExpressions.Options),
+            };
         }
 
 
-        public static RegexParser AsRegex(this ParseValue This, RegexOptions Options = RegexOptions.None) {
-            return new RegexParser(This.Value, Options);
+        public static RegexParser AsRegex(this ParseValue This, RegexOptions? Options = default) {
+            return new RegexParser() {
+                Input = This.Value,
+                Options = Options ?? RegularExpressions.Options,
+            };
         }
 
         public static RegexMatchParser AsRegexMatches(this ParseValue This, Regex RX) {
-            return new RegexMatchParser(RX, This.Value);
+            return new RegexMatchParser() {
+                Input = This.Value,
+                Regex = RX,
+            };
         }
 
-        public static RegexMatchParser AsRegexMatches(this ParseValue This, string RX) {
-            return new RegexMatchParser(new Regex(RX), This.Value);
+        public static RegexMatchParser AsRegexMatches(this ParseValue This, string RX, RegexOptions? Options = default) {
+            return new RegexMatchParser() {
+                Input = This.Value,
+                Regex = new Regex(RX, Options ?? RegularExpressions.Options),
+            };
         }
 
         public static RegexValuesParser AsRegexValues(this ParseValue This, Regex RX) {
-            return new RegexValuesParser(RX, This.Value);
+            return new RegexValuesParser() {
+                Input = This.Value,
+                Regex = RX
+            };
         }
 
-        public static RegexValuesParser AsRegexValues(this ParseValue This, string RX) {
-            return new RegexValuesParser(new Regex(RX), This.Value);
+        public static RegexValuesParser AsRegexValues(this ParseValue This, string RX, RegexOptions? Options = default) {
+            return new RegexValuesParser() {
+                Input = This.Value,
+                Regex = new Regex(RX, Options ?? RegularExpressions.Options),
+            };
         }
 
         public static EmailAddressParser AsEmails(this ParseValue This) {
-            return new EmailAddressParser(This.Value);
+            return new EmailAddressParser() {
+                Input = This.Value,
+            };
         }
 
         public static PhoneNumberParser AsPhoneNumber(this ParseValue This) {
-            return new PhoneNumberParser(This.Value);
+            return new PhoneNumberParser() {
+                Input = This.Value
+            };
+        }
+
+        public static EntityNameParser AsName(this ParseValue This, IEnumerable<PersonNameFormat>? Formats = default) {
+            return new EntityNameParser() {
+                Input = This.Value,
+                Formats = (Formats ?? PersonNameFormats.All).ToImmutableArray()
+            };
         }
 
         public static UriValueParser AsUri(this ParseValue This) {
-            return new UriValueParser(This.Value);
+            return new UriValueParser() {
+                Input = This.Value,
+            };
         }
 
         public static MemoryStreamParser AsMemoryStream(this ParseValue This, Encoding? Encoding = default) {
-            return new MemoryStreamParser(Encoding ?? Encoding.Default, This.Value);
+            return new MemoryStreamParser() {
+                Input = This.Value,
+                Encoding = Encoding ?? Encoding.Default,
+            };
         }
 
         public static PathParser AsPath(this ParseValue This) {

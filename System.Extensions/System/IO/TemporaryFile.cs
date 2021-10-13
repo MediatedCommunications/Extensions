@@ -18,6 +18,23 @@ namespace System.IO
         protected Stream? LockStream { get; private set; }
         protected bool AlreadyDisposed { get; private set; }
 
+        public FileInfo Info() {
+            return new FileInfo(FullPath);
+        }
+
+        public long Size {
+            get {
+                var ret = 0L;
+
+                var FI = Info();
+                if (FI.Exists) {
+                    ret = FI.Length;
+                }
+
+                return ret;
+            }
+        }
+
         public TemporaryFile(string FullPath, bool? Lock = default) {
             this.FullPath = FullPath;
 

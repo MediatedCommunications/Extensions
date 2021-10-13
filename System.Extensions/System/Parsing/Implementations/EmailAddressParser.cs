@@ -7,8 +7,8 @@ namespace System {
         private static readonly Regex REGEX_EMAIL = new($@"\b(?<{nameof(EmailAddress.Mailbox)}>(   ([A-Z0-9]+) ([._+-][A-Z0-9]+)*)    )@(?<{nameof(EmailAddress.Domain)}>(([A-Z0-9-]+\.)+([A-Z]{{2,}})))\b", System.Text.RegularExpressions.RegularExpressions.Options);
         private static readonly string AliasSeparator = "+";
 
-        public EmailAddressParser(string? Value) : base(REGEX_EMAIL, ClassParser, Value) {
-
+        public EmailAddressParser() : base(ClassParser) {
+            this.Regex = REGEX_EMAIL;
         }
 
         private static bool ClassParser(Match Input, [NotNullWhen(true)] out EmailAddress? Result) {

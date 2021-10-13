@@ -2,8 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace System.Collections.Generic
-{
+namespace System.Collections.Generic {
+
+
 
     public static class EnumerableExtensions {
 
@@ -445,6 +446,9 @@ namespace System.Collections.Generic
 
         }
 
+        public static IAsyncEnumerable<LinkedList<T>> Chunk<T>(this IAsyncEnumerable<T>? This, AdaptiveChunker Chunker) {
+            return Chunker.Chunk(This.Coalesce());
+        }
 
         public static async IAsyncEnumerable<LinkedList<T>> Chunk<T>(this IAsyncEnumerable<T>? This, long Count = 1000) {
             if (Count <= 0) {

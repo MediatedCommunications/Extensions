@@ -12,6 +12,14 @@ namespace System.IO
             return new StreamWriter(This);
         }
 
+        public static TemporaryFile ToTemporaryFile(this Func<Stream> This, bool? Lock = default) {
+            using var FS = This();
+
+            var ret = FS.ToTemporaryFile(Lock);
+
+            return ret;
+        }
+
         public static TemporaryFile ToTemporaryFile(this Stream This, bool? Lock = default) {
             var ret = TemporaryFile.Create(Lock: Lock);
 

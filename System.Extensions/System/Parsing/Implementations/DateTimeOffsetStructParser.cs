@@ -14,10 +14,6 @@ namespace System {
 
     public record RegexParser : DefaultClassParser<Regex> {
         public RegexOptions Options { get; init; }
-
-        public RegexParser(string? Value, RegexOptions Options) : base(Value) {
-            this.Options = Options;
-        }
         
         public override bool TryGetValue([NotNullWhen(true)] out Regex? Result) {
             var ret = false;

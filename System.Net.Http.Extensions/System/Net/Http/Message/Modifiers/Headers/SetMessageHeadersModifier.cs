@@ -5,10 +5,10 @@ namespace System.Net.Http.Message.Modifiers
 {
     public record SetMessageHeadersModifier : SetHeadersModifier {
 
-        public SetMessageHeadersModifier(IEnumerable<KeyValuePair<string, string?>> Values, bool? RemoveFirst = null, bool? Enabled = null) : base(Values, RemoveFirst, Enabled) {
+        public SetMessageHeadersModifier(IEnumerable<KeyValuePair<string, string>> Values, bool? RemoveFirst = null, bool? Enabled = null) : base(Values, RemoveFirst, Enabled) {
         }
 
-        public SetMessageHeadersModifier(string Name, string? Value, bool? RemoveFirst = null, bool? Enabled = null) : base(Name, Value, RemoveFirst, Enabled) {
+        public SetMessageHeadersModifier(string Name, string Value, bool? RemoveFirst = null, bool? Enabled = null) : base(Name, Value, RemoveFirst, Enabled) {
         }
 
         protected override Task ModifyEnabledAsync(HttpRequestMessage Message) {
@@ -31,7 +31,7 @@ namespace System.Net.Http.Message.Modifiers
     public record SetAcceptHeaderModifier : SetHeadersModifier {
 
 
-        private static IEnumerable<KeyValuePair<string, string?>> GenerateValues(IEnumerable<string?> Values) {
+        private static IEnumerable<KeyValuePair<string, string>> GenerateValues(IEnumerable<string> Values) {
 
             foreach (var Value in Values) {
                 var ret = KeyValuePair.Create("Accept", Value);
@@ -42,7 +42,7 @@ namespace System.Net.Http.Message.Modifiers
 
         }
 
-        public SetAcceptHeaderModifier(IEnumerable<string?> Values, bool? RemoveFirst = null, bool? Enabled = null) : base(GenerateValues(Values), RemoveFirst, Enabled) {
+        public SetAcceptHeaderModifier(IEnumerable<string> Values, bool? RemoveFirst = null, bool? Enabled = null) : base(GenerateValues(Values), RemoveFirst, Enabled) {
         }
 
         protected override Task ModifyEnabledAsync(HttpRequestMessage Message) {
@@ -65,7 +65,7 @@ namespace System.Net.Http.Message.Modifiers
     public record SetUserAgentHeaderModifier : SetHeadersModifier {
 
 
-        private static IEnumerable<KeyValuePair<string, string?>> GenerateValues(string? Input) {
+        private static IEnumerable<KeyValuePair<string, string>> GenerateValues(string? Input) {
 
             var Values = new[]{
                 Input ?? UserAgents.Default

@@ -1,7 +1,31 @@
-﻿namespace System.Diagnostics {
+﻿using System.Runtime.CompilerServices;
+
+namespace System.Diagnostics {
     public class DisplayBuilderStatusRegion : DisplayBuilderRegion {
         public DisplayBuilderStatusRegion(string Format, DisplayBuilder Parent) : base(Format, Parent) {
         
+        }
+
+        public override DisplayBuilderStatusRegion If(bool Condition) {
+            var ret = Condition
+                ? this
+                : new DisplayBuilderStatusRegion(Format, Parent)
+                ;
+
+            return ret;
+        }
+
+        public DisplayBuilder Is(bool Value, [CallerArgumentExpression("Value")] string? Name = default) {
+            return this.If(Value).Add(Name);
+        }
+
+
+        public DisplayBuilder IsConflict(bool Value) {
+            return this.If(Value).Add("Conflict");
+        }
+
+        public DisplayBuilder IsNotConflict(bool Value) {
+            return IsConflict(!Value);
         }
 
         public DisplayBuilder IsEnabled(bool Value) {
@@ -9,7 +33,7 @@
         }
 
         public DisplayBuilder IsNotEnabled(bool Value) {
-            return AddIf(Value, "Disabled");
+            return this.If(Value).Add("Disabled");
         }
 
         public DisplayBuilder IsVisible(bool Value) {
@@ -17,7 +41,7 @@
         }
 
         public DisplayBuilder IsNotVisible(bool Value) {
-            return AddIf(Value, "Hidden");
+            return this.If(Value).Add("Hidden");
         }
 
         public DisplayBuilder IsNotLocked(bool Value) {
@@ -25,7 +49,7 @@
         }
 
         public DisplayBuilder IsApproved(bool Value) {
-            return AddIf(Value, "Approved");
+            return this.If(Value).Add("Approved");
         }
 
         public DisplayBuilder IsNotApproved(bool Value) {
@@ -33,7 +57,7 @@
         }
 
         public DisplayBuilder IsCurrent(bool Value) {
-            return AddIf(Value, "Current");
+            return this.If(Value).Add("Current");
         }
 
         public DisplayBuilder IsNotCurrent(bool Value) {
@@ -41,7 +65,7 @@
         }
 
         public DisplayBuilder IsFavorite(bool Value) {
-            return AddIf(Value, "Favorite");
+            return this.If(Value).Add("Favorite");
         }
 
         public DisplayBuilder IsNotFavorite(bool Value) {
@@ -49,16 +73,16 @@
         }
 
         public DisplayBuilder IsSigned(bool Value) {
-            return AddIf(Value, "Signed");
+            return this.If(Value).Add("Signed");
         }
 
         public DisplayBuilder IsNotSigned(bool Value) {
-            return AddIf(Value, "UNSIGNED");
+            return this.If(Value).Add("UNSIGNED");
         }
 
 
         public DisplayBuilder IsLocked(bool Value) {
-            return AddIf(Value, "Locked");
+            return this.If(Value).Add("Locked");
         }
 
         public DisplayBuilder IsNotDeleted(bool Value) {
@@ -66,7 +90,16 @@
         }
 
         public DisplayBuilder IsDeleted(bool Value) {
-            return AddIf(Value, "Deleted");
+            return this.If(Value).Add("Deleted");
+        }
+
+
+        public DisplayBuilder IsNotPrimary(bool Value) {
+            return IsPrimary(!Value);
+        }
+
+        public DisplayBuilder IsPrimary(bool Value) {
+            return this.If(Value).Add("Primary");
         }
 
         public DisplayBuilder IsNotPrivate(bool Value) {
@@ -74,7 +107,7 @@
         }
 
         public DisplayBuilder IsPrivate(bool Value) {
-            return AddIf(Value, "Private");
+            return this.If(Value).Add("Private");
         }
 
         public DisplayBuilder IsNotArchived(bool Value) {
@@ -82,7 +115,7 @@
         }
 
         public DisplayBuilder IsArchived(bool Value) {
-            return AddIf(Value, "Archived");
+            return this.If(Value).Add("Archived");
         }
 
         public DisplayBuilder IsNotRequired(bool Value) {
@@ -90,11 +123,11 @@
         }
 
         public DisplayBuilder IsRequired(bool Value) {
-            return AddIf(Value, "Required");
+            return this.If(Value).Add("Required");
         }
 
         public DisplayBuilder IsRedacted(bool Value) {
-            return AddIf(Value, "Redacted");
+            return this.If(Value).Add("Redacted");
         }
 
         public DisplayBuilder IsNotRedacted(bool Value) {
@@ -102,7 +135,7 @@
         }
 
         public DisplayBuilder IsOwner(bool Value) {
-            return AddIf(Value, "Owner");
+            return this.If(Value).Add("Owner");
         }
 
         public DisplayBuilder IsNotOwner(bool Value) {
@@ -110,12 +143,42 @@
         }
 
         public DisplayBuilder IsDefault(bool Value) {
-            return AddIf(Value, "Default");
+            return this.If(Value).Add("Default");
         }
 
         public DisplayBuilder IsNotDefault(bool Value) {
             return IsDefault(!Value);
         }
+
+        public DisplayBuilder IsSuccessOrError(bool Value) {
+            this.IsSuccess(Value);
+            this.IsError(!Value);
+            return Parent;
+        }
+
+        public DisplayBuilder IsErrorOrSuccess(bool Value) {
+            this.IsSuccess(!Value);
+            this.IsError(Value);
+            return Parent;
+        }
+
+
+        public DisplayBuilder IsSuccess(bool Value) {
+            return this.If(Value).Add("Success");
+        }
+
+        public DisplayBuilder IsNotSuccess(bool Value) {
+            return IsSuccess(!Value);
+        }
+
+        public DisplayBuilder IsError(bool Value) {
+            return this.If(Value).Add("Error");
+        }
+
+        public DisplayBuilder IsNotError(bool Value) {
+            return IsError(!Value);
+        }
+
 
     }
 

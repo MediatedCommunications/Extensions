@@ -1,8 +1,35 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace System
-{
+namespace System {
+    public static class RetryExtensions {
+        public static T OnFailure<T>(this T This, RetryFailureResult Value) where T : RetryBase {
+            return This with {
+                OnFailure = Value
+            };
+        }
+
+    }
+
+    public static class RetryExtensionsAsnyc {
+
+        public static RetryAsync<TResult> DefaultIs<TResult>(this RetryAsync<TResult> This, TResult Default = default)
+            where TResult : struct {
+
+            return DefaultIs(This, x => Task.FromResult(Default));
+        }
+
+        public static RetryAsync<TResult> DefaultIs<TResult>(this RetryAsync<TResult> This, Func<CancellationToken, Task<TResult>> Default) {
+
+            return This with {
+                Default = Default,
+                OnFailure = RetryFailureResult.ReturnDefault,
+            };
+
+        }
+    }
+
+
     public static class Retry
     {
         public static RetryAsync<bool> WithActionAsync(Func<CancellationToken, Task> Value) { 
@@ -15,17 +42,12 @@ namespace System
                 return true;
             }
 
-            static Task<bool> Default(CancellationToken Token)
-            {
 
-                return Task.FromResult(false);
-            }
 
             var ret = new RetryAsync<bool>()
             {
                 Try = SubAction,
-                Default = Default,
-            };
+            }.DefaultIs();
 
             return ret;
 
@@ -50,17 +72,12 @@ namespace System
                 return true;
             }
 
-            static bool Default(CancellationToken Token)
-            {
-
-                return false;
-            }
+            
 
             var ret = new RetrySync<bool>()
             {
                 Try = SubAction,
-                Default = Default,
-            };
+            }.DefaultIs();
 
             return ret;
 
@@ -76,13 +93,6 @@ namespace System
             return ret;
         }
 
-        public static T OnFailure<T>(this T This, RetryFailureResult Value) where T : RetryBase
-        {
-            return This with
-            {
-                OnFailure = Value
-            };
-        }
     }
 
 

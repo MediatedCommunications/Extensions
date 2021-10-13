@@ -14,6 +14,40 @@ namespace System.IO
 
     public static class File2 {
 
+        public static void Move(string SourceFile, string DestFile, bool Overwrite = true, bool CreatePath = true) {
+            var Options = TransferOptions.None
+                | TransferOptions.Move
+                ;
+
+            if (Overwrite) {
+                Options |= TransferOptions.OverwriteDest;
+            }
+
+            if (CreatePath) {
+                Options |= TransferOptions.CreateDestPath;
+            }
+
+            Transfer(SourceFile, DestFile, Options);
+
+        }
+
+        public static void Copy(string SourceFile, string DestFile, bool Overwrite = true, bool CreatePath = true) {
+            var Options = TransferOptions.None
+                | TransferOptions.Copy
+                ;
+
+            if (Overwrite) {
+                Options |= TransferOptions.OverwriteDest;
+            }
+
+            if (CreatePath) {
+                Options |= TransferOptions.CreateDestPath;
+            }
+
+            Transfer(SourceFile, DestFile, Options);
+
+        }
+
         public static void Transfer(string SourceFile, string DestFile, params TransferOptions[] OptionList) {
             var Options = TransferOptions.None;
             foreach (var item in OptionList)

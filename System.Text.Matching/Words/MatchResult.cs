@@ -19,7 +19,7 @@ namespace System.Text.Matching {
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
-                .Data.AddPair(Right, Left)
+                .Data.AddExpression(Right, Left)
                 .Postfix.Add($@"{Weight} / {RelativeWeight}")
                 ;
         }

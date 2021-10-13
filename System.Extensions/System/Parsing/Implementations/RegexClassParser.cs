@@ -5,11 +5,10 @@ using System.Text.RegularExpressions;
 namespace System
 {
     public abstract record RegexClassParser<TResult> : ListParser<TResult> {
-        protected Regex Regex { get; init; }
+        public Regex Regex { get; init; } = RegularExpressions.None;
         private TryGetValue<Match, TResult> ClassParser { get; init; }
         
-        public RegexClassParser(Regex Regex, TryGetValue<Match, TResult> ClassParser, string? Value) : base(Value) {
-            this.Regex = Regex;
+        public RegexClassParser(TryGetValue<Match, TResult> ClassParser) {
             this.ClassParser = ClassParser;
         }
 
@@ -17,7 +16,10 @@ namespace System
             var ret = false;
             Result = default;
 
-            var MatchParser = new RegexMatchParser(Regex, Input);
+            var MatchParser = new RegexMatchParser() {
+                Regex = Regex,
+                Input = Input,
+            };
 
             if (MatchParser.TryGetValue(out var Matches)) {
                 var TResult = new LinkedList<TResult>();

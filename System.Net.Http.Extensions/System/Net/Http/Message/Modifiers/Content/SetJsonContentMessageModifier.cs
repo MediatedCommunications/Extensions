@@ -10,7 +10,7 @@ namespace System.Net.Http.Message.Modifiers
 
         public SetJsonContentMessageModifier(object? Content, ConfiguredJsonSerializer? Serializer = default, bool? Enabled = default) : base(Enabled) {
             this.Content = Content;
-            this.Serializer = Serializer ?? ConfiguredJsonSerializer.Default;
+            this.Serializer = Serializer ?? ConfiguredJsonSerializers.Default;
         }
 
         protected override Task ModifyEnabledAsync(HttpRequestMessage Message) {

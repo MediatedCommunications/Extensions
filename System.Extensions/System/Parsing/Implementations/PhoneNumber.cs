@@ -39,7 +39,7 @@ namespace System
                 ;
         }
 
-        public string ToString(params PhoneNumberFields[] NumberParts) {
+        public string FormatString(params PhoneNumberFields[] NumberParts) {
             var Aggregated = PhoneNumberFields.None;
 
             foreach (var NumberPart in NumberParts) {
@@ -68,7 +68,7 @@ namespace System
         }
 
         public override string ToString() {
-            return ToString(PhoneNumberFields.All);
+            return FormatString(PhoneNumberFields.All);
         }
 
         public PhoneNumber Normalize() {

@@ -11,6 +11,7 @@ namespace System
         public const string Dot = ".";
         public const string Comma = ",";
         public const string Dash = "-";
+        public const string Underscore = "_";
         public const string Separator = " - ";
         public static readonly ImmutableArray<string> Dots = new[] { Dot }.ToImmutableArray();
 

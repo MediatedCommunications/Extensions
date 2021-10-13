@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace System.Net.Http.Message.Senders
 {
-    public abstract record RetryDelegatingMessageSender : DelegatingMessageSender<IMessageModifier, HttpResponseMessage> {
+    public abstract record RetryDelegatingMessageSender : DelegatingHttpMessageSender {
 
-        public RetryDelegatingMessageSender(IEnumerable<TimeSpan>? Attempts, IMessageSender<IMessageModifier, HttpResponseMessage>? Child = default) : base(Child) {
+        public RetryDelegatingMessageSender(IEnumerable<TimeSpan>? Attempts, IHttpMessageSender? Child = default) : base(Child) {
             if (Attempts is { } V1) {
                 Delays = V1.ToImmutableList();
             }

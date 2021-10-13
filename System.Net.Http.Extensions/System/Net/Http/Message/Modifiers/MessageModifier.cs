@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace System.Net.Http.Message.Modifiers
 {
-    public abstract record MessageModifier : DisplayRecord, IMessageModifier {
+    public abstract record MessageModifier : DisplayRecord, IHttpRequestMessageBuilder {
         public bool Enabled { get; init; }
 
         public MessageModifier(bool? Enabled = default) {

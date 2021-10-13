@@ -3,11 +3,7 @@ using System.Text.Json;
 
 namespace System {
     public record JsonValueParser<TJson> : ClassParser<TJson> where TJson : class {
-        public ConfiguredJsonSerializer Serializer { get; init; }
-
-        public JsonValueParser(string? Value, ConfiguredJsonSerializer? Serializer = default) : base(Value) {
-            this.Serializer = Serializer ?? ConfiguredJsonSerializer.Default;
-        }
+        public ConfiguredJsonSerializer Serializer { get; init; } = ConfiguredJsonSerializers.Default;
 
         public override bool TryGetValue([NotNullWhen(true)] out TJson? Result) {
             var ret = false;

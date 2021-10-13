@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace System.Diagnostics
 {
+
     [DebuggerDisplay(DisplayBuilder.DebuggerDisplay)]
     public class DisplayBuilderRegion : IGetDebuggerDisplay {
         public List<string> Values { get; private set; } = new List<string>();
@@ -14,6 +15,28 @@ namespace System.Diagnostics
         public DisplayBuilderRegion(string Format, DisplayBuilder Parent) {
             this.Format = Format;
             this.Parent = Parent;
+        }
+
+        public virtual DisplayBuilderRegion If(bool Condition) {
+            var ret = Condition
+                ? this
+                : new DisplayBuilderRegion(Format, Parent)
+                ;
+
+            return ret;
+        }
+
+
+
+        public DisplayBuilder AddPhrase(params object?[] Values) {
+            var Phrase = Values.Select(x => StringValue(x).TrimSafe())
+                .WhereIsNotBlank()
+                .JoinSpace()
+                ;
+
+            Add(Phrase);
+
+            return Parent;
         }
 
         public DisplayBuilder Add(params object?[] Values) {
@@ -34,6 +57,16 @@ namespace System.Diagnostics
             return Parent;
         }
 
+        private DisplayBuilder Add(ICollection? Values) {
+            if (Values is { }) {
+                foreach (var Value in Values) {
+                    Add(Value);
+                }
+            }
+
+            return Parent;
+        }
+
 
         public DisplayBuilder AddCount(long Count, [CallerArgumentExpression("Count")] string? Name = default) {
 
@@ -47,44 +80,32 @@ namespace System.Diagnostics
             return Add($@"{ActualCount} {ActualName}");
         }
 
-        public DisplayBuilder AddCount<T>(IEnumerable<T> Item, [CallerArgumentExpression("Item")] string? Name = default)
+        public DisplayBuilder AddCount<T>(IEnumerable<T> Collection, [CallerArgumentExpression("Collection")] string? Name = default)
         {
-            var ActualCount = Item.Count();
+            var ActualCount = Collection.Count();
 
             return AddCount(ActualCount, Name);
         }
 
-        public DisplayBuilder AddIf(bool Condition, params object?[] Values) {
-            if (Condition) {
-                Add(Values);
-            }
-            return Parent;
-        }
-
-
-        public DisplayBuilder AddPair<TValue>(IEnumerable<KeyValuePair<string, TValue>>? Values) {
+        public DisplayBuilder AddNameValue<TValue>(IEnumerable<KeyValuePair<string, TValue>>? Values) {
             foreach (var item in Values.Coalesce()) {
-                AddPair(item.Value, item.Key);
+                AddNameValue(item.Key, item.Value);
             }
 
             return Parent;
         }
 
-        public DisplayBuilder AddPair(bool Condition, object? Value, [CallerArgumentExpression("Value")] string? Name = default) {
 
-            if (Condition) {
-                AddPair(Value, Name);
-            }
-
-            return Parent;
+        public DisplayBuilder AddNameValue(string? Name, object? Value) {
+            return AddExpression(Value, Name);
         }
 
-        public DisplayBuilder AddPair(object? Value, [CallerArgumentExpression("Value")] string? Name = default) {
+        public DisplayBuilder AddExpression(object? Value, [CallerArgumentExpression("Value")] string? Name = default) {
 
             if (Name.IsBlank()) {
                 Add(Value);
 
-            } else if (Value is { } V1 &&  StringValue(V1) is { } V2) {
+            } else if (Value is { } V1 && StringValue(V1) is { } V2) {
                 Add($@"{Name}: {V2}");
 
             }
@@ -102,10 +123,16 @@ namespace System.Diagnostics
         }
 
         public DisplayBuilder Add(object? Value) {
-            if (Value is { } V1 && StringValue(V1) is { } V2) {
-                var V3 = V2.Trim();
-                if (V3.IsNotBlank()) {
-                    Values.Add(V3);
+            if (Value is { } V1){
+
+                if(V1 is ICollection IC) {
+                    Add(IC);
+
+                } else if (StringValue(V1) is { } V2) {
+                    var V3 = V2.Trim();
+                    if (V3.IsNotBlank()) {
+                        Values.Add(V3);
+                    }
                 }
             }
 

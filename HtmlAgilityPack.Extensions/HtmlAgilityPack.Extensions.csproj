@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\__Shared\Shared.targets" Label="Shared" />
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Extensions\System.Extensions.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>MC.HtmlAgilityPack.Extensions</PackageId>
+  </PropertyGroup>
+
+</Project>

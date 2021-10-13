@@ -9,14 +9,14 @@ namespace System.Net.Http.Message.Senders
 {
     public record RetryOnHttpStatusCodes : RetryDelegatingMessageSender {
 
-        public ImmutableList<HttpStatusCode> StatusCodes { get; init; } = ImmutableList<HttpStatusCode>.Empty;
+        public ImmutableHashSet<HttpStatusCode> StatusCodes { get; init; } = ImmutableHashSet<HttpStatusCode>.Empty;
 
 
-        public RetryOnHttpStatusCodes(IEnumerable<HttpStatusCode> StatusCodes, IEnumerable<TimeSpan>? Attempts, IMessageSender<IMessageModifier, HttpResponseMessage>? Child = default) : base(Attempts, Child) {
-            this.StatusCodes = StatusCodes.ToImmutableList();
+        public RetryOnHttpStatusCodes(IEnumerable<HttpStatusCode> StatusCodes, IEnumerable<TimeSpan>? Attempts, IHttpMessageSender? Child = default) : base(Attempts, Child) {
+            this.StatusCodes = StatusCodes.ToImmutableHashSet();
         }
 
-        public override async Task<HttpResponseMessage> SendAsync(IMessageModifier Message, CancellationToken Token) {
+        public override async Task<HttpResponseMessage> SendAsync(IHttpRequestMessageBuilder Message, CancellationToken Token) {
             var Index = -1;
             while (true) {
                 var ret = await base.SendAsync(Message, Token)

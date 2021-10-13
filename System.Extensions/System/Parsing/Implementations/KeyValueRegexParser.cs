@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 namespace System
 {
     public record KeyValueRegexParser : RegexClassParser<KeyValuePair<string, string>> {
-        public KeyValueRegexParser(Regex Regex, string? Value) : base(Regex, ClassParser, Value) {
+        public KeyValueRegexParser() : base(ClassParser) {
 
         }
 

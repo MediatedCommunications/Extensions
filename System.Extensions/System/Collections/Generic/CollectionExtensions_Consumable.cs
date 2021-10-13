@@ -71,10 +71,10 @@
 
             if (This is { } V1) {
 
-                for (var i = 0; i < V1.Count; i++) {
-                    if (MyCondition(V1[i])) {
-                        var tret = V1[i];
-                        V1.RemoveAt(i);
+                while (V1.Count > 0) {
+                    if (MyCondition(V1[0])) {
+                        var tret = V1[0];
+                        V1.RemoveAt(0);
                         yield return tret;
                     }
                 }

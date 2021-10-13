@@ -43,6 +43,13 @@ namespace System
                 ;
         }
 
+        public static string[] SplitUnderscore(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
+            return This
+                .Coalesce()
+                .Split(new[] { StringExtensions.Underscore }, SplitOptions)
+                ;
+        }
+
         public static string[] SplitLine(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
             return This
                 .Coalesce()

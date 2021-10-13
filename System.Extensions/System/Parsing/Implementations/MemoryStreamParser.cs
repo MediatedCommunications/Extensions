@@ -5,11 +5,8 @@ using System.Text;
 namespace System
 {
     public record MemoryStreamParser : DefaultClassParser<MemoryStream> {
-        public Encoding Encoding { get; init; }
+        public Encoding Encoding { get; init; } = System.Text.Encoding.UTF8;
 
-        public MemoryStreamParser(Encoding Encoding, string? Value) : base(Value) {
-            this.Encoding = Encoding;
-        }
 
         public override bool TryGetValue([NotNullWhen(true)] out MemoryStream? Result) {
             Result = Encoding.GetBytes(Input.ToStringSafe()).ToMemoryStream();

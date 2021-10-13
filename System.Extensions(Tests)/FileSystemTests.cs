@@ -8,9 +8,9 @@ namespace System.Extensions
     public class FileSystemTests {
         [Test]
         public Task TestAttributes() {
-            var Drive = FileSystem.GetAttributes(@"C:\");
-            var Folder = FileSystem.GetAttributes(@"C:\Temp\");
-            var File = FileSystem.GetAttributes(@"C:\DBs\Needles.log");
+            var Drive = FileSystem.GetAttributesFromPath(@"C:\");
+            var Folder = FileSystem.GetAttributesFromPath(@"C:\Temp\");
+            var File = FileSystem.GetAttributesFromPath(@"C:\DBs\Needles.log");
 
 
             return Task.CompletedTask;

@@ -13,7 +13,7 @@ namespace System
             };
         }
 
-        public static RetryAsync<T> WithDefault<T>(this RetryAsync<T> This, Func<CancellationToken, Task<T>> Value)
+        public static RetryAsync<T> DefaultIs<T>(this RetryAsync<T> This, Func<CancellationToken, Task<T>> Value)
         {
             return This with
             {
@@ -21,7 +21,49 @@ namespace System
             };
         }
 
-        
+        public static RetryAsync<T> DefaultIs<T>(this RetryAsync<T> This, Func<CancellationToken, T> Value) {
+            return This with {
+                Default = x => Task.FromResult(Value(x)),
+            };
+        }
+
+        public static RetryAsync<T?> DefaultIsNull<T>(this RetryAsync<T> This) {
+            
+            var OldTry = This.Try;
+
+            async Task<T?> NewTry(CancellationToken Token) {
+                var tret = default(T?);
+
+                tret = await OldTry(Token)
+                    .DefaultAwait()
+                    ;
+
+                return tret;
+
+            }
+            
+            var ret = new RetryAsync<T?>() {
+                DelayAfterRecover = This.DelayAfterRecover,
+                DelayBeforeRecover = This.DelayBeforeRecover,
+                OnFailure = This.OnFailure,
+                Default = x => Task.FromResult(default(T?)),
+                Recover = This.Recover,
+                RetryAttempts = This.RetryAttempts,
+                Token = This.Token,
+                Try = NewTry,
+            };
+
+            return ret;
+        }
+
+        public static RetryAsync<T> DefaultIs<T>(this RetryAsync<T> This, Func<T> Value) {
+            return This.DefaultIs(x => Value());
+        }
+
+        public static RetryAsync<T> DefaultIs<T>(this RetryAsync<T> This, T Value) {
+            return This.DefaultIs(x => Value);
+        }
+
     }
 
 

@@ -1,9 +1,54 @@
-﻿using System.Runtime.ExceptionServices;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace System
 {
+
+    public record RetryResult<T> : DisplayRecord {
+        public bool Success { get; init; }
+        public Exception? Exception { get; init; }
+        public T Result {  get; init; }
+
+        public RetryResult(T Result) {
+            this.Result = Result;
+        }
+
+        public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
+            return base.GetDebuggerDisplayBuilder(Builder)
+                .Status.IsSuccess(Success);
+        }
+    }
+
+    public static class RetryResultExtensions { 
+        public static bool IsSuccess<T>(this RetryResult<T> This, out T Result) {
+            Result = This.Result;
+            return This.Success;
+        }
+
+        public static bool IsError<T>(this RetryResult<T> This, out T ResultOrDefault) {
+            return This.IsError(out ResultOrDefault);
+        }
+
+        public static bool IsError<T>(this RetryResult<T> This, out T ResultOrDefault, [NotNullWhen(true)] out Exception? Error) {
+            var ret = !This.Success;
+
+            ResultOrDefault = This.Result;
+
+            Error = default;
+
+            if (ret) {
+                Error = This.Exception ?? new Exception();
+            }
+
+            
+            return ret;
+        }
+
+    }
+
 
     public record RetryAsync<T> : RetryBase {
         public Func<CancellationToken, Task<T>> Try { get; init; } = x => throw new MissingMethodException();
@@ -12,9 +57,30 @@ namespace System
         public Func<Exception, CancellationToken, Task> Recover { get; init; } = (x,y) => Task.CompletedTask;
 
         public async Task<T> InvokeAsync(CancellationToken Token = default) {
+            var tret = await TryInvokeAsync(true, Token)
+                .DefaultAwait()
+                ;
+
+            var ret = tret.Result;
+
+            return ret;
+        }
+
+        public async Task<RetryResult<T>> TryInvokeAsync(CancellationToken Token = default) {
+            var ret = await TryInvokeAsync(false, Token)
+                .DefaultAwait()
+                ;
+
+            return ret;
+        }
+        
+        private async Task<RetryResult<T>> TryInvokeAsync(bool CanThrowException, CancellationToken Token) {
             var LinkedToken = CancellationTokenSource.CreateLinkedTokenSource(Token, this.Token);
 
-            var ret = default(T);
+            var Result_Success = false;
+            var Result_Exception = default(Exception?);
+            var Result_Value = default(T)!;
+
             var Attempts = 0;
             var Success = false;
 
@@ -24,9 +90,16 @@ namespace System
                 try {
                     Attempts += 1;
 
-                    ret = await Try(LinkedToken.Token)
+                    var tret = await Try(LinkedToken.Token)
                         .DefaultAwait()
                         ;
+
+
+                    Result_Success = true;
+                    Result_Value = tret;
+                    Result_Exception = default;
+                    
+
                     FailureException = default;
                     Success = true;
                 } catch (Exception ex) {
@@ -51,17 +124,27 @@ namespace System
 
             }
 
+
             if(FailureException is { }) {
-                if(OnFailure == RetryFailureResult.ThrowException) {
+                Result_Success = false;
+                Result_Exception = FailureException.SourceException;
+
+                if(CanThrowException && OnFailure == RetryFailureResult.ThrowException) {
                     FailureException.Throw();
                 }
             }
 
-            if(ret is null) {
-                ret = await Default(Token)
+            if (!Success) {
+                Result_Value = await Default(Token)
                     .DefaultAwait()
                     ;
             }
+
+            var ret = new RetryResult<T>(Result_Value) {
+                Exception = Result_Exception,
+                Result = Result_Value,
+                Success = Success,
+            };
 
             return ret;
 

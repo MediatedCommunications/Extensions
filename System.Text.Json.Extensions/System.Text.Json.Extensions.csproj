@@ -3,8 +3,10 @@
 
 
   <ItemGroup>
-    <PackageReference Include="PostSharp" Version="6.9.9" />
-    <PackageReference Include="System.Text.Json" Version="6.0.0-rc.1.21451.13" />
+    <PackageReference Include="Macross.Json.Extensions" Version="2.0.0" />
+    <PackageReference Include="PostSharp" Version="6.9.10" />
+    <PackageReference Include="System.Text.Json" Version="6.0.0-rc.2.21480.5" />
+    
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Extensions\System.Extensions.csproj" />

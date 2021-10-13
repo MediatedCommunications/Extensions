@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace System.Net.Http.Message.Senders
 {
-    public record HttpClientMessageSender : MessageSender<IMessageModifier, HttpResponseMessage> {
+    public record HttpClientMessageSender : HttpMessageSender {
         public HttpClient Client { get; init; }
         public HttpCompletionOption CompletionOption { get; init; }
 
@@ -12,7 +12,7 @@ namespace System.Net.Http.Message.Senders
             this.CompletionOption = CompletionOption ?? HttpCompletionOption.ResponseHeadersRead;
         }
 
-        public override async Task<HttpResponseMessage> SendAsync(IMessageModifier Message, CancellationToken Token) {
+        public override async Task<HttpResponseMessage> SendAsync(IHttpRequestMessageBuilder Message, CancellationToken Token) {
             var Request = await Message.ToMessageAsync()
                 .DefaultAwait()
                 ;

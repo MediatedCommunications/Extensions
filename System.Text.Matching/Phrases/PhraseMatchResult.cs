@@ -9,7 +9,7 @@ namespace System.Text.Matching {
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
                 .Data.Add(Matches)
-                .Postfix.AddPair(Weight, nameof(Weight))
+                .Postfix.AddExpression(Weight, nameof(Weight))
                 ;
         }
 

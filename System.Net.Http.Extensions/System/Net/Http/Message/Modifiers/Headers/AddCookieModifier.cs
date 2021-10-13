@@ -9,11 +9,11 @@ namespace System.Net.Http.Message.Modifiers
     public record AddCookieModifier : MessageModifier {
 
 
-        public ImmutableList<KeyValuePair<string, string?>> Values { get; init; }
+        public ImmutableList<KeyValuePair<string, string>> Values { get; init; }
 
         public bool Encode { get; init; }
 
-        public AddCookieModifier(IEnumerable<KeyValuePair<string, string?>>? Values, bool Encode, bool? Enabled = default) : base(Enabled) {
+        public AddCookieModifier(IEnumerable<KeyValuePair<string, string>>? Values, bool Encode, bool? Enabled = default) : base(Enabled) {
             this.Values = Values.Coalesce().ToImmutableList();
             this.Encode = Encode;
         }

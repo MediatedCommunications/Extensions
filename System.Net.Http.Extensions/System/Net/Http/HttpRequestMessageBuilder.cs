@@ -1,14 +1,15 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Net.Http.Message;
+using System.Net.Http.Message.Modifiers;
 using System.Threading.Tasks;
 
-namespace System.Net.Http.Message.Modifiers
-{
-    public record MessageBuilder : MessageModifier {
-        public MessageBuilder(bool? Enabled = default) : base(Enabled) {
+namespace System.Net.Http {
+    public record HttpRequestMessageBuilder : MessageModifier {
+        public HttpRequestMessageBuilder(bool? Enabled = default) : base(Enabled) {
         }
 
-        public ImmutableList<IMessageModifier> Actions { get; init; } = ImmutableList<IMessageModifier>.Empty;
+        public ImmutableList<IHttpRequestMessageBuilder> Actions { get; init; } = ImmutableList<IHttpRequestMessageBuilder>.Empty;
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
@@ -26,7 +27,6 @@ namespace System.Net.Http.Message.Modifiers
 
         }
 
-        public static MessageBuilder Default { get; private set; } = new MessageBuilder(); 
-
     }
+
 }

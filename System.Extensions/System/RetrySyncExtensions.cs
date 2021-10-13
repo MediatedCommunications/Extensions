@@ -12,12 +12,20 @@ namespace System
             };
         }
 
-        public static RetrySync<T> WithDefault<T>(this RetrySync<T> This, Func<CancellationToken, T> Value)
+        public static RetrySync<T> DefaultIs<T>(this RetrySync<T> This, Func<CancellationToken, T> Value)
         {
             return This with
             {
                 Default = Value,
+                OnFailure = RetryFailureResult.ReturnDefault,
             };
+        }
+
+        public static RetrySync<TResult> DefaultIs<TResult>(this RetrySync<TResult> This, TResult Default = default)
+            where TResult : struct {
+
+            return DefaultIs(This, x => Default);
+
         }
 
     }
