@@ -38,7 +38,7 @@ namespace System.Text.Matching
 
             var InvalidMatchChar = OptionalInvalidMatchChar ?? 'X';
 
-            foreach (var Segment in This.Coalesce()) {
+            foreach (var Segment in This.EmptyIfNull()) {
 
                 var Length = Math.Max(Segment.Left.Length, Segment.Right.Length);
 

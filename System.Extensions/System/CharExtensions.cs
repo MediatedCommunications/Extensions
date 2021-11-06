@@ -7,7 +7,7 @@ namespace System
     public static class CharExtensions {
 
         public static IEnumerable<char> WhereIs(this IEnumerable<char>? This, params CharType[] Types) {
-            return This.Coalesce().Where(x => x.Is(Types));
+            return This.EmptyIfNull().Where(x => x.Is(Types));
         }
 
         public static string WhereIs(this string? This, params CharType[] Types) {
@@ -15,7 +15,7 @@ namespace System
         }
 
         public static string Join(this IEnumerable<char>? This) {
-            var Array = This.Coalesce().ToArray();
+            var Array = This.EmptyIfNull().ToArray();
 
             var ret = new string(Array);
 

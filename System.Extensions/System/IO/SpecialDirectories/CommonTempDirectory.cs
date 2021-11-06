@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace System {
+namespace System.IO {
 
-    internal class CommonTempFolder : SpecialFolder {
+    internal class CommonTempDirectory : SpecialDirectory {
         public override string GetPath() {
             var ret = Environment.ExpandEnvironmentVariables(@"%SystemRoot%\Temp");
             return ret;

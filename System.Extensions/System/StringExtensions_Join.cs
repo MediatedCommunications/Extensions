@@ -10,7 +10,7 @@ namespace System
                 NewSeparator += Separator;
             }
 
-            var ret = string.Join(NewSeparator, This.Coalesce());
+            var ret = string.Join(NewSeparator, This.EmptyIfNull());
 
             return ret;
         }

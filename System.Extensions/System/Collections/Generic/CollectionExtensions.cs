@@ -37,8 +37,8 @@ namespace System.Collections.Generic
 
         private static TCollection Add<TCollection, TItem>(this TCollection This, IEnumerable<TItem>[]? Values, Func<TCollection, TItem, TCollection> Adder) {
             var ret = This;
-            foreach (var Group in EnumerableExtensions.Coalesce(Values)) {
-                foreach (var Item in EnumerableExtensions.Coalesce(Group)) {
+            foreach (var Group in EnumerableExtensions.EmptyIfNull(Values)) {
+                foreach (var Item in EnumerableExtensions.EmptyIfNull(Group)) {
 
                     ret = Adder(ret, Item);
                 }

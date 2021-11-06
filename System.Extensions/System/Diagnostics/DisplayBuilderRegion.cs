@@ -49,7 +49,7 @@ namespace System.Diagnostics
         }
 
         public DisplayBuilder Add<T>(ICollection<T>? Values) {
-            foreach (var Value in Values.Coalesce())
+            foreach (var Value in Values.EmptyIfNull())
             {
                 Add(Value);
             }
@@ -67,6 +67,9 @@ namespace System.Diagnostics
             return Parent;
         }
 
+        public DisplayBuilder AddFlag(bool Condition, [CallerArgumentExpression("Condition")] string? Name = default) {
+            return this.If(Condition).Add(Name);
+        }
 
         public DisplayBuilder AddCount(long Count, [CallerArgumentExpression("Count")] string? Name = default) {
 
@@ -88,7 +91,7 @@ namespace System.Diagnostics
         }
 
         public DisplayBuilder AddNameValue<TValue>(IEnumerable<KeyValuePair<string, TValue>>? Values) {
-            foreach (var item in Values.Coalesce()) {
+            foreach (var item in Values.EmptyIfNull()) {
                 AddNameValue(item.Key, item.Value);
             }
 

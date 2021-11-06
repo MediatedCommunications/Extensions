@@ -6,6 +6,25 @@ using System.Linq;
 namespace System {
     public class FirstMiddleLastPersonNameFormat : PersonNameFormat {
 
+        public override string FormatName(PersonName Name, PersonNameFields Fields) {
+            var First = new List<string>() {
+                Fields.HasFlag(PersonNameFields.Prefix) ? Name.Prefix : string.Empty,
+                Fields.HasFlag(PersonNameFields.FirstName) ? Name.First: string.Empty,
+                Fields.HasFlag(PersonNameFields.MiddleName) ? Name.Middle: Array.Empty<string>(),
+                Fields.HasFlag(PersonNameFields.LastName) ? Name.Last: string.Empty,
+            }.WhereIsNotBlank().JoinSpace();
+
+            var Second = new List<string>() {
+                First,
+                Fields.HasFlag(PersonNameFields.Suffix) ? Name.Suffix : string.Empty,
+            }.WhereIsNotBlank().Join(", ");
+
+            var ret = Second;
+
+            return ret;
+        }
+
+
         public override bool TryParse(string Input, [NotNullWhen(true)] out PersonName? Name) {
             var ret = false;
             Name = default;

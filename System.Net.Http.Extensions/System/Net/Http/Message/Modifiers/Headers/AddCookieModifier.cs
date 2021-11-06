@@ -14,7 +14,7 @@ namespace System.Net.Http.Message.Modifiers
         public bool Encode { get; init; }
 
         public AddCookieModifier(IEnumerable<KeyValuePair<string, string>>? Values, bool Encode, bool? Enabled = default) : base(Enabled) {
-            this.Values = Values.Coalesce().ToImmutableList();
+            this.Values = Values.EmptyIfNull().ToImmutableList();
             this.Encode = Encode;
         }
 

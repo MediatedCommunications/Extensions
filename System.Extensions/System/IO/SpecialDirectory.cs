@@ -1,5 +1,5 @@
-﻿namespace System {
-    public abstract class SpecialFolder {
+﻿namespace System.IO {
+    public abstract class SpecialDirectory {
 
         public abstract string GetPath();
 

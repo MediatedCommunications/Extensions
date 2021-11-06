@@ -46,7 +46,7 @@ namespace Telerik.Windows.Controls {
 
 
         protected void SelectedItems_Set(IEnumerable<object>? SelectedItems, bool ForContainer, bool ForControl) {
-            var ToSet = SelectedItems.Coalesce().ToList();
+            var ToSet = SelectedItems.EmptyIfNull().ToList();
             
             Container_Events_Disable();
             Control_Events_Disable();
@@ -68,20 +68,20 @@ namespace Telerik.Windows.Controls {
 
         protected void SelectedItems_Update_Internal(IEnumerable<object>? Add, IEnumerable<object>? Remove, bool ForContainer, bool ForControl) {
             if (ForContainer) {
-                Container_SelectedItems_Add(Add.Coalesce());
+                Container_SelectedItems_Add(Add.EmptyIfNull());
             }
 
             if (ForControl) {
-                Control_SelectedItems_Add(Add.Coalesce());
+                Control_SelectedItems_Add(Add.EmptyIfNull());
             }
 
 
             if (ForContainer) {
-                Container_SelectedItems_Remove(Remove.Coalesce());
+                Container_SelectedItems_Remove(Remove.EmptyIfNull());
             }
 
             if (ForControl) {
-                Control_SelectedItems_Remove(Remove.Coalesce());
+                Control_SelectedItems_Remove(Remove.EmptyIfNull());
             }
         }
 

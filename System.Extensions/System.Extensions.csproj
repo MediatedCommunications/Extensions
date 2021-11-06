@@ -5,4 +5,8 @@
     <PackageId>MC.System.Extensions</PackageId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="System\Environment\" />
+  </ItemGroup>
+
 </Project>

@@ -10,7 +10,7 @@ namespace System {
         static PersonNameFormats() {
             FirstMiddleLast = new FirstMiddleLastPersonNameFormat();
             LastFirstMiddle = new LastFirstMiddlePersonNameFormat();
-
+            
             All = new[] {
                 FirstMiddleLast,
                 LastFirstMiddle,
@@ -20,5 +20,6 @@ namespace System {
 
 
     }
+
 
 }

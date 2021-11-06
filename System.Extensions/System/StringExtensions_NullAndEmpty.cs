@@ -23,27 +23,27 @@ namespace System
         }
 
         public static IEnumerable<string?> WhereIsNullOrEmpty(this IEnumerable<string?>? This) {
-            return EnumerableExtensions.Coalesce(This)
+            return EnumerableExtensions.EmptyIfNull(This)
                 .Where(x => x.IsNullOrEmpty())
                 ;
         }
 
         public static IEnumerable<string> WhereIsNotNullOrEmpty(this IEnumerable<string?>? This) {
-            return EnumerableExtensions.Coalesce(This)
+            return EnumerableExtensions.EmptyIfNull(This)
                 .Where(x => x.IsNotNullOrEmpty())
                 .OfType<string>()
                 ;
         }
 
         public static IEnumerable<string> WhereIsBlank(this IEnumerable<string?>? This) {
-            return EnumerableExtensions.Coalesce(This)
+            return EnumerableExtensions.EmptyIfNull(This)
                 .Where(x => x.IsBlank())
                 .OfType<string>()
                 ;
         }
 
         public static IEnumerable<string> WhereIsNotBlank(this IEnumerable<string?>? This) {
-            return EnumerableExtensions.Coalesce(This)
+            return EnumerableExtensions.EmptyIfNull(This)
                 .Where(x => x.IsNotBlank())
                 .OfType<string>()
                 ;

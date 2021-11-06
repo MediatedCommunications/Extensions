@@ -117,8 +117,8 @@ namespace System.IO
             return Create(FolderName, FileName, Extension, true);
         }
 
-        public static TemporaryFile Create(System.SpecialFolder? Folder, string? FileName = default, string? Extension = default, bool? Lock = default) {
-            var FolderName = (Folder ?? System.SpecialFolders.Local.CommonDocuments).GetPath();
+        public static TemporaryFile Create(System.IO.SpecialDirectory? Folder, string? FileName = default, string? Extension = default, bool? Lock = default) {
+            var FolderName = (Folder ?? System.IO.SpecialDirectories.Local.CommonDocuments).GetPath();
 
             return Create(FolderName, FileName, Extension, Lock);
         }

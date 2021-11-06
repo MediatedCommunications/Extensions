@@ -89,7 +89,7 @@ namespace CsvHelper
             
             var HeadersToIndex = IndexToHeaders
                 .GroupBy(x => x.Value, x => x.Key, StringComparer.InvariantCultureIgnoreCase)
-                .ToImmutableDictionary(x => x.Key, x => x.ToImmutableList(), StringComparer.InvariantCultureIgnoreCase)
+                .ToImmutableDictionary(x => x.Key, x => x.ToImmutableArray(), StringComparer.InvariantCultureIgnoreCase)
                 ;
 
             var HeaderToIndex = HeadersToIndex
@@ -107,7 +107,7 @@ namespace CsvHelper
 
                     tret.Add(value);
                 }
-                var Values = tret.ToImmutableList();
+                var Values = tret.ToImmutableArray();
 
                 var ret = new DynamicCsvRecord() {
                     IndexToHeaders = IndexToHeaders,

@@ -67,7 +67,7 @@ namespace System.Collections.Generic {
         }
 
         public static IEnumerable<T> GetRange<T>(this IEnumerable<T>? source, Range Values) {
-            var IE = source.Coalesce();
+            var IE = source.EmptyIfNull();
             var Count = IE.Count();
             var Start = Values.Start.GetOffset(Count);
             var Finish = Values.End.GetOffset(Count);
@@ -85,7 +85,7 @@ namespace System.Collections.Generic {
 
         public static IEnumerable<WithIndexItem<T>> WithIndexes<T>(this IEnumerable<T>? source, int FirstIndex = 0) {
             var Index = FirstIndex;
-            foreach (var Item in source.Coalesce()) {
+            foreach (var Item in source.EmptyIfNull()) {
                 var ret = WithIndexItem.Create(Index, Item);
                 yield return ret;
 
@@ -93,7 +93,7 @@ namespace System.Collections.Generic {
             }
         }
 
-        public static IEnumerable<T> Coalesce<T>(this IEnumerable<T>? source) {
+        public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T>? source) {
             return Coalesce(source, Enumerable.Empty<T>());
         }
 
@@ -139,7 +139,7 @@ namespace System.Collections.Generic {
 
 
         public static void ForEach<T>(this IEnumerable<T>? This, Action<T> Action) {
-            foreach (var item in This.Coalesce()) {
+            foreach (var item in This.EmptyIfNull()) {
                 Action(item);
             }
         }
@@ -147,7 +147,7 @@ namespace System.Collections.Generic {
         public static void ForEach<T>(this IEnumerable<T>? This, Action<T, int> Action) {
             var index = -1;
             
-            foreach (var item in This.Coalesce()) {
+            foreach (var item in This.EmptyIfNull()) {
                 index += 1;
                 Action(item, index);
             }
@@ -159,7 +159,7 @@ namespace System.Collections.Generic {
 
         public static async IAsyncEnumerable<TOutput> AsAsyncEnumerable<TInput, TOutput>(this IEnumerable<TInput> This, Func<TInput, Task<TOutput>> Convert) {
 
-            foreach (var item in This.Coalesce()) {
+            foreach (var item in This.EmptyIfNull()) {
                 var Converted = await Convert(item)
                     .DefaultAwait()
                     ;
@@ -387,7 +387,7 @@ namespace System.Collections.Generic {
                 yield break;
             }
 
-            foreach (var item in This.Coalesce()) {
+            foreach (var item in This.EmptyIfNull()) {
                 yield return item;
 
                 if (CancelWhen()) {
@@ -430,7 +430,7 @@ namespace System.Collections.Generic {
                 Queues.Add(new Queue<T>());
             }
 
-            foreach (var (Index, Item) in This.Coalesce().WithIndexes()) {
+            foreach (var (Index, Item) in This.EmptyIfNull().WithIndexes()) {
                 var Bucket = (int)(Index % Queues.Count);
 
                 Queues[Bucket].Enqueue(Item);

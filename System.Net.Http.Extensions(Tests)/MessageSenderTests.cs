@@ -12,7 +12,7 @@ namespace System.Net.Http {
         [Test]
         public Task TestChaining() {
 
-            var C = DefaultMessageSender.CreateHttp()
+            var C = HttpMessageSenders.Default
                 .RetryOnHttpException()
                 .RetryOnHttpStatusErrors()
                 .SendUsingHttpClient()

@@ -16,7 +16,7 @@ namespace System.Text.Matching
         public TokenizeResult<T> Tokenize<T>(T Input, Func<T, IEnumerable<string?>?> GetTexts) {
             var tret = new List<string>();
 
-            foreach (var Text in GetTexts(Input).Coalesce<string?>().WhereIsNotBlank()) {
+            foreach (var Text in GetTexts(Input).EmptyIfNull<string?>().WhereIsNotBlank()) {
                 var Value = this.TokenizeInternal(Text);
                 tret.Add(Value);
             }
@@ -30,7 +30,7 @@ namespace System.Text.Matching
             var SW = System.Diagnostics.Stopwatch.StartNew();
             
             var ret = (
-                from x in Input.Coalesce()
+                from x in Input.EmptyIfNull()
                 let v = Tokenize(x, GetTexts)
                 select v
                 ).ToImmutableList();

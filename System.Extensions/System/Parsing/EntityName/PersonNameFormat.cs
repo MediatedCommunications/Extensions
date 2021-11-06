@@ -46,6 +46,16 @@ namespace System {
         }
 
         public abstract bool TryParse(string Input, [NotNullWhen(true)] out PersonName? Name);
+
+        public abstract string FormatName(PersonName Name, PersonNameFields Fields);
+
+        public string FormatName(PersonName Name) {
+            var ret = FormatName(Name, PersonNameFields.All);
+
+            return ret;
+        }
+
+
     }
 
 }

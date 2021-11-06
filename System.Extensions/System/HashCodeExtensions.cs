@@ -10,7 +10,7 @@ namespace System
     {
         public static void AddRange<T>(this HashCode This, IEnumerable<T>? Items)
         {
-            foreach (var item in Items.Coalesce())
+            foreach (var item in Items.EmptyIfNull())
             {
                 This.Add(item);
             }

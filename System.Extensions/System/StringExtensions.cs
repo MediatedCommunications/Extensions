@@ -69,7 +69,7 @@ namespace System
         }
 
         public static string Coalesce(this IEnumerable<string?>? This) {
-            var ret = EnumerableExtensions.Coalesce(This)
+            var ret = EnumerableExtensions.EmptyIfNull(This)
                 .WhereIsNotNull()
                 .FirstOrDefault(string.Empty)
                 ;
@@ -104,7 +104,7 @@ namespace System
             while (true) {
                 var Changed = false;
 
-                foreach (var item in ItemsToTrim.Coalesce<string?>().WhereIsNotNullOrEmpty()) {
+                foreach (var item in ItemsToTrim.EmptyIfNull<string?>().WhereIsNotNullOrEmpty()) {
 
                     if(Method(item, ref ret)) {
                         Changed = true;

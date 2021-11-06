@@ -7,7 +7,7 @@ namespace System.Reflection
 
         public static List<Type> GetTypesSafe(this IEnumerable<Assembly> This) {
             var ret = (
-                from x in This.Coalesce()
+                from x in This.EmptyIfNull()
                 from y in x.GetTypesSafe()
                 select y
                 ).ToList();
@@ -28,7 +28,7 @@ namespace System.Reflection
                 ex.Ignore();
             }
 
-            ret.Add(Array.Coalesce().WhereIsNotNull());
+            ret.Add(Array.EmptyIfNull().WhereIsNotNull());
 
             return ret;
         }

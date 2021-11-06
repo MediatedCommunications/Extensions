@@ -23,7 +23,7 @@ namespace System.Events.Async {
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
                 .Data.Add(Data)
-                .Postfix.If(Handled).Add(nameof(Handled))
+                .Postfix.AddFlag(Handled)
                 ;
         }
 

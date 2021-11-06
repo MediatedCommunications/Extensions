@@ -32,6 +32,27 @@ namespace System {
 
     public static class Retry
     {
+        public static RetryAsync<bool> WithActionAsync(Func<Task> Value) {
+            async Task<bool> SubAction(CancellationToken Token) {
+                Token.Ignore();
+
+                await Value()
+                    .DefaultAwait()
+                    ;
+
+                return true;
+            }
+
+
+
+            var ret = new RetryAsync<bool>() {
+                Try = SubAction,
+            }.DefaultIs();
+
+            return ret;
+        }
+
+
         public static RetryAsync<bool> WithActionAsync(Func<CancellationToken, Task> Value) { 
             async Task<bool> SubAction(CancellationToken Token)
             {
@@ -48,6 +69,25 @@ namespace System {
             {
                 Try = SubAction,
             }.DefaultIs();
+
+            return ret;
+
+        }
+
+        public static RetryAsync<T> WithActionAsync<T>(Func<Task<T>> Value) {
+            async Task<T> SubAction(CancellationToken Token) {
+                Token.Ignore();
+
+                var ret = await Value()
+                    .DefaultAwait()
+                    ;
+
+                return ret;
+            }
+
+            var ret = new RetryAsync<T>() {
+                Try = SubAction,
+            };
 
             return ret;
 

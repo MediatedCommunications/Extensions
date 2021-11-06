@@ -82,11 +82,10 @@ namespace System
             var Result_Value = default(T)!;
 
             var Attempts = 0;
-            var Success = false;
 
             var FailureException = default(ExceptionDispatchInfo);
 
-            while(!Success && Attempts < RetryAttempts && LinkedToken.Token.ShouldContinue()) {
+            while(!Result_Success && Attempts < RetryAttempts && LinkedToken.Token.ShouldContinue()) {
                 try {
                     Attempts += 1;
 
@@ -101,7 +100,7 @@ namespace System
                     
 
                     FailureException = default;
-                    Success = true;
+
                 } catch (Exception ex) {
                     FailureException = ExceptionDispatchInfo.Capture(ex);
 
@@ -134,7 +133,7 @@ namespace System
                 }
             }
 
-            if (!Success) {
+            if (!Result_Success) {
                 Result_Value = await Default(Token)
                     .DefaultAwait()
                     ;
@@ -143,7 +142,7 @@ namespace System
             var ret = new RetryResult<T>(Result_Value) {
                 Exception = Result_Exception,
                 Result = Result_Value,
-                Success = Success,
+                Success = Result_Success,
             };
 
             return ret;

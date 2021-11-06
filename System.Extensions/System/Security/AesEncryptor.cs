@@ -13,7 +13,7 @@ namespace System.Security
         public static AesEncryptor Default { get; } = new();
 
         protected virtual byte[] SafeSalt(IEnumerable<byte>? Value) {
-            var VV = Value.Coalesce().ToArray();
+            var VV = Value.EmptyIfNull().ToArray();
             
             var Size = Math.Max(8, VV.Length);
             var ret = new byte[Size];

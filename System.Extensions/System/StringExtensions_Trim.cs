@@ -6,7 +6,7 @@ namespace System
         public static IEnumerable<string> Trim(this IEnumerable<string?>? This) {
             if(This is { })
             {
-                foreach (var item in This.Coalesce<string?>())
+                foreach (var item in This.EmptyIfNull<string?>())
                 {
                     var ret = item.Coalesce().Trim();
 

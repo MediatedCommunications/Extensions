@@ -1,8 +1,8 @@
-﻿namespace System {
-    internal class EnvironmentSpecialFolder : SpecialFolder {
+﻿namespace System.IO {
+    internal class EnvironmentSpecialDirectory : SpecialDirectory {
         protected System.Environment.SpecialFolder Folder { get; }
 
-        public EnvironmentSpecialFolder(System.Environment.SpecialFolder Folder) {
+        public EnvironmentSpecialDirectory(System.Environment.SpecialFolder Folder) {
             this.Folder = Folder;
         }
 

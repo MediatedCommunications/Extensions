@@ -4,7 +4,7 @@
 
             var ret = new SortedDictionary<TKey, TValue>(Comparer);
 
-            foreach (var item in source.Coalesce()) {
+            foreach (var item in source.EmptyIfNull()) {
                 var key = keySelector(item);
                 var value = elementSelector(item);
 
