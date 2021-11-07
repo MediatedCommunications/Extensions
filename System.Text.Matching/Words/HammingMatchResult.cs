@@ -6,7 +6,7 @@ namespace System.Text.Matching {
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
-                .Postfix.AddExpression(Distance, nameof(Distance))
+                .Postfix.AddExpression(Distance)
                 ;
         }
 
