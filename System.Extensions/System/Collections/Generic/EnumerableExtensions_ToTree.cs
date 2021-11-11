@@ -12,193 +12,6 @@ namespace System.Collections.Generic {
         }
     }
 
-    public record TreeTable<TKey1, TValue>  : TreeTable<TValue>
-        where TKey1 : notnull
-        {
-
-        public ImmutableDictionary<TKey1, ImmutableList<TValue>> Values { get; init; } = ImmutableDictionary<TKey1, ImmutableList<TValue>>.Empty;
-
-        public override IEnumerator<TValue> GetEnumerator() {
-            var items = (
-                from a in Values.Values
-                from z in a
-                select z
-                );
-
-            foreach (var item in items) {
-                yield return item;
-            }
-                
-        }
-
-        public ImmutableList<TValue>? TryGetValue(TKey1 Key1) {
-            if(!(Values.TryGetValue(Key1, out var ret))) {
-                ret = default;
-            }
-
-            return ret;
-        }
-
-        public ImmutableList<TValue> SafeGetValue(TKey1 Key1) {
-            return TryGetValue(Key1) ?? ImmutableList<TValue>.Empty;
-        }
-      
-
-    }
-
-    public record TreeTable<TKey1, TKey2, TValue> : TreeTable<TValue>
-        where TKey1 : notnull
-        where TKey2 : notnull
-        {
-
-        public ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableList<TValue>>> Values { get; init; } = ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableList<TValue>>>.Empty;
-
-        public override IEnumerator<TValue> GetEnumerator() {
-            var items = (
-                from x in Values.Values
-                from y in x.Values
-                from z in y
-                select z
-                );
-
-            foreach (var item in items) {
-                yield return item;
-            }
-
-        }
-
-
-        public ImmutableList<TValue>? TryGetValue(TKey1 Key1, TKey2 Key2) {
-            if (!(Values.TryGetValue(Key1, out var V2) && V2.TryGetValue(Key2, out var ret))) {
-                ret = default;
-            }
-
-            return ret;
-        }
-
-        public ImmutableList<TValue> SafeGetValue(TKey1 Key1, TKey2 Key2) {
-            return TryGetValue(Key1, Key2) ?? ImmutableList<TValue>.Empty;
-        }
-
-    }
-
-    public record TreeTable<TKey1, TKey2, TKey3, TValue> : TreeTable<TValue>
-        where TKey1 : notnull
-        where TKey2 : notnull
-        where TKey3 : notnull {
-
-        public ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableDictionary<TKey3, ImmutableList<TValue>>>> Values { get; init; } = ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableDictionary<TKey3, ImmutableList<TValue>>>>.Empty;
-
-
-        public override IEnumerator<TValue> GetEnumerator() {
-            var items = (
-                from w in Values.Values
-                from x in w.Values
-                from y in x.Values
-                from z in y
-                select z
-                );
-
-            foreach (var item in items) {
-                yield return item;
-            }
-
-        }
-
-        public ImmutableList<TValue>? TryGetValue(TKey1 Key1, TKey2 Key2, TKey3 Key3) {
-            if (!(Values.TryGetValue(Key1, out var V2) && V2.TryGetValue(Key2, out var V3) && V3.TryGetValue(Key3, out var ret))) {
-                ret = default;
-            }
-
-            return ret;
-        }
-
-        public ImmutableList<TValue> SafeGetValue(TKey1 Key1, TKey2 Key2, TKey3 Key3) {
-            return TryGetValue(Key1, Key2, Key3) ?? ImmutableList<TValue>.Empty;
-        }
-
-    }
-
-    public record TreeTable<TKey1, TKey2, TKey3, TKey4, TValue> : TreeTable<TValue>
-        where TKey1 : notnull
-        where TKey2 : notnull
-        where TKey3 : notnull
-        where TKey4 : notnull {
-
-        public ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableDictionary<TKey3, ImmutableDictionary<TKey4, ImmutableList<TValue>>>>> Values { get; init; } = ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableDictionary<TKey3, ImmutableDictionary<TKey4, ImmutableList<TValue>>>>>.Empty;
-
-
-        public override IEnumerator<TValue> GetEnumerator() {
-            var items = (
-                from v in Values.Values
-                from w in v.Values
-                from x in w.Values
-                from y in x.Values
-                from z in y
-                select z
-                );
-
-            foreach (var item in items) {
-                yield return item;
-            }
-
-        }
-
-        public ImmutableList<TValue>? TryGetValue(TKey1 Key1, TKey2 Key2, TKey3 Key3, TKey4 Key4) {
-            if (!(Values.TryGetValue(Key1, out var V2) && V2.TryGetValue(Key2, out var V3) && V3.TryGetValue(Key3, out var V4) && V4.TryGetValue(Key4, out var ret))) {
-                ret = default;
-            }
-
-            return ret;
-        }
-
-        public ImmutableList<TValue> SafeGetValue(TKey1 Key1, TKey2 Key2, TKey3 Key3, TKey4 Key4) {
-            return TryGetValue(Key1, Key2, Key3, Key4) ?? ImmutableList<TValue>.Empty;
-        }
-
-    }
-
-    public record TreeTable<TKey1, TKey2, TKey3, TKey4, TKey5, TValue> : TreeTable<TValue>
-            where TKey1 : notnull
-            where TKey2 : notnull
-            where TKey3 : notnull
-            where TKey4 : notnull
-            where TKey5 : notnull {
-
-        public ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableDictionary<TKey3, ImmutableDictionary<TKey4, ImmutableDictionary<TKey5, ImmutableList<TValue>>>>>> Values { get; init; } = ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableDictionary<TKey3, ImmutableDictionary<TKey4, ImmutableDictionary<TKey5, ImmutableList<TValue>>>>>>.Empty;
-
-
-        public override IEnumerator<TValue> GetEnumerator() {
-            var items = (
-                from u in Values.Values
-                from v in u.Values
-                from w in v.Values
-                from x in w.Values
-                from y in x.Values
-                from z in y
-                select z
-                );
-
-            foreach (var item in items) {
-                yield return item;
-            }
-
-        }
-
-        public ImmutableList<TValue>? TryGetValue(TKey1 Key1, TKey2 Key2, TKey3 Key3, TKey4 Key4, TKey5 Key5) {
-            if (!(Values.TryGetValue(Key1, out var V2) && V2.TryGetValue(Key2, out var V3) && V3.TryGetValue(Key3, out var V4) && V4.TryGetValue(Key4, out var V5) && V5.TryGetValue(Key5, out var ret))) {
-                ret = default;
-            }
-
-            return ret;
-        }
-
-        public ImmutableList<TValue> SafeGetValue(TKey1 Key1, TKey2 Key2, TKey3 Key3, TKey4 Key4, TKey5 Key5) {
-            return TryGetValue(Key1, Key2, Key3, Key4, Key5) ?? ImmutableList<TValue>.Empty;
-        }
-
-    }
-
     public static class EnumerableExtensions_ToTreeTable {
 
         private static ImmutableDictionary<TKey, TValue> ToImmutableDictionary<TSource, TKey, TValue>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? keyComparer, Func<TSource, TValue> elementSelector)
@@ -257,7 +70,10 @@ namespace System.Collections.Generic {
                 ;
 
             var ret = new TreeTable<TKey1, TValue>() {
-                Values = Values
+                Values = Values,
+                Key1Extractor = Key1,
+                Key1Comparer = Key1Comparer,
+               
             };
 
             return ret;
@@ -278,6 +94,12 @@ namespace System.Collections.Generic {
 
             var ret = new TreeTable<TKey1, TKey2, TValue>() {
                 Values = Values,
+                Key1Extractor = Key1,
+                Key1Comparer = Key1Comparer,
+
+                Key2Extractor = Key2,
+                Key2Comparer = Key2Comparer,
+                
             };
 
             return ret;
@@ -299,6 +121,15 @@ namespace System.Collections.Generic {
 
             var ret = new TreeTable<TKey1, TKey2, TKey3, TValue>() {
                 Values = Values,
+
+                Key1Extractor = Key1,
+                Key1Comparer = Key1Comparer,
+
+                Key2Extractor = Key2,
+                Key2Comparer = Key2Comparer,
+
+                Key3Extractor = Key3,
+                Key3Comparer = Key3Comparer,
             };
 
             return ret;
@@ -320,6 +151,18 @@ namespace System.Collections.Generic {
 
             var ret = new TreeTable<TKey1, TKey2, TKey3, TKey4, TValue>() {
                 Values = Values,
+
+                Key1Extractor = Key1,
+                Key1Comparer = Key1Comparer,
+
+                Key2Extractor = Key2,
+                Key2Comparer = Key2Comparer,
+
+                Key3Extractor = Key3,
+                Key3Comparer = Key3Comparer,
+
+                Key4Extractor = Key4,
+                Key4Comparer = Key4Comparer,
             };
 
             return ret;
@@ -343,6 +186,21 @@ namespace System.Collections.Generic {
 
             var ret = new TreeTable<TKey1, TKey2, TKey3, TKey4, TKey5, TValue>() {
                 Values = Values,
+
+                Key1Extractor = Key1,
+                Key1Comparer = Key1Comparer,
+
+                Key2Extractor = Key2,
+                Key2Comparer = Key2Comparer,
+
+                Key3Extractor = Key3,
+                Key3Comparer = Key3Comparer,
+
+                Key4Extractor = Key4,
+                Key4Comparer = Key4Comparer,
+
+                Key5Extractor = Key5,
+                Key5Comparer = Key5Comparer,
             };
 
             return ret;

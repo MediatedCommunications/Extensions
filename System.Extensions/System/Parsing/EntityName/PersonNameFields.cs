@@ -8,7 +8,8 @@
         LastName = 8,
         Suffix = 16,
 
-        AllNames = FirstName | MiddleName | LastName,
+        FirstLast = FirstName | LastName,
+        FirstMiddleLast = FirstName | MiddleName | LastName,
         All = Prefix | FirstName | MiddleName | LastName | Suffix,
     }
 
