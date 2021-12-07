@@ -36,7 +36,9 @@ namespace System {
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
                 .Prefix.Add(Prefix)
-                .Data.AddPhrase(First, Middle, Last)
+                .Data.Add(First)
+                .Data.Add(Middle)
+                .Data.Add(Last)
                 .Postfix.Add(Suffix)
                 ;
         }

@@ -8,6 +8,20 @@
 
         public static DateTimeOffset Now => DateTimeOffset.Now;
         public static DateTimeOffset UtcNow => DateTimeOffset.UtcNow;
+
+        public static bool Match(DateTimeOffset V1, DateTimeOffset V2) {
+            return Match(V1, V2, TimeSpans.OneSecond);
+        }
+
+        public static bool Match(DateTimeOffset V1, DateTimeOffset V2, TimeSpan Tolerance) {
+            var ret = false;
+            var Delta = V1 - V2;
+            if(Delta >= -Tolerance && Delta <= Tolerance) {
+                ret = true;
+            }
+
+            return ret;
+        }
     }
 
 }

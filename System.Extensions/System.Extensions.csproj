@@ -4,6 +4,10 @@
   <PropertyGroup>
     <PackageId>MC.System.Extensions</PackageId>
   </PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="System.Linq.Async" Version="5.1.0" />
+	</ItemGroup>
 
   <ItemGroup>
     <Folder Include="System\Environment\" />

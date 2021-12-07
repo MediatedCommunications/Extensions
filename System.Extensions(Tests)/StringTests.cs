@@ -1,4 +1,6 @@
 ﻿using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace System.Extensions
@@ -44,6 +46,26 @@ namespace System.Extensions
             Assert.AreEqual(Short2, "..");
             Assert.AreEqual(Short1, ".");
             Assert.AreEqual(Short0, "");
+
+            return Task.CompletedTask;
+        }
+
+        [Test]
+        public Task LastIndexOfAny() {
+            var Tests = new Dictionary<string, int[]>() {
+                { "this\nis\na\ntest", new[] { 9, 7, 4 }},
+                { "this\r\nis\r\na\r\ntest", new[] { 11, 8, 4 }},
+                { "XXX\r\nXXX\r\nXXX\r\n\r\n", new[]{ 15, 13, 8, 3} },
+            };
+
+            foreach (var (Input, Expected) in Tests) {
+                var Indexes = Input.LastIndexOfAny(StringExtensions.NewLines).ToList();
+                var Actual = Indexes.Select(x => x.Item2).ToArray();
+
+                Assert.AreEqual(Expected, Actual);
+
+            }
+
 
             return Task.CompletedTask;
         }

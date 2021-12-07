@@ -15,7 +15,7 @@
                   ;
         }
 
-        public static DisplayBuilder GetDebuggerDisplay(IGetDebuggerDisplay This, DisplayBuilder Builder) {
+        public static DisplayBuilder GetDebuggerDisplayBuilder(IGetDebuggerDisplay This, DisplayBuilder Builder) {
             return Builder
                 .Type.Add(This.GetType())
                 ;

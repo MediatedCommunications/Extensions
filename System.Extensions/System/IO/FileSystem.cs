@@ -111,7 +111,7 @@ namespace System.IO
                 ret |= FileSystemAttributes.Temporary;
             }
 
-            if (IsSystemName(Name)) {
+            if (IsSystemGeneratedName(Name)) {
                 ret |= FileSystemAttributes.System;
             }
 
@@ -172,7 +172,7 @@ namespace System.IO
             return ret;
         }
 
-        public static bool IsSystemName(string FileName) {
+        public static bool IsSystemGeneratedName(string FileName) {
             var FN = FileName.Parse().AsPath().FileName.AsText();
 
             var ret = false

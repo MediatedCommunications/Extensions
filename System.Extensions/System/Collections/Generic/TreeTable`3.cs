@@ -2,17 +2,17 @@
 using System.Linq;
 
 namespace System.Collections.Generic {
-    public record TreeTable<TKey1, TKey2, TValue> : TreeTable<TValue>
+    public record TreeTable<TItem, TKey1, TKey2, TValue> : TreeTable<TItem, TValue>
         where TKey1 : notnull
         where TKey2 : notnull
         {
 
         public ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableList<TValue>>> Values { get; init; } = ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableList<TValue>>>.Empty;
 
-        public Func<TValue, TKey1>? Key1Extractor { get; init; }
+        public Func<TItem, TKey1>? Key1Extractor { get; init; }
         public IEqualityComparer<TKey1>? Key1Comparer { get; init; }
 
-        public Func<TValue, TKey2>? Key2Extractor { get; init; }
+        public Func<TItem, TKey2>? Key2Extractor { get; init; }
         public IEqualityComparer<TKey2>? Key2Comparer { get; init; }
 
         public override IEnumerator<TValue> GetEnumerator() {
@@ -42,7 +42,9 @@ namespace System.Collections.Generic {
             return TryGetValue(Key1, Key2) ?? ImmutableList<TValue>.Empty;
         }
 
-        public TreeTable<TKey1, TKey2, TValue> Add(TKey1 Key1, TKey2 Key2, TValue Value) {
+        public TreeTable<TItem, TKey1, TKey2, TValue> Add(TKey1 Key1, TKey2 Key2, TItem Item) {
+            var Value = ValueSelector(Item);
+
             var Level0 = Values;
             
             if(!Level0.TryGetValue(Key1, out var Level1)) {
@@ -59,6 +61,7 @@ namespace System.Collections.Generic {
             Level0 = Level0.SetItem(Key1, Level1);
 
             var ret = this with {
+                Items = Items.Add(Item),
                 Values = Level0
             };
 

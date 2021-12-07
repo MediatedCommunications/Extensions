@@ -12,19 +12,21 @@ namespace System.IO
             return new StreamWriter(This);
         }
 
-        public static TemporaryFile ToTemporaryFile(this Func<Stream> This, bool? Lock = default) {
+        public static TemporaryFile ToTemporaryFile(this Func<Stream> This, bool? Lock = default, string? Tag = default) {
             using var FS = This();
 
-            var ret = FS.ToTemporaryFile(Lock);
+            var ret = FS.ToTemporaryFile(Lock, Tag);
 
             return ret;
         }
 
-        public static TemporaryFile ToTemporaryFile(this Stream This, bool? Lock = default) {
-            var ret = TemporaryFile.Create(Lock: Lock);
+        public static TemporaryFile ToTemporaryFile(this Stream This, bool? Lock = default, string? Tag = default) {
+            var ret = TemporaryFile.Create(Lock: Lock, Tag:Tag);
 
-            using var FS = ret.OpenWrite();
-            This.CopyTo(FS);
+            {
+                using var FS = ret.OpenWrite();
+                This.CopyTo(FS);
+            }
 
             return ret;
         }
@@ -40,7 +42,9 @@ namespace System.IO
             try {
                 var InitialBufferSize = 4096;
                 try {
-                    InitialBufferSize = (int)stream.Length;
+                    if (stream.CanSeek) {
+                        InitialBufferSize = (int)stream.Length;
+                    }
                 } catch(Exception ex) {
                     ex.Ignore();
                 }

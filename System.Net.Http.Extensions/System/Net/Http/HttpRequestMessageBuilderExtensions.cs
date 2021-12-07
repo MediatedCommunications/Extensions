@@ -53,6 +53,9 @@ namespace System.Net.Http
             return This.Add(new SetUserAgentHeaderModifier(Value, RemoveFirst, Enabled));
         }
 
+        public static HttpRequestMessageBuilder Referrer(this HttpRequestMessageBuilder This, string? Value = default, bool? RemoveFirst = default, bool? Enabled = default) {
+            return This.Add(new SetReferrerHeaderModifier(Value, RemoveFirst, Enabled));
+        }
 
         public static HttpRequestMessageBuilder Accept(this HttpRequestMessageBuilder This, IEnumerable<string> Values, bool? RemoveFirst = default, bool? Enabled = default) {
             return This.Add(new SetAcceptHeaderModifier(Values, RemoveFirst, Enabled));

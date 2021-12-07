@@ -20,6 +20,22 @@ namespace System {
             return This.Value.ToString("s", Culture.Coalesce());
         }
 
+        public static string AsSortableStandard(this FormatValue<DateTimeOffset> This) {
+            var ret = $@"{This.Value:yyyy-MM-dd @ HH:mm.ss}";
+
+            return ret;
+        }
+
+        public static string AsSortableStandard(this FormatValue<DateTimeOffset?> This) {
+            var ret = string.Empty;
+            if(This.Value is { } Value) {
+                ret = Value.Format().AsSortableStandard();
+            }
+            
+
+            return ret;
+        }
+
         public static string AsCurrency(this FormatValue<decimal> This, IFormatProvider? Culture = default) {
             return This.Value.ToString($@"C", Culture.Coalesce());
         }

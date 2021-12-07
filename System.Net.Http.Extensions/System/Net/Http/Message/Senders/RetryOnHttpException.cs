@@ -6,7 +6,7 @@ namespace System.Net.Http.Message.Senders
 {
     public record RetryOnHttpException : RetryDelegatingMessageSender {
 
-        public RetryOnHttpException(IEnumerable<TimeSpan>? Attempts, IHttpMessageSender? Child = default) : base(Attempts, Child) {
+        public RetryOnHttpException(IEnumerable<TimeSpan>? Attempts, IHttpRequestMessageSender? Child = default) : base(Attempts, Child) {
 
         }
 

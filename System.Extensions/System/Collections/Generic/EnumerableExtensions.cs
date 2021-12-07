@@ -27,7 +27,7 @@ namespace System.Collections.Generic {
 
         public static async IAsyncEnumerable<T> SelectMany<T>(this IEnumerable<IAsyncEnumerable<T>> This) {
             foreach (var Parent in This) {
-                await foreach(var Child in Parent) {
+                await foreach(var Child in Parent.DefaultAwait()) {
                     yield return Child;
                 }
             }
@@ -124,6 +124,42 @@ namespace System.Collections.Generic {
             }
 
             ret ??= Enumerable.Empty<T>();
+
+            return ret;
+        }
+
+        public static IAsyncEnumerable<T> EmptyIfNull<T>(this IAsyncEnumerable<T>? source) {
+            return Coalesce(source, AsyncEnumerable.Empty<T>());
+        }
+
+        public static IAsyncEnumerable<T> Coalesce<T>(this IAsyncEnumerable<T>? source, params T[] Values) {
+            return Coalesce(source, Values.AsAsyncEnumerable());
+        }
+
+
+        public static IAsyncEnumerable<T> Coalesce<T>(this IAsyncEnumerable<T>? source, params IAsyncEnumerable<T>?[] Values) {
+            var ret = source is { } V1
+                ? V1
+                : Values.CoalesceInternal()
+                ;
+
+            return ret;
+
+        }
+
+        private static IAsyncEnumerable<T> CoalesceInternal<T>(this IEnumerable<IAsyncEnumerable<T>?>? This) {
+            var ret = default(IAsyncEnumerable<T>?);
+
+            if (This is { } V1) {
+                foreach (var item in V1) {
+                    if (item is { } V2) {
+                        ret = V2;
+                        break;
+                    }
+                }
+            }
+
+            ret ??= AsyncEnumerable.Empty<T>();
 
             return ret;
         }

@@ -12,7 +12,7 @@ namespace System.Net.Http.Message.Senders
         public ImmutableHashSet<HttpStatusCode> StatusCodes { get; init; } = ImmutableHashSet<HttpStatusCode>.Empty;
 
 
-        public RetryOnHttpStatusCodes(IEnumerable<HttpStatusCode> StatusCodes, IEnumerable<TimeSpan>? Attempts, IHttpMessageSender? Child = default) : base(Attempts, Child) {
+        public RetryOnHttpStatusCodes(IEnumerable<HttpStatusCode> StatusCodes, IEnumerable<TimeSpan>? Attempts, IHttpRequestMessageSender? Child = default) : base(Attempts, Child) {
             this.StatusCodes = StatusCodes.ToImmutableHashSet();
         }
 

@@ -16,7 +16,7 @@ namespace System.Net.Http.Message.Senders
             return ret;
         }
 
-        public FollowRedirectsMessageSender(Func<HttpResponseMessage, bool>? ShouldFollowRedirect = default, int? MaxRedirects = default, IHttpMessageSender? Child = default) : base(Child) {
+        public FollowRedirectsMessageSender(Func<HttpResponseMessage, bool>? ShouldFollowRedirect = default, int? MaxRedirects = default, IHttpRequestMessageSender? Child = default) : base(Child) {
             this.MaxRedirects = MaxRedirects ?? 50;
             this.ShouldFollowRedirect = ShouldFollowRedirect ?? ShouldFollowLocation;
         }

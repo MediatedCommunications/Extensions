@@ -9,7 +9,7 @@ namespace System.Net.Http.Message
         
         public IHttpRequestMessageBuilder Modifier { get; init; }
 
-        public MessageModifierSender(IHttpRequestMessageBuilder Modifier, IHttpMessageSender? Child = null) : base(Child) {
+        public MessageModifierSender(IHttpRequestMessageBuilder Modifier, IHttpRequestMessageSender? Child = null) : base(Child) {
             this.Modifier = Modifier;
         }
 

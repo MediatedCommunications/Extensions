@@ -12,7 +12,7 @@
         }
 
         public virtual DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
-            return IGetDebuggerDisplayDefaults.GetDebuggerDisplay(this, Builder);
+            return IGetDebuggerDisplayDefaults.GetDebuggerDisplayBuilder(this, Builder);
         }
     }
 

@@ -1,9 +1,12 @@
-﻿using System.Threading;
+﻿using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.IO
 {
-    public class TemporaryFileStream : FileStream {
+
+    [DebuggerDisplay(Debugger2.DebuggerDisplay)]
+    public class TemporaryFileStream : FileStream, IGetDebuggerDisplayBuilder {
         private TemporaryFile? Internals { get; set; }
 
         private Action<TemporaryFileStream> OnRead;
@@ -78,6 +81,16 @@ namespace System.IO
             }
 
 
+        }
+
+        public DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
+            return IGetDebuggerDisplayDefaults.GetDebuggerDisplayBuilder(this, Builder)
+                .Add(Internals)
+                ;
+        }
+
+        public string GetDebuggerDisplay() {
+            return IGetDebuggerDisplayDefaults.GetDebuggerDisplay(this);
         }
     }
 

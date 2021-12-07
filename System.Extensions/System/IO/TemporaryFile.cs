@@ -7,6 +7,8 @@ namespace System.IO
 {
 
     public class TemporaryFile : DisplayClass, IDisposable {
+        public string? Tag { get; set; }
+        
         public string FullPath { get; private set; }
 
         public DateTimeOffset CreationTime { get; private set; }
@@ -35,9 +37,9 @@ namespace System.IO
             }
         }
 
-        public TemporaryFile(string FullPath, bool? Lock = default) {
+        public TemporaryFile(string FullPath, bool? Lock = default, string? Tag = default) {
             this.FullPath = FullPath;
-
+            this.Tag = Tag;
             LockAccess();
 
             var ShouldLock = Lock ?? false;
@@ -104,26 +106,26 @@ namespace System.IO
             }
         }
 
-        public static TemporaryFile CreateLocked(string FullPath) {
-            return Create(FullPath, true);
+        public static TemporaryFile CreateLocked(string FullPath, string? Tag = default) {
+            return Create(FullPath, true, Tag);
         }
 
 
-        public static TemporaryFile Create(string FullPath, bool? Lock = default) {
-            return new TemporaryFile(FullPath, Lock);
+        public static TemporaryFile Create(string FullPath, bool? Lock = default, string? Tag = default) {
+            return new TemporaryFile(FullPath, Lock, Tag);
         }
 
-        public static TemporaryFile CreateLocked(string? FolderName = default, string? FileName = default, string? Extension = default) {
-            return Create(FolderName, FileName, Extension, true);
+        public static TemporaryFile CreateLocked(string? FolderName = default, string? FileName = default, string? Extension = default, string? Tag = default) {
+            return Create(FolderName, FileName, Extension, true, Tag);
         }
 
-        public static TemporaryFile Create(System.IO.SpecialDirectory? Folder, string? FileName = default, string? Extension = default, bool? Lock = default) {
+        public static TemporaryFile Create(System.IO.SpecialDirectory? Folder, string? FileName = default, string? Extension = default, bool? Lock = default, string? Tag = default) {
             var FolderName = (Folder ?? System.IO.SpecialDirectories.Local.CommonDocuments).GetPath();
 
-            return Create(FolderName, FileName, Extension, Lock);
+            return Create(FolderName, FileName, Extension, Lock, Tag);
         }
 
-        public static TemporaryFile Create(string? FolderName = default, string? FileName = default, string? Extension = default, bool? Lock = default) {
+        public static TemporaryFile Create(string? FolderName = default, string? FileName = default, string? Extension = default, bool? Lock = default, string? Tag = default) {
             var ActualFolderName = new[] { FolderName, Path.GetTempPath() }.WhereIsNotBlank().Coalesce();
             var ActualFileName = new[] { FileName, $@"{Guid.NewGuid()}" }.WhereIsNotBlank().Coalesce();
             var ActualExtension = new[] { Extension }.Coalesce();
@@ -134,7 +136,7 @@ namespace System.IO
                 .FullPath
                 ;
 
-            return Create(DestPath, Lock);
+            return Create(DestPath, Lock, Tag);
         }
 
         public IEnumerable<TemporaryFileStream> ActiveStreams() {
@@ -143,7 +145,7 @@ namespace System.IO
             }
         }
 
-        private ConcurrentDictionary<TemporaryFileStream, TemporaryFileStream> Instances = new();
+        private readonly ConcurrentDictionary<TemporaryFileStream, TemporaryFileStream> Instances = new();
 
         private TemporaryFileStream AddStream(TemporaryFileStream S) {
             var ret = S;
@@ -219,7 +221,8 @@ namespace System.IO
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
-                .Data.Add(FullPath)
+                .Data.If(Tag is { }).Add(Tag)
+                .Data.If(Tag is null).Add(FullPath)
                 ;
         }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace System.Net.Http
 {
-    public static class HttpMessageSenderExtensions {
+    public static class HttpRequestMessageSenderExtensions {
 
         public static MessageModifierSender AsMessageSender(this IHttpRequestMessageBuilder This) {
             var ret = new MessageModifierSender(This);
@@ -45,7 +45,7 @@ namespace System.Net.Http
             return This.Add(new HttpClientMessageSender(Client, CompletionOption));
         }
 
-        public static IEnumerable<IHttpMessageSender> AllChildren(this IHttpMessageSender This) {
+        public static IEnumerable<IHttpRequestMessageSender> AllChildren(this IHttpRequestMessageSender This) {
             var Current = This;
             while(Current is { }) {
                 yield return Current;
@@ -60,7 +60,7 @@ namespace System.Net.Http
         }
 
 
-        public static DelegatingHttpMessageSender Add(this DelegatingHttpMessageSender This, IHttpMessageSender Child) {
+        public static DelegatingHttpMessageSender Add(this DelegatingHttpMessageSender This, IHttpRequestMessageSender Child) {
             
             var Items = This
                 .AllChildren()

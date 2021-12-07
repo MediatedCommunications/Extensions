@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 
 namespace System.Net.Http.Message.Senders
 {
-    public abstract record DelegatingHttpMessageSender : HttpMessageSender {
-        public IHttpMessageSender Child { get; init; }
+    public abstract record DelegatingHttpMessageSender : HttpRequestMessageSender {
+        public IHttpRequestMessageSender Child { get; init; }
 
-        public DelegatingHttpMessageSender(IHttpMessageSender? Child = default) {
-            this.Child = Child ?? HttpMessageSenders.Throw;
+        public DelegatingHttpMessageSender(IHttpRequestMessageSender? Child = default) {
+            this.Child = Child ?? HttpRequestMessageSenders.Throw;
         }
 
         public override async Task<HttpResponseMessage> SendAsync(IHttpRequestMessageBuilder Message, CancellationToken Token) {

@@ -3,7 +3,7 @@
 namespace System.Net.Http.Message.Senders
 {
     public static class MessageSenderExtensions {
-        public static IEnumerable<IHttpMessageSender> GetEnumerable<TRequest, TResponse>(this IHttpMessageSender This) {
+        public static IEnumerable<IHttpRequestMessageSender> GetEnumerable<TRequest, TResponse>(this IHttpRequestMessageSender This) {
             var start = This;
 
             while(true) {

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace System.Net.Http.Message.Senders
 {
-    public record HttpClientMessageSender : HttpMessageSender {
+    public record HttpClientMessageSender : HttpRequestMessageSender {
         public HttpClient Client { get; init; }
         public HttpCompletionOption CompletionOption { get; init; }
 

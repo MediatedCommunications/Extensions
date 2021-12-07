@@ -10,6 +10,10 @@
 
         FirstLast = FirstName | LastName,
         FirstMiddleLast = FirstName | MiddleName | LastName,
+
+        PrefixFirstLast = Prefix | FirstName | LastName,
+        PrefixFirstMiddleLast = Prefix | FirstName | MiddleName | LastName,
+
         All = Prefix | FirstName | MiddleName | LastName | Suffix,
     }
 

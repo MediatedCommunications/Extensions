@@ -19,6 +19,14 @@ namespace System.Diagnostics {
             return this.If(Value).Add(Name);
         }
 
+        public DisplayBuilder IsOverdue(bool Value) {
+            return this.If(Value).Add("Overdue");
+        }
+
+        public DisplayBuilder IsNotOverdue(bool Value) {
+            return IsOverdue(!Value);
+        }
+
 
         public DisplayBuilder IsConflict(bool Value) {
             return this.If(Value).Add("Conflict");
@@ -93,6 +101,13 @@ namespace System.Diagnostics {
             return this.If(Value).Add("Deleted");
         }
 
+        public DisplayBuilder IsNotRoot(bool Value) {
+            return IsRoot(!Value);
+        }
+
+        public DisplayBuilder IsRoot(bool Value) {
+            return this.If(Value).Add("Root");
+        }
 
         public DisplayBuilder IsNotPrimary(bool Value) {
             return IsPrimary(!Value);

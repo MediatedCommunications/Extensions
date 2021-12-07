@@ -19,8 +19,8 @@ namespace System
         public const string SlashUnix = @"/";
         public static readonly ImmutableArray<string> Slashes = new[] { SlashWindows, SlashUnix }.ToImmutableArray();
 
-        public const string CR = "\n";
-        public const string LF = "\r";
+        public const string CR = "\r";
+        public const string LF = "\n";
         public const string CRLF = CR + LF;
         public const string TAB = "\t";
 
@@ -39,32 +39,32 @@ namespace System
             var EndAt = Range.End.GetOffset(This.Length);
 
             var Length = EndAt - StartAt;
-           
+
             return SafeSubstring(This, StartAt, Length);
         }
 
         public static string SafeSubstring(this string This, int StartIndex, int? Length = default) {
 
             var ActualStartIndex = StartIndex;
-            if(ActualStartIndex < 0) {
+            if (ActualStartIndex < 0) {
                 ActualStartIndex = 0;
             }
-            if(ActualStartIndex > This.Length) {
+            if (ActualStartIndex > This.Length) {
                 ActualStartIndex = This.Length;
             }
 
             var MaxLength = Length ?? This.Length;
 
-            if(ActualStartIndex + MaxLength > This.Length) {
+            if (ActualStartIndex + MaxLength > This.Length) {
                 MaxLength = This.Length - ActualStartIndex;
             }
 
-            if(MaxLength < 0) {
+            if (MaxLength < 0) {
                 MaxLength = 0;
             }
 
             var ret = This.Substring(ActualStartIndex, MaxLength);
-            
+
             return ret;
         }
 
@@ -83,9 +83,9 @@ namespace System
                 ? V1
                 : Values.Coalesce()
                 ;
-            
+
             return ret;
-        } 
+        }
 
         public static string TrimSafe(this string? This) {
             var ret = This
@@ -106,7 +106,7 @@ namespace System
 
                 foreach (var item in ItemsToTrim.EmptyIfNull<string?>().WhereIsNotNullOrEmpty()) {
 
-                    if(Method(item, ref ret)) {
+                    if (Method(item, ref ret)) {
                         Changed = true;
                     }
                 }
@@ -124,7 +124,7 @@ namespace System
         public static string TrimStart(this string? This, IEnumerable<string?>? ItemsToTrim = default, StringComparison Comparison = default) {
             bool TrimMethod(string Element, ref string Input) {
                 var ret = false;
-                while(Input.StartsWith(Element, Comparison)){
+                while (Input.StartsWith(Element, Comparison)) {
                     Input = Input[Element.Length..];
                     ret = true;
                 }
@@ -138,7 +138,7 @@ namespace System
         public static string TrimEnd(this string? This, IEnumerable<string?>? ItemsToTrim = default, StringComparison Comparison = default) {
             bool TrimMethod(string Element, ref string Input) {
                 var ret = false;
-                while(Input.EndsWith(Element, Comparison)) {
+                while (Input.EndsWith(Element, Comparison)) {
                     Input = Input[..^Element.Length];
                     ret = true;
                 }
@@ -165,7 +165,7 @@ namespace System
 
         public static string Replace(this string? This, Func<long, string, string> Adjuster) {
             var ret = This.Coalesce();
-            
+
             var Continue = true;
             var Index = 0;
             while (Continue) {
@@ -198,6 +198,62 @@ namespace System
             );
         }
 
+     
+        public static IEnumerable<Tuple<string, int>> LastIndexOfAny(this string This, IEnumerable<string> Values) {
+            var ToFind = new List<Tuple<string, int>>();
+
+            var LastResult = int.MaxValue;
+
+            var ActualValues = Values.OrderByDescending(x => x.Length).Distinct().ToList();
+            foreach (var Value in ActualValues) {
+                var NewTuple = Tuple.Create(Value, LastResult);
+                ToFind.Add(NewTuple);
+            }
+
+            while (ToFind.Count > 0) {
+                for (var i = ToFind.Count - 1; i >= 0; i--) {
+                    var (Key, Index) = ToFind[i];
+                    var NewIndex = Index;
+
+                    if (Index >= LastResult) {
+                        var ShouldRemove = false;
+                        var StartSearchAt = Math.Min(This.Length, LastResult - 1);
+
+                        if (StartSearchAt < 0) {
+                            ShouldRemove = true;
+                        } else {
+                            NewIndex = This.LastIndexOf(Key, StartSearchAt);
+
+                            if(NewIndex < 0) {
+                                ShouldRemove = true;
+                            }
+                        }
+
+                        if (ShouldRemove) {
+                            ToFind.RemoveAt(i);
+                        } else {
+                            ToFind[i] = Tuple.Create(Key, NewIndex);
+                        }
+
+                    }
+                    
+                }
+
+                if (ToFind.Count > 0) {
+                    var Best = (
+                        from x in ToFind
+                        orderby x.Item1.Length + x.Item2 descending, x.Item1.Length descending
+                        select x
+                        ).First();
+
+                    yield return Best;
+
+                    LastResult = Best.Item2;
+                        
+                }
+            }
+
+        }
 
     }
 
