@@ -1,5 +1,4 @@
-﻿namespace System
-{
+﻿namespace System {
     public static class DateTimeOffsets
     {
         public static DateTimeOffset MinValue { get; } = DateTimeOffset.MinValue;

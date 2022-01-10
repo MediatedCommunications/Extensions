@@ -13,7 +13,7 @@ namespace System.Extensions
         public Task TestSafeSubstring() {
             var Data = "0123456789";
 
-            var Expected1 = Data.Substring(5);
+            var Expected1 = Data[5..];
             var Expected2 = Data.Substring(5, 2);
 
             Assert.AreEqual(Data.SafeSubstring(5), Expected1);
@@ -59,7 +59,7 @@ namespace System.Extensions
             };
 
             foreach (var (Input, Expected) in Tests) {
-                var Indexes = Input.LastIndexOfAny(StringExtensions.NewLines).ToList();
+                var Indexes = Input.LastIndexOfAny(Strings.NewLines).ToList();
                 var Actual = Indexes.Select(x => x.Item2).ToArray();
 
                 Assert.AreEqual(Expected, Actual);

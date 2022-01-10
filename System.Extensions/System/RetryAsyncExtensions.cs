@@ -48,7 +48,7 @@ namespace System
                 OnFailure = This.OnFailure,
                 Default = x => Task.FromResult(default(T?)),
                 Recover = This.Recover,
-                RetryAttempts = This.RetryAttempts,
+                MaxAttempts = This.MaxAttempts,
                 Token = This.Token,
                 Try = NewTry,
             };

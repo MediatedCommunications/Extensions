@@ -22,6 +22,58 @@
             return JsonSerializer.Deserialize<TValue>(Value, Options);
         }
 
+        public bool TryDeserialize<TValue>(string? Value, out TValue? ret) {
+            var success = false;
+            ret = default;
+            try {
+                ret = Deserialize<TValue>(Value);
+            } catch (Exception ex) {
+                ex.Ignore();
+            }
+
+            return success;
+        }
+
+        public bool TryDeserialize<TValue>(ref Utf8JsonReader Value, out TValue? ret) {
+            var success = false;
+            ret = default;
+            try {
+                ret = Deserialize<TValue>(ref Value);
+            } catch (Exception ex) {
+                ex.Ignore();
+            }
+
+            return success;
+        }
+
+        public bool TryDeserialize<TValue>(ReadOnlySpan<byte> Value, out TValue? ret) {
+            var success = false;
+            ret = default;
+            try {
+                ret = Deserialize<TValue>(Value);
+            } catch (Exception ex) {
+                ex.Ignore();
+            }
+
+            return success;
+        }
+
+        public TValue? TryDeserialize<TValue>(string? Value) {
+            TryDeserialize(Value, out TValue? ret);
+            return ret;
+        }
+
+        public TValue? TryDeserialize<TValue>(ref Utf8JsonReader Value) {
+            TryDeserialize(ref Value, out TValue? ret);
+            return ret;
+        }
+
+        public TValue? TryDeserialize<TValue>(ReadOnlySpan<byte> Value) {
+            TryDeserialize(Value, out TValue? ret);
+            return ret;
+        }
+
+
         public string Serialize(object Value, Type Type) {
             return JsonSerializer.Serialize(Value, Type, Options);
         }

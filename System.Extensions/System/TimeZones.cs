@@ -7,10 +7,10 @@ namespace System
 {
     public static class TimeZones {
 
-        public static ImmutableDictionary<string, TimeZoneInfo> SystemTimeZones { get; private set; }
+        public static ImmutableDictionary<string, TimeZoneInfo> SystemTimeZones { get; }
 
-        public static ImmutableDictionary<string, TimeZoneInfo> AllAmericanTimeZones { get; private set; }
-        public static ImmutableDictionary<string, TimeZoneInfo> OnlyAmericanTimeZones { get; private set; }
+        public static ImmutableDictionary<string, TimeZoneInfo> AllAmericanTimeZones { get; }
+        public static ImmutableDictionary<string, TimeZoneInfo> OnlyAmericanTimeZones { get; }
 
         private static readonly Regex DisplayNameOnlyRegex;
 
@@ -52,6 +52,7 @@ namespace System
 
             return ret;
         }
+
 
 
         private static void CreateAmericanTimeZones(out ImmutableDictionary<string, TimeZoneInfo> AllAmericanTimeZones, out ImmutableDictionary<string, TimeZoneInfo> OnlyAmericanTimeZones) {

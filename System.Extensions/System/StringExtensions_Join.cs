@@ -16,35 +16,47 @@ namespace System
         }
 
         public static string JoinSpace<T>(this IEnumerable<T>? This, int RepeatSeparator = 1) {
-            return This.Join(StringExtensions.Space, RepeatSeparator);
+            return This.Join(Strings.Space, RepeatSeparator);
         }
 
         public static string JoinComma<T>(this IEnumerable<T>? This, int RepeatSeparator = 1) {
-            return This.Join(StringExtensions.Comma, RepeatSeparator);
+            return This.Join(Strings.Comma, RepeatSeparator);
         }
 
         public static string JoinSeparator<T>(this IEnumerable<T>? This, int RepeatSeparator = 1) {
-            return This.Join(StringExtensions.Separator, RepeatSeparator);
+            return This.Join(Strings.Separator, RepeatSeparator);
         }
 
         public static string JoinDot<T>(this IEnumerable<T>? This, int RepeatSeparator = 1) {
-            return This.Join(StringExtensions.Dot, RepeatSeparator);
+            return This.Join(Strings.Dot, RepeatSeparator);
         }
 
         public static string JoinDash<T>(this IEnumerable<T>? This, int RepeatSeparator = 1) {
-            return This.Join(StringExtensions.Dash, RepeatSeparator);
+            return This.Join(Strings.Dash, RepeatSeparator);
+        }
+
+        public static string JoinPipe<T>(this IEnumerable<T>? This, int RepeatSeparator = 1) {
+            return This.Join(Strings.Pipe, RepeatSeparator);
         }
 
         public static string JoinLine<T>(this IEnumerable<T>? This, int RepeatSeparator = 1) {
-            return This.Join(StringExtensions.CR, RepeatSeparator);
+            return This.Join(Strings.CR, RepeatSeparator);
         }
 
         public static string JoinPathWindows<T>(this IEnumerable<T>? This, int RepeatSeparator = 1) {
-            return This.Join(StringExtensions.SlashWindows, RepeatSeparator);
+            return This.Join(Strings.SlashWindows, RepeatSeparator);
         }
 
         public static string JoinPathUnix<T>(this IEnumerable<T>? This, int RepeatSeparator = 1) {
-            return This.Join(StringExtensions.SlashUnix, RepeatSeparator);
+            return This.Join(Strings.SlashUnix, RepeatSeparator);
+        }
+
+        public static string JoinPathWeb<T>(this IEnumerable<T>? This, int RepeatSeparator = 1) {
+            return This.Join(Strings.SlashWeb, RepeatSeparator);
+        }
+
+        public static string JoinUnderscore<T>(this IEnumerable<T>? This, int RepeatSeparator = 1) {
+            return This.Join(Strings.Underscore, RepeatSeparator);
         }
 
     }

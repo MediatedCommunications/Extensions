@@ -6,10 +6,18 @@ namespace System.IO
     public enum TransferOptions {
         None = 0,
         Copy = 1,
-        DeleteSource = 2,
-        Move = Copy | DeleteSource,
-        OverwriteDest = 4,
-        CreateDestPath = 8,
+        Source_Delete = 2,
+        CreatePath = 4,
+
+        IfDestExists_Overwrite = 128,
+        IfDestExists_MoveToTemp = 256,
+
+        Move = Copy | Source_Delete,
+        TryOverwrite = IfDestExists_Overwrite,
+        ForceOverwrite = IfDestExists_Overwrite | IfDestExists_MoveToTemp,
+
+        ForceCopy = CreatePath | Copy | ForceOverwrite
+        
     }
 
     public static class File2 {
@@ -20,11 +28,11 @@ namespace System.IO
                 ;
 
             if (Overwrite) {
-                Options |= TransferOptions.OverwriteDest;
+                Options |= TransferOptions.IfDestExists_Overwrite;
             }
 
             if (CreatePath) {
-                Options |= TransferOptions.CreateDestPath;
+                Options |= TransferOptions.CreatePath;
             }
 
             Transfer(SourceFile, DestFile, Options);
@@ -37,11 +45,11 @@ namespace System.IO
                 ;
 
             if (Overwrite) {
-                Options |= TransferOptions.OverwriteDest;
+                Options |= TransferOptions.IfDestExists_Overwrite;
             }
 
             if (CreatePath) {
-                Options |= TransferOptions.CreateDestPath;
+                Options |= TransferOptions.CreatePath;
             }
 
             Transfer(SourceFile, DestFile, Options);
@@ -71,19 +79,24 @@ namespace System.IO
                 Copy = true;
             }
 
-            if (Options.HasFlag(TransferOptions.DeleteSource))
+            if (Options.HasFlag(TransferOptions.Source_Delete))
             {
                 DeleteSource = true;
             }
 
-            if (Options.HasFlag(TransferOptions.OverwriteDest)) {
+            if (Options.HasFlag(TransferOptions.IfDestExists_Overwrite)) {
                 Overwrite = true;
             }
 
-            if (Options.HasFlag(TransferOptions.CreateDestPath)) {
+            if (Options.HasFlag(TransferOptions.CreatePath)) {
                 var Folder = DestFile.Parse().AsPath().Directory;
 
                 Directory.CreateDirectory(Folder);
+            }
+
+            if(Options.HasFlag(TransferOptions.IfDestExists_MoveToTemp) && System.IO.File.Exists(DestFile)) {
+                using var TFS = TemporaryFile.Create();
+                System.IO.File.Move(DestFile, TFS.FullPath, true);
             }
 
             if (Move) {

@@ -21,8 +21,8 @@ namespace System
             };
         }
 
-        public static RetrySync<TResult> DefaultIs<TResult>(this RetrySync<TResult> This, TResult Default = default)
-            where TResult : struct {
+        public static RetrySync<TResult> DefaultIs<TResult>(this RetrySync<TResult> This, TResult Default)
+        {
 
             return DefaultIs(This, x => Default);
 

@@ -5,29 +5,40 @@ using System.Linq;
 namespace System.IO
 {
     public static class FileSystem {
+        
+        static FileSystem() {
+            InvalidFileNameChars = Path.GetInvalidFileNameChars().Select(x => x.ToString()).ToImmutableHashSet();
+            InvalidPathNameChars = Path.GetInvalidPathChars().Select(x => x.ToString()).ToImmutableHashSet();
 
-        public static ImmutableHashSet<string> InvalidFileNameChars { get; private set; } = Path.GetInvalidFileNameChars().Select(x => x.ToString()).ToImmutableHashSet();
-        public static ImmutableHashSet<string> InvalidPathNameChars { get; private set; } = Path.GetInvalidPathChars().Select(x => x.ToString()).ToImmutableHashSet();
+            InvalidCharacterReplacements = new Dictionary<string, string>() {
+                [$@"\"] = "-",
+                [$@"/"] = "-",
+                [$@"|"] = "-",
+                [$@":"] = ".",
+                [$@"?"] = "-",
+                [$@"*"] = "@",
+                [$@""""] = "'",
+                [$@"<"] = "[",
+                [$@">"] = "]",
+                [$"\t"] = " ",
+            }.ToImmutableDictionary();
 
-        public static ImmutableDictionary<string, string> InvalidCharacterReplacements { get; private set; } = new Dictionary<string, string>() {
-            [$@"\"] = "-",
-            [$@"/"] = "-",
-            [$@"|"] = "-",
-            [$@":"] = ".",
-            [$@"?"] = "-",
-            [$@"*"] = "@",
-            [$@""""] = "'",
-            [$@"<"] = "[",
-            [$@">"] = "]",
-            [$"\t"] = " ",
-        }.ToImmutableDictionary();
+            InvalidNameReplacements = new[] {
+                $@"",
+                $@"CON", $@"PRN", $@"AUX", $@"NUL",
+                $@"COM1", $@"COM2",$@"COM3",$@"COM4", $@"COM5", $@"COM6", $@"COM7", $@"COM8", $@"COM9",
+                $@"LPT1", $@"LPT2", $@"LPT3", $@"LPT4", $@"LPT5", $@"LPT6", $@"LPT7", $@"LPT8", $@"LPT9",
+            }.ToImmutableHashSet(StringComparer.InvariantCultureIgnoreCase);
 
-        public static ImmutableHashSet<string> InvalidNameReplacements { get; private set; } = new HashSet<string>() {
-            $@"",
-            $@"CON", $@"PRN", $@"AUX", $@"NUL",
-            $@"COM1", $@"COM2",$@"COM3",$@"COM4", $@"COM5", $@"COM6", $@"COM7", $@"COM8", $@"COM9",
-            $@"LPT1", $@"LPT2", $@"LPT3", $@"LPT4", $@"LPT5", $@"LPT6", $@"LPT7", $@"LPT8", $@"LPT9",
-        }.ToImmutableHashSet(StringComparer.InvariantCultureIgnoreCase);
+        }
+
+
+        public static ImmutableHashSet<string> InvalidFileNameChars { get; } 
+        public static ImmutableHashSet<string> InvalidPathNameChars { get; } 
+
+        public static ImmutableDictionary<string, string> InvalidCharacterReplacements { get; } 
+
+        public static ImmutableHashSet<string> InvalidNameReplacements { get; } 
 
         private static string RemoveInvalidCharacters(string FileName) {
             var ret = FileName;
@@ -80,6 +91,20 @@ namespace System.IO
 
             ret = RemoveInvalidCharacters(ret);
             ret = ReplaceInvalidNames(ret);
+
+            return ret;
+        }
+
+        public static List<string> SafeFilePath(params string[] Values) {
+            return SafeFilePath(Values.AsEnumerable());
+        }
+
+        public static List<string> SafeFilePath(IEnumerable<string> Values) {
+            var ret = (
+                from x in Values
+                let v = SafeFileName(x)
+                select v
+                ).ToList();
 
             return ret;
         }
@@ -179,6 +204,20 @@ namespace System.IO
                 || FN.Equals("desktop.ini")
                 || FN.Equals("thumbs.db")
                 || FN.Equals(".ds_store")
+                ;
+
+            return ret;
+        }
+
+        public static bool IsExecutableName(string FileName) {
+            var FN = FileName.Parse().AsPath().Extension.AsText();
+
+            var ret = false
+                || FN.Equals("exe")
+                || FN.Equals("com")
+                || FN.Equals("bat")
+                || FN.Equals("cmd")
+                || FN.Equals("dll")
                 ;
 
             return ret;

@@ -34,7 +34,7 @@ namespace System
 
             var FailureException = default(ExceptionDispatchInfo);
 
-            while (!Result_Success && Attempts < RetryAttempts && LinkedToken.Token.ShouldContinue())
+            while (!Result_Success && Attempts < MaxAttempts && LinkedToken.Token.ShouldContinue())
             {
                 try
                 {
@@ -53,15 +53,17 @@ namespace System
                 {
                     FailureException = ExceptionDispatchInfo.Capture(ex);
 
-                    if (Attempts != RetryAttempts)
+                    if (Attempts != MaxAttempts)
                     {
-                        SafeDelay.Delay(DelayBeforeRecover, LinkedToken.Token)
+                        var Delay1 = DelayBeforeRecover(Attempts);
+                        SafeDelay.Delay(Delay1, LinkedToken.Token)
                             ;
 
                         Recover(ex, LinkedToken.Token)
                             ;
 
-                        SafeDelay.Delay(DelayAfterRecover, LinkedToken.Token)
+                        var Delay2 = DelayAfterRecover(Attempts);
+                        SafeDelay.Delay(Delay2, LinkedToken.Token)
                             ;
                     }
 

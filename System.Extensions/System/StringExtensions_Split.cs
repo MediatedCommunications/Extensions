@@ -17,7 +17,7 @@ namespace System
         public static string[] SplitSpace(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
             return This
                 .Coalesce()
-                .Split(new[] { StringExtensions.Space }, SplitOptions)
+                .Split(new[] { Strings.Space }, SplitOptions)
                 ;
         }
 
@@ -25,62 +25,76 @@ namespace System
         public static string[] SplitComma(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
             return This
                 .Coalesce()
-                .Split(new[] { StringExtensions.Comma }, SplitOptions)
+                .Split(new[] { Strings.Comma }, SplitOptions)
                 ;
         }
 
         public static string[] SplitDot(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
             return This
                 .Coalesce()
-                .Split(new[] { StringExtensions.Dot }, SplitOptions)
+                .Split(new[] { Strings.Dot }, SplitOptions)
                 ;
         }
 
         public static string[] SplitDash(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
             return This
                 .Coalesce()
-                .Split(new[] { StringExtensions.Dash }, SplitOptions)
+                .Split(new[] { Strings.Dash }, SplitOptions)
+                ;
+        }
+
+        public static string[] SplitPipe(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
+            return This
+                .Coalesce()
+                .Split(new[] { Strings.Pipe }, SplitOptions)
                 ;
         }
 
         public static string[] SplitUnderscore(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
             return This
                 .Coalesce()
-                .Split(new[] { StringExtensions.Underscore }, SplitOptions)
+                .Split(new[] { Strings.Underscore }, SplitOptions)
                 ;
         }
 
         public static string[] SplitLine(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
             return This
                 .Coalesce()
-                .Split(StringExtensions.NewLines.ToArray(), SplitOptions)
+                .Split(Strings.NewLines.ToArray(), SplitOptions)
                 ;
         }
 
         public static string[] SplitPath(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
             return This
                 .Coalesce()
-                .Split(StringExtensions.Slashes.ToArray(), SplitOptions)
+                .Split(Strings.Slashes.ToArray(), SplitOptions)
                 ;
         }
 
         public static string[] SplitPathWindows(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
             return This
                 .Coalesce()
-                .Split(new[] { StringExtensions.SlashWindows }, SplitOptions)
+                .Split(new[] { Strings.SlashWindows }, SplitOptions)
                 ;
         }
 
         public static string[] SplitPathUnix(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
             return This
                 .Coalesce()
-                .Split(new[] { StringExtensions.SlashUnix }, SplitOptions)
+                .Split(new[] { Strings.SlashUnix }, SplitOptions)
+                ;
+        }
+
+        public static string[] SplitPathWeb(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
+            return This
+                .Coalesce()
+                .Split(new[] { Strings.SlashWeb }, SplitOptions)
                 ;
         }
 
         public static string[] SplitNull(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
             return This.Coalesce()
-                .Split(new[] { StringExtensions.Null }, SplitOptions);
+                .Split(new[] { Strings.Null }, SplitOptions);
         }
 
 

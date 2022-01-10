@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
-    <AssemblyVersion>21.11.22.0652</AssemblyVersion>
-    <FileVersion>21.11.22.0652</FileVersion>
-    <Version>21.11.22.0652</Version>
+    <AssemblyVersion>21.12.15.0506</AssemblyVersion>
+    <FileVersion>21.12.15.0506</FileVersion>
+    <Version>21.12.15.0506</Version>
   </PropertyGroup>
 </Project>
 

@@ -86,15 +86,29 @@ namespace System {
             };
         }
 
-        public static KeyValueRegexParser AsKeyValueRegexMatches(this ParseValue This, Regex RX) {
-            return new KeyValueRegexParser() {
+        public static KeyValueNamedCaptureRegexParser AsKeyValueRegexMatches(this ParseValue This, Regex RX) {
+            return new KeyValueNamedCaptureRegexParser() {
                 Input = This.Value,
                 Regex = RX,
             };
         }
 
-        public static KeyValueRegexParser AsKeyValueRegexMatches(this ParseValue This, string RX, RegexOptions? Options = default) {
-            return new KeyValueRegexParser() {
+        public static KeyValueNamedCaptureRegexParser AsKeyValueRegexMatches(this ParseValue This, string RX, RegexOptions? Options = default) {
+            return new KeyValueNamedCaptureRegexParser() {
+                Input = This.Value,
+                Regex = new Regex(RX, Options ?? RegularExpressions.Options),
+            };
+        }
+
+        public static ValueNamedCaptureRegexParser AsValueRegexMatches(this ParseValue This, Regex RX) {
+            return new ValueNamedCaptureRegexParser() {
+                Input = This.Value,
+                Regex = RX,
+            };
+        }
+
+        public static ValueNamedCaptureRegexParser AsValueRegexMatches(this ParseValue This, string RX, RegexOptions? Options = default) {
+            return new ValueNamedCaptureRegexParser() {
                 Input = This.Value,
                 Regex = new Regex(RX, Options ?? RegularExpressions.Options),
             };

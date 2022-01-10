@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Text;
 
-namespace System.Threading
-{
+namespace System.Threading {
+
 
     public static class Invoke
     {

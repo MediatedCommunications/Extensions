@@ -6,8 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace CsvHelper
-{
+namespace CsvHelper {
 
     public static class Read {
 

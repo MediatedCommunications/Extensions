@@ -1,6 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace System.Text.Json {
+    public static class Converters {
+        public static JsonConverter StringEnumConverter() {
+            return new JsonStringEnumMemberConverter();
+        }
+    }
+
     public static class ConfiguredJsonSerializers {
         public static ConfiguredJsonSerializer Default { get; }
         public static ConfiguredJsonSerializer NumericEnums { get; }
@@ -11,6 +17,7 @@ namespace System.Text.Json {
                 var Options = new JsonSerializerOptions() {
                     AllowTrailingCommas = true,
                     PropertyNameCaseInsensitive = true,
+                    WriteIndented = true,
                     Converters = {
 
                     },
@@ -22,6 +29,7 @@ namespace System.Text.Json {
                 var Options = new JsonSerializerOptions() {
                     AllowTrailingCommas = true,
                     PropertyNameCaseInsensitive = true,
+                    WriteIndented = true,
                     Converters = {
                     
                     },
@@ -33,8 +41,9 @@ namespace System.Text.Json {
                 var Options = new JsonSerializerOptions() {
                     AllowTrailingCommas = true,
                     PropertyNameCaseInsensitive = true,
+                    WriteIndented = true,
                     Converters = {
-                        new JsonStringEnumMemberConverter(),
+                        Converters.StringEnumConverter(),
                     },
                 };
                 NamedEnums = new(Options);

@@ -1,9 +1,34 @@
-﻿namespace System.Collections.Generic {
+﻿using System.Linq;
+
+namespace System.Collections.Generic {
     public static class CollectionExtensions_Consumable {
 
-        static bool Condition_Default<T>(T _) {
+        private static bool Condition_Default<T>(T _) {
             return true;
         }
+
+        public static IEnumerable<T> GetConsumingEnumerableFirst<T>(this ICollection<T>? This) {
+            if(This is { } V1) {
+                while(V1.FirstOrDefault() is { } Item) {
+                    V1.Remove(Item);
+
+                    yield return Item;
+                    
+                }
+            }
+        }
+
+        public static IEnumerable<T> GetConsumingEnumerableLast<T>(this ICollection<T>? This) {
+            if (This is { } V1) {
+                while (V1.LastOrDefault() is { } Item) {
+                    V1.Remove(Item);
+
+                    yield return Item;
+
+                }
+            }
+        }
+
 
         public static IEnumerable<T> GetConsumingEnumerableFirst<T>(this LinkedList<T>? This) {
             if(This is { } V1) {

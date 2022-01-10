@@ -15,7 +15,14 @@ namespace System.Text.RegularExpressions {
         /// <summary>
         /// A regex that will never match anything.
         /// </summary>
-        public static Regex None { get; } 
+        public static Regex None { get; }
+        public static string NonePattern { get; }
+
+        /// <summary>
+        /// A regex that will always match everything
+        /// </summary>
+        public static Regex Any { get; }
+        public static string AnyPattern { get; }
 
         static RegularExpressions()
         {
@@ -25,7 +32,12 @@ namespace System.Text.RegularExpressions {
                 | RegexOptions.Compiled
                 ;
 
-            None = new Regex($@"(?!)", Options);
+            NonePattern = $@"(?!)";
+            AnyPattern = $@".*";
+
+            None = new Regex(NonePattern, Options);
+
+            Any = new Regex(AnyPattern, Options);
         }
 
     }

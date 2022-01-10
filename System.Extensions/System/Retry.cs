@@ -9,26 +9,13 @@ namespace System {
             };
         }
 
-    }
-
-    public static class RetryExtensionsAsnyc {
-
-        public static RetryAsync<TResult> DefaultIs<TResult>(this RetryAsync<TResult> This, TResult Default = default)
-            where TResult : struct {
-
-            return DefaultIs(This, x => Task.FromResult(Default));
-        }
-
-        public static RetryAsync<TResult> DefaultIs<TResult>(this RetryAsync<TResult> This, Func<CancellationToken, Task<TResult>> Default) {
-
+        public static T MaxAttemptsIs<T>(this T This, int Value) where T : RetryBase {
             return This with {
-                Default = Default,
-                OnFailure = RetryFailureResult.ReturnDefault,
+                MaxAttempts = Value
             };
-
         }
-    }
 
+    }
 
     public static class Retry
     {
@@ -47,7 +34,7 @@ namespace System {
 
             var ret = new RetryAsync<bool>() {
                 Try = SubAction,
-            }.DefaultIs();
+            }.DefaultIs(false);
 
             return ret;
         }
@@ -68,7 +55,7 @@ namespace System {
             var ret = new RetryAsync<bool>()
             {
                 Try = SubAction,
-            }.DefaultIs();
+            }.DefaultIs(false);
 
             return ret;
 
@@ -103,6 +90,20 @@ namespace System {
             return ret;
         }
 
+        public static RetrySync<bool> WithAction(Action Value) {
+            bool SubAction(CancellationToken Token) {
+                Value();
+
+                return true;
+            }
+
+            var ret = new RetrySync<bool>() {
+                Try = SubAction,
+            }.DefaultIs(false);
+
+            return ret;
+        }
+
         public static RetrySync<bool> WithAction(Action<CancellationToken> Value)
         {
             bool SubAction(CancellationToken Token)
@@ -117,10 +118,25 @@ namespace System {
             var ret = new RetrySync<bool>()
             {
                 Try = SubAction,
-            }.DefaultIs();
+            }.DefaultIs(false);;
 
             return ret;
 
+        }
+
+
+        public static RetrySync<T> WithAction<T>(Func<T> Value) {
+            T SubAction(CancellationToken Token) {
+                var tret = Value();
+
+                return tret;
+            }
+
+            var ret = new RetrySync<T>() {
+                Try = SubAction,
+            };
+
+            return ret;
         }
 
         public static RetrySync<T> WithAction<T>(Func<CancellationToken, T> Value)

@@ -5,10 +5,10 @@ namespace System
 {
     public abstract record RetryBase : DisplayRecord
     {
-        public TimeSpan DelayBeforeRecover { get; init; } = TimeSpan.Zero;
-        public TimeSpan DelayAfterRecover { get; init; } = TimeSpan.FromSeconds(1);
+        public Func<int, TimeSpan> DelayBeforeRecover { get; init; } = x => TimeSpan.Zero;
+        public Func<int, TimeSpan> DelayAfterRecover { get; init; } = x => TimeSpan.FromSeconds(x);
 
-        public long RetryAttempts { get; init; } = 3;
+        public long MaxAttempts { get; init; } = 3;
 
         public RetryFailureResult OnFailure { get; init; } = RetryFailureResult.ReturnDefault;
         public CancellationToken Token { get; init; } = default;

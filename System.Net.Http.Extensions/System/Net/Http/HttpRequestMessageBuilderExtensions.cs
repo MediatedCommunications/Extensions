@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Net.Http.Message;
 using System.Net.Http.Message.Modifiers;
@@ -114,6 +115,9 @@ namespace System.Net.Http
             return This.Add(new SetNoContentMessageModifier(Enabled));
         }
 
+        public static HttpRequestMessageBuilder StreamContent(this HttpRequestMessageBuilder This, Func<Stream> Content, bool? Enabled = default) {
+            return This.Add(new SetStreamContentMessageModifier(Content, Enabled));
+        }
 
         public static HttpRequestMessageBuilder HttpMethod(this HttpRequestMessageBuilder This, HttpMethod Method, bool? Enabled = default) {
             return This.Add(new SetHttpMethodModifier(Method, Enabled));

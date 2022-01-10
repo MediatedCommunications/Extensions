@@ -44,6 +44,7 @@
         public SpecialDirectory Resources { get;} = new EnvironmentSpecialDirectory(Environment.SpecialFolder.Resources);
         public SpecialDirectory SendTo { get;} = new EnvironmentSpecialDirectory(Environment.SpecialFolder.SendTo);
         public SpecialDirectory StartMenu { get;} = new EnvironmentSpecialDirectory(Environment.SpecialFolder.StartMenu);
+        public SpecialDirectory StartMenuPrograms { get; } = new EnvironmentSpecialDirectory(Environment.SpecialFolder.StartMenu, "Programs");
         public SpecialDirectory Startup { get;} = new EnvironmentSpecialDirectory(Environment.SpecialFolder.Startup);
         public SpecialDirectory System { get;} = new EnvironmentSpecialDirectory(Environment.SpecialFolder.System);
         public SpecialDirectory SystemX86 { get;} = new EnvironmentSpecialDirectory(Environment.SpecialFolder.SystemX86);

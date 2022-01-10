@@ -54,7 +54,7 @@ namespace System
         public Func<CancellationToken, Task<T>> Try { get; init; } = x => throw new MissingMethodException();
         public Func<CancellationToken, Task<T>> Default { get; init; } = x => throw new MissingMethodException();
 
-        public Func<Exception, CancellationToken, Task> Recover { get; init; } = (x,y) => Task.CompletedTask;
+        public Func<Exception, int, CancellationToken, Task> Recover { get; init; } = (x, y, z) => Task.CompletedTask;
 
         public async Task<T> InvokeAsync(CancellationToken Token = default) {
             var tret = await TryInvokeAsync(true, Token)
@@ -85,7 +85,7 @@ namespace System
 
             var FailureException = default(ExceptionDispatchInfo);
 
-            while(!Result_Success && Attempts < RetryAttempts && LinkedToken.Token.ShouldContinue()) {
+            while(!Result_Success && Attempts < MaxAttempts && LinkedToken.Token.ShouldContinue()) {
                 try {
                     Attempts += 1;
 
@@ -104,17 +104,19 @@ namespace System
                 } catch (Exception ex) {
                     FailureException = ExceptionDispatchInfo.Capture(ex);
 
-                    if (Attempts != RetryAttempts) {
+                    if (Attempts != MaxAttempts) {
 
-                        await SafeDelay.DelayAsync(DelayBeforeRecover, LinkedToken.Token)
+                        var Delay1 = DelayBeforeRecover(Attempts);
+                        await SafeDelay.DelayAsync(Delay1, LinkedToken.Token)
                             .DefaultAwait()
                             ;
 
-                        await Recover(ex, LinkedToken.Token)
+                        await Recover(ex, Attempts, LinkedToken.Token)
                             .DefaultAwait()
                             ;
 
-                        await SafeDelay.DelayAsync(DelayAfterRecover, LinkedToken.Token)
+                        var Delay2 = DelayAfterRecover(Attempts);
+                        await SafeDelay.DelayAsync(Delay2, LinkedToken.Token)
                             .DefaultAwait()
                             ;
                     }

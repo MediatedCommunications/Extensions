@@ -25,13 +25,13 @@ namespace System
         }
 
         protected PathParser(string? FullPath) {
-            var ActualPath = FullPath.TrimEnd(StringExtensions.Slashes);
+            var ActualPath = FullPath.TrimEnd(Strings.Slashes);
             this.FullPath = ActualPath;
             this.FileName = Path.GetFileName(ActualPath).Coalesce();
             this.Name = Path.GetFileNameWithoutExtension(ActualPath).Coalesce();
             this.Directory = Path.GetDirectoryName(ActualPath).Coalesce();
             this.DotExtension = Path.GetExtension(ActualPath).Coalesce();
-            this.Extension = DotExtension.TrimStart(StringExtensions.Dots);
+            this.Extension = DotExtension.TrimStart(Strings.Dots);
 
             if(this.FileName.IsBlank() && this.Directory.IsBlank()) {
                 this.Directory = ActualPath;

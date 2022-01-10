@@ -41,6 +41,20 @@ namespace System.Net.Http
             return RetryOnHttpStatusCodes(This, HttpStatusErrors, Attempts);
         }
 
+        public static DelegatingHttpMessageSender SendUsingHttpClient(this DelegatingHttpMessageSender This, Action<HttpClientHandler> ConfigureHandler, HttpCompletionOption? CompletionOption = default) {
+            var Handler = new HttpClientHandler();
+            ConfigureHandler(Handler);
+
+            return This.SendUsingHttpClient(Handler, CompletionOption);
+        }
+
+        public static DelegatingHttpMessageSender SendUsingHttpClient(this DelegatingHttpMessageSender This, HttpClientHandler Handler, HttpCompletionOption? CompletionOption = default) {
+            var Client = new HttpClient(Handler);
+
+            return This.SendUsingHttpClient(Client, CompletionOption);
+        }
+
+
         public static DelegatingHttpMessageSender SendUsingHttpClient(this DelegatingHttpMessageSender This, HttpClient? Client = default, HttpCompletionOption? CompletionOption = default) {
             return This.Add(new HttpClientMessageSender(Client, CompletionOption));
         }
