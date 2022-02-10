@@ -17,8 +17,8 @@ namespace System.Text.Matching
     }
 
     public record MatchSegment : DisplayRecord {
-        public string Left { get; init; } = string.Empty;
-        public string Right { get; init; } = string.Empty;
+        public string Left { get; init; } = Strings.Empty;
+        public string Right { get; init; } = Strings.Empty;
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)

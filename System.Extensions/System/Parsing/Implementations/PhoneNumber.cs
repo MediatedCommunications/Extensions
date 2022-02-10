@@ -21,17 +21,17 @@ namespace System
         /// <summary>
         /// + 555 ...
         /// </summary>
-        public string CountryCode { get; init; } = string.Empty;
+        public string CountryCode { get; init; } = Strings.Empty;
 
         /// <summary>
         /// ... 555-555-555 x ...
         /// </summary>
-        public string Number { get; init; } = string.Empty;
+        public string Number { get; init; } = Strings.Empty;
 
         /// <summary>
         /// ... x 555
         /// </summary>
-        public string Extension { get; init; } = string.Empty;
+        public string Extension { get; init; } = Strings.Empty;
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)

@@ -36,8 +36,8 @@ namespace System.Extensions
     }
 
     public record TestLicense : DisplayRecord {
-        public string Id { get; init; } = string.Empty;
-        public string Owner { get; init; } = string.Empty;
+        public string Id { get; init; } = Strings.Empty;
+        public string Owner { get; init; } = Strings.Empty;
         public DateTimeOffset From { get; init; }
         public DateTimeOffset Till { get; init; }
     }

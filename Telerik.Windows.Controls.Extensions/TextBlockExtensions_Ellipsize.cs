@@ -37,7 +37,7 @@ namespace Telerik.Windows.Controls {
                 var Start = 0;
                 var End = Content.Length;
 
-                var NewContent = string.Empty;
+                var NewContent = Strings.Empty;
 
                 for (var i = End; i >= Start; i--) {
 

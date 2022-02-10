@@ -47,11 +47,11 @@ namespace System.IO
             }
 
             foreach (var item in InvalidFileNameChars) {
-                ret = ret.Replace(item, string.Empty);
+                ret = ret.Replace(item, Strings.Empty);
             }
 
             foreach (var item in InvalidPathNameChars) {
-                ret = ret.Replace(item, string.Empty);
+                ret = ret.Replace(item, Strings.Empty);
             }
 
             ret = ret.Trim();
@@ -120,6 +120,14 @@ namespace System.IO
             return ret;
         }
 
+
+        public static FileSystemAttributes GetAttributesFromName(string Name, string Ext) {
+            var NewName = new[] { Name, Ext }.JoinDot();
+
+            var ret = GetAttributesFromName(NewName);
+
+            return ret;
+        }
 
         public static FileSystemAttributes GetAttributesFromName(string Name) {
             var ret = GetAttributesFromNameInternal(Name);

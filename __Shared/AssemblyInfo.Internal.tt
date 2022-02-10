@@ -14,7 +14,7 @@
     var Major = (VersionDate.Year % 100);
     var Minor = VersionDate.Month;
     var Build = VersionDate.Day;
-    var Revision = (VersionDate.Hour * 60) + VersionDate.Minute;
+    var Revision = (VersionDate.Hour * 100) + VersionDate.Minute;
 
     var Version = String.Format("{0:00}.{1:00}.{2:00}.{3:0000}", Major, Minor, Build, Revision);
 
@@ -26,9 +26,15 @@ using System;
     static internal partial class InternalAssemblyInfo {
 
 		public const string AssemblyBuildDateString = "<#= Date #>" ;
-		public static DateTimeOffset AssemblyBuildDate {get; private set;} = DateTimeOffset.Parse(AssemblyBuildDateString, System.Globalization.DateTimeFormatInfo.InvariantInfo);
+		public static DateTimeOffset AssemblyBuildDate {get; }
 
         public const string AssemblyVersionString = "<#= Version #>";
-        public static Version AssemblyVersion {get; private set;} = new Version(AssemblyVersionString);
+        public static Version AssemblyVersion {get; } 
+
+
+        static InternalAssemblyInfo(){
+            AssemblyBuildDate = DateTimeOffset.Parse(AssemblyBuildDateString, System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            AssemblyVersion = new Version(AssemblyVersionString);
+        }
 
 	}

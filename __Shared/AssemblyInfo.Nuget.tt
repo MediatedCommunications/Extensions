@@ -13,7 +13,7 @@
     var Major = (VersionDate.Year % 100);
     var Minor = VersionDate.Month;
     var Build = VersionDate.Day;
-    var Revision = (VersionDate.Hour * 60) + VersionDate.Minute;
+    var Revision = (VersionDate.Hour * 100) + VersionDate.Minute;
 
     var Version = String.Format("{0:00}.{1:00}.{2:00}.{3:0000}", Major, Minor, Build, Revision);
 

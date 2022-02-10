@@ -3,6 +3,7 @@ using System.Text;
 
 namespace System.Security {
     public class HashCodeAlgorithm {
+        private static string NoHashCode { get; } = Strings.Empty;
 
         protected Func<Cryptography.HashAlgorithm> AlgorithmFactory { get; }
         
@@ -13,7 +14,7 @@ namespace System.Security {
         private static string MyRetry(Func<string> Action) {
             var ret = Retry.WithAction(Action)
                 .MaxAttemptsIs(1)
-                .DefaultIs(string.Empty)
+                .DefaultIs(NoHashCode)
                 .Invoke()
                 ;
 
@@ -21,7 +22,13 @@ namespace System.Security {
         }
 
         public string TryHashPath(string FilePath) {
-            return MyRetry(() => HashPath(FilePath));
+            return MyRetry(() => {
+                var ret = NoHashCode;
+                if (FilePath.IsNotBlank() && System.IO.File.Exists(FilePath)) {
+                    ret = HashPath(FilePath);
+                }
+                return ret;
+            });
         }
 
         public string TryHash(Stream Content) {
@@ -69,7 +76,7 @@ namespace System.Security {
 
         private static string Format(byte[] Hash) {
             var ret = BitConverter.ToString(Hash)
-                .Replace("-", string.Empty)
+                .Replace("-", Strings.Empty)
                 ;
 
             return ret;

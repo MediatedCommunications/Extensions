@@ -76,8 +76,8 @@ namespace HtmlAgilityPack {
         }
 
         public HtmlNode Node { get; init; }
-        public string Name { get; init; } = string.Empty;
-        public string Value { get; init; } = string.Empty;
+        public string Name { get; init; } = Strings.Empty;
+        public string Value { get; init; } = Strings.Empty;
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)

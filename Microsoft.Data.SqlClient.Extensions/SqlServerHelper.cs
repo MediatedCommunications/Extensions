@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace Microsoft.Data.SqlClient {
     public record SqlServerHelper : DisplayRecord {
-        public string ConnectionString { get; init; } = string.Empty;
+        public string ConnectionString { get; init; } = Strings.Empty;
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)

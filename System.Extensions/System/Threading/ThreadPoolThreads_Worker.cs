@@ -1,5 +1,5 @@
 ﻿namespace System.Threading {
-    internal class ThreadPoolWorkerThreads : ThreadPoolThreads {
+    internal class ThreadPoolThreads_Worker : ThreadPoolThreads {
         public override int Min { 
             get {
                 ThreadPool.GetMinThreads(out var worker, out _);

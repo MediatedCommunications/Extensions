@@ -6,7 +6,7 @@ namespace Telerik.Windows.Controls {
     public static partial class PasswordBoxExtensions {
 
         public static readonly DependencyProperty PasswordProperty =
-                   DependencyProperty.RegisterAttached(nameof(Password), typeof(string), typeof(PasswordBoxExtensions), new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, Password.PropertyChanged, Password.CoerceValue));
+                   DependencyProperty.RegisterAttached(nameof(Password), typeof(string), typeof(PasswordBoxExtensions), new FrameworkPropertyMetadata(Strings.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, Password.PropertyChanged, Password.CoerceValue));
 
         public static string GetPassword(DependencyObject dp) {
             return (string)dp.GetValue(PasswordProperty);
@@ -65,7 +65,7 @@ namespace Telerik.Windows.Controls {
             }
 
             private static string GetValue(object d) {
-                var ret = string.Empty;
+                var ret = Strings.Empty;
 
                 if (d is PasswordBox V1) {
                     ret = V1.Password;

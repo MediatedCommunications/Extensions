@@ -33,12 +33,33 @@ namespace System.Diagnostics
             return this;
         }
 
-        public DisplayBuilderRegion Id { get; private set; }
-        public DisplayBuilderRegion Type { get; private set; }
-        public DisplayBuilderRegion Prefix { get; private set; }
-        public DisplayBuilderRegion Data { get; private set; }
-        public DisplayBuilderRegion Postfix { get; private set; }
-        public DisplayBuilderStatusRegion Status { get; private set; }
+        public virtual DisplayBuilder If(
+            bool Condition,
+            Func<DisplayBuilder, DisplayBuilder> Then
+        ) {
+            return If(Condition, Then, x => x);
+        }
+
+        public virtual DisplayBuilder If(
+            bool Condition,
+            Func<DisplayBuilder, DisplayBuilder> Then,
+            Func<DisplayBuilder, DisplayBuilder> Else
+        ) {
+
+            if (Condition) {
+                return Then(this);
+            } else {
+                return Else(this);
+            }
+
+        }
+
+        public DisplayBuilderRegion Id { get; }
+        public DisplayBuilderRegion Type { get; }
+        public DisplayBuilderRegion Prefix { get; }
+        public DisplayBuilderRegion Data { get; }
+        public DisplayBuilderRegion Postfix { get; }
+        public DisplayBuilderStatusRegion Status { get; }
 
         public virtual string GetDebuggerDisplay() {
             var ret = new [] {

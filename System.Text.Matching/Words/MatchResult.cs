@@ -4,8 +4,8 @@ namespace System.Text.Matching {
     public abstract record MatchResult 
         : DisplayRecord
         , IComparable<MatchResult> {
-        public string Left { get; init; } = string.Empty;
-        public string Right { get; init; } = string.Empty;
+        public string Left { get; init; } = Strings.Empty;
+        public string Right { get; init; } = Strings.Empty;
 
         public long MatchedCount { get; init; }
         public long UnmatchedCount { get; init; }

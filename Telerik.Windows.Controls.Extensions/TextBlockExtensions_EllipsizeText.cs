@@ -13,14 +13,14 @@ namespace Telerik.Windows.Controls {
             nameof(EllipsizeText),
             typeof(string),
             typeof(TextBlockExtensions),
-            new PropertyMetadata(string.Empty, EllipsizeText.PropertyChanged)
+            new PropertyMetadata(Strings.Empty, EllipsizeText.PropertyChanged)
         );
 
         public static void SetEllipsizeText(TextBlock element, string value) {
             element.SetValue(EllipsizeTextProperty, value);
         }
         public static string GetEllipsizeText(TextBlock element) {
-            return element.GetValue(EllipsizeTextProperty) as string ?? string.Empty;
+            return element.GetValue(EllipsizeTextProperty) as string ?? Strings.Empty;
         }
 
         private static class EllipsizeText {

@@ -20,7 +20,7 @@ namespace System.Diagnostics
         /// <returns></returns>
         public static string ShowFields(object? @this)
         {
-            var ret = string.Empty;
+            var ret = Strings.Empty;
             if (@this is not { })
             {
                 ret = "N.U.L.L";

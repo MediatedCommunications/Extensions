@@ -5,28 +5,10 @@ namespace System {
         public string? Value { get; init; }
         public StringComparison Comparison { get; init; } = StringComparison.CurrentCulture;
 
-        public static implicit operator string(RegionalizedString R) => R.Value.Coalesce();
-
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
                 .Data.Add(Value)
                 ;
-        }
-
-        public static bool operator==(RegionalizedString R, string S) {
-            return R.Equals(S);
-        }
-
-        public static bool operator!=(RegionalizedString R, string S) {
-            return !R.Equals(S);
-        }
-
-        public static bool operator ==(string S, RegionalizedString R) {
-            return R.Equals(S);
-        }
-
-        public static bool operator !=(string S, RegionalizedString R) {
-            return !R.Equals(S);
         }
 
         private static bool TextOperation(string? This, string?[] Values, Func<string, string, bool> Condition) {
@@ -40,6 +22,14 @@ namespace System {
             }
 
             return ret;
+        }
+
+        public bool Starts(params string?[] CompareTo) {
+            return TextOperation(Value, CompareTo, (x, y) => y.StartsWith(x, Comparison));
+        }
+
+        public bool Ends(params string?[] CompareTo) {
+            return TextOperation(Value, CompareTo, (x, y) => y.EndsWith(x, Comparison));
         }
 
         public bool StartsWith(params string?[] CompareTo) {

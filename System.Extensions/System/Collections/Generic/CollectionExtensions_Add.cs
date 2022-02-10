@@ -38,6 +38,10 @@ namespace System.Collections.Generic
 
         }
 
+        public static void Set<TKey, TValue>(this IDictionary<TKey, TValue> This, IEnumerable<KeyValuePair<TKey, TValue>>? Items) {
+            This.Add(Items, true);
+        }
+
         public static void Set<TKey, TValue>(this IDictionary<TKey, TValue> This, IEnumerable<TValue>? Items)
             where TValue : IIdResult<TKey> {
             This.Add(Items, true);
@@ -49,6 +53,10 @@ namespace System.Collections.Generic
 
         public static void Set<TKey, TValue, TItem>(this IDictionary<TKey, TValue> This, IEnumerable<TItem>? Items, Func<TItem, TKey> KeySelector, Func<TItem, TValue> ValueSelector) {
             This.Add(Items, KeySelector, ValueSelector, true);
+        }
+
+        public static void Add<TKey, TValue>(this IDictionary<TKey, TValue> This, IEnumerable<KeyValuePair<TKey, TValue>>? Items, bool Set = false) {
+            This.Add(Items, x => x.Key, x => x.Value, true);
         }
 
         public static void Add<TKey, TValue>(this IDictionary<TKey, TValue> This, IEnumerable<TValue>? Items, bool Set = false) 

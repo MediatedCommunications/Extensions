@@ -12,7 +12,7 @@ namespace System.Data {
             var ret = default(TKey);
             if (ret is null) {
                 if (typeof(TKey) == typeof(string)) {
-                    ret = (TKey)(object)string.Empty;
+                    ret = (TKey)(object)Strings.Empty;
                 }
             }
             if(ret is null) {
@@ -40,7 +40,7 @@ namespace System.Data {
             var ret = default(TKey?);
             if (ret is null) {
                 if (typeof(TKey) == typeof(string)) {
-                    ret = (TKey)(object)string.Empty;
+                    ret = (TKey)(object)Strings.Empty;
                 }
             }
 

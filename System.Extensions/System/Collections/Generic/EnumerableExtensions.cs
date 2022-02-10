@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -209,7 +210,122 @@ namespace System.Collections.Generic {
             return This.AsAsyncEnumerable().MergeAsync(Proposed_Concurrency, Evaluate_Concurrency);
         }
 
-        public static async IAsyncEnumerable<TInput> MergeAsync<TInput>(this IAsyncEnumerable<IAsyncEnumerable<TInput>> This, Func<int>? Proposed_Concurrency = default, Func<TimeSpan?>? Evaluate_Concurrency = default) {
+        public static IAsyncEnumerable<TInput> MergeAsync<TInput>(this IAsyncEnumerable<IAsyncEnumerable<TInput>> This, Func<int>? Proposed_Concurrency = default, Func<TimeSpan?>? Evaluate_Concurrency = default) {
+            return MergeAsync_Default(This, Proposed_Concurrency, Evaluate_Concurrency);
+        }
+
+        public static async IAsyncEnumerable<TInput> MergeAsync_Channel<TInput>(this IAsyncEnumerable<IAsyncEnumerable<TInput>> This, Func<int>? Proposed_Concurrency = default, Func<TimeSpan?>? Evaluate_Concurrency = default) {
+            int Concurrency_Min() => 1;
+            int Concurrency_Max() => 32;
+            int Concurrency_Default() => 1;
+            var Concurrency = Proposed_Concurrency ?? Concurrency_Default;
+
+            Task DelayTask_Create() {
+                var Duration = Evaluate_Concurrency?.Invoke() ?? TimeSpan.FromSeconds(1);
+
+                return SafeDelay.DelayAsync(Duration);
+            }
+
+            Task DelayTask_Create_Async() {
+                return Task.Run(() => DelayTask_Create());
+            }
+
+            var C = System.Threading.Channels.Channel.CreateUnbounded<TInput>(new Threading.Channels.UnboundedChannelOptions() {
+                SingleReader = true,
+                AllowSynchronousContinuations = false,
+            });
+
+            var Status = new ConcurrentDictionary<IAsyncEnumerable<TInput>, long>();
+
+            async Task FillAsync(IAsyncEnumerable<TInput> Source) {
+                var Count = 0;
+                Status[Source] = Count;
+
+                await foreach (var item in Source.DefaultAwait()) {
+                    await C.Writer.WriteAsync(item)
+                        .DefaultAwait()
+                        ;
+                    Count += 1;
+                    Status[Source] = Count;
+                }
+
+                Count *= -1;
+                Status[Source] = Count;
+            }
+
+            var Filler = Task.Run(async () => {
+                var DelayTask = default(Task?);
+
+                var Tasks = new List<Task>();
+
+                var Source = This.GetAsyncEnumerator();
+                var SourceEnded = false;
+
+                while (!SourceEnded || Tasks.Count > 0) {
+
+                    //Initialize our items
+                    if (!SourceEnded) {
+                        var Threads = Math.Clamp(Concurrency(), Concurrency_Min(), Concurrency_Max());
+
+                        while (!SourceEnded && Tasks.Count < Threads) {
+                            SourceEnded = !await Source.MoveNextAsync()
+                                .DefaultAwait()
+                                ;
+
+                            if (!SourceEnded) {
+                                var IE = Source.Current;
+                                Tasks.Add(Task.Run(()=>FillAsync(IE)));
+                            } else {
+
+                            }
+
+                        }
+                    }
+
+                    var CompletedItems = (
+                        from x in Tasks
+                        where x.IsCompleted
+                        select x
+                        ).ToList();
+
+                    foreach (var item in CompletedItems) {
+                        await item
+                            .DefaultAwait()
+                            ;
+                        Tasks.Remove(item);
+                    }
+
+                    if (!SourceEnded) {
+                        if(DelayTask is null || !Tasks.Contains(DelayTask)){
+                            DelayTask = DelayTask_Create_Async();
+                            Tasks.Add(DelayTask);
+                        }
+                    }
+
+                    if (Tasks.Count > 0) {
+
+                        var CompletedTask = await Task.WhenAny(Tasks)
+                            .DefaultAwait()
+                            ;
+
+                    }
+
+                }
+
+
+
+                C.Writer.Complete();
+            
+            });
+
+            await foreach (var item in C.Reader.ReadAllAsync().DefaultAwait()) {
+                yield return item;
+            }
+
+
+        }
+
+        public static async IAsyncEnumerable<TInput> MergeAsync_Default<TInput>(this IAsyncEnumerable<IAsyncEnumerable<TInput>> This, Func<int>? Proposed_Concurrency = default, Func<TimeSpan?>? Evaluate_Concurrency = default) {
             int Concurrency_Min() => 1;
             int Concurrency_Max() => 32;
             int Concurrency_Default() => 1;

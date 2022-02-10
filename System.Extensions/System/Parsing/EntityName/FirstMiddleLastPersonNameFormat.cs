@@ -8,15 +8,15 @@ namespace System {
 
         public override string FormatName(PersonName Name, PersonNameFields Fields) {
             var First = new List<string>() {
-                Fields.HasFlag(PersonNameFields.Prefix) ? Name.Prefix : string.Empty,
-                Fields.HasFlag(PersonNameFields.FirstName) ? Name.First: string.Empty,
+                Fields.HasFlag(PersonNameFields.Prefix) ? Name.Prefix : Strings.Empty,
+                Fields.HasFlag(PersonNameFields.FirstName) ? Name.First: Strings.Empty,
                 Fields.HasFlag(PersonNameFields.MiddleName) ? Name.Middle: Array.Empty<string>(),
-                Fields.HasFlag(PersonNameFields.LastName) ? Name.Last: string.Empty,
+                Fields.HasFlag(PersonNameFields.LastName) ? Name.Last: Strings.Empty,
             }.WhereIsNotBlank().JoinSpace();
 
             var Second = new List<string>() {
                 First,
-                Fields.HasFlag(PersonNameFields.Suffix) ? Name.Suffix : string.Empty,
+                Fields.HasFlag(PersonNameFields.Suffix) ? Name.Suffix : Strings.Empty,
             }.WhereIsNotBlank().Join(", ");
 
             var ret = Second;
@@ -43,8 +43,8 @@ namespace System {
             
             if (IsValidInput) {
 
-                var Prefix = string.Empty;
-                var Suffix = string.Empty;
+                var Prefix = Strings.Empty;
+                var Suffix = Strings.Empty;
 
                 {
                     var FirstOnlyLetters = Parts.FirstOrDefault().Coalesce().WhereIs(CharType.Letter).Join();

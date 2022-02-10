@@ -46,7 +46,7 @@ namespace System.Windows.UiAutomation
 
             // If titleSize is 0, there is no title so return an empty string (or null)
             if (titleSize == 0)
-                return String.Empty;
+                return string.Empty;
 
             StringBuilder title = new StringBuilder(titleSize + 1);
 

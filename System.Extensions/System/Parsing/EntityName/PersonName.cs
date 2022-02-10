@@ -1,32 +1,33 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 
 namespace System {
     public record PersonName : EntityName {
-        public string Prefix { get; init; } = string.Empty;
+        public string Prefix { get; init; } = Strings.Empty;
 
-        public string First { get; init; } = string.Empty;
+        public string First { get; init; } = Strings.Empty;
         public ImmutableArray<string> Middle { get; init; } = ImmutableArray<string>.Empty;
-        public string Last { get; init; } = string.Empty;
+        public string Last { get; init; } = Strings.Empty;
 
-        public string Suffix { get; init; } = string.Empty;
+        public string Suffix { get; init; } = Strings.Empty;
+
+        public PersonName() { }
+
+        public PersonName(string Last, string First, params string[] Middle) : this(Last, First, Middle.AsEnumerable()) {
+
+        }
+
+        public PersonName(string Last, string First, IEnumerable<string> Middle) {
+            this.First = First;
+            this.Middle = Middle.WhereIsNotBlank().ToImmutableArray();
+            this.Last = Last;
+        }
 
         public override string Full {
             get {
-                var V1 = new List<string>() {
-                    Prefix,
-                    First,
-                    Middle,
-                    Last,
-                }.WhereIsNotBlank().JoinSpace();
-
-                var V2 = new List<string>() {
-                    V1,
-                    Suffix
-                }.WhereIsNotBlank().Join(", ");
-
-                var ret = V2;
+                var ret = this.Format().AsString(PersonNameFormats.FirstMiddleLast);
 
                 return ret;
 

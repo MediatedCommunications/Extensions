@@ -20,7 +20,7 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsOverdue(bool Value) {
-            return this.If(Value).Add("Overdue");
+            return this.If(Value, Then => Then.Add("Overdue"));
         }
 
         public DisplayBuilder IsNotOverdue(bool Value) {
@@ -29,7 +29,7 @@ namespace System.Diagnostics {
 
 
         public DisplayBuilder IsConflict(bool Value) {
-            return this.If(Value).Add("Conflict");
+            return this.If(Value, Then => Then.Add("Conflict"));
         }
 
         public DisplayBuilder IsNotConflict(bool Value) {
@@ -41,7 +41,7 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsNotEnabled(bool Value) {
-            return this.If(Value).Add("Disabled");
+            return this.If(Value, Then => Then.Add("Disabled"));
         }
 
         public DisplayBuilder IsVisible(bool Value) {
@@ -49,7 +49,7 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsNotVisible(bool Value) {
-            return this.If(Value).Add("Hidden");
+            return this.If(Value, Then => Then.Add("Hidden"));
         }
 
         public DisplayBuilder IsNotLocked(bool Value) {
@@ -57,7 +57,7 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsApproved(bool Value) {
-            return this.If(Value).Add("Approved");
+            return this.If(Value, Then => Then.Add("Approved"));
         }
 
         public DisplayBuilder IsNotApproved(bool Value) {
@@ -65,7 +65,7 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsCurrent(bool Value) {
-            return this.If(Value).Add("Current");
+            return this.If(Value, Then => Then.Add("Current"));
         }
 
         public DisplayBuilder IsNotCurrent(bool Value) {
@@ -73,7 +73,7 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsFavorite(bool Value) {
-            return this.If(Value).Add("Favorite");
+            return this.If(Value, Then => Then.Add("Favorite"));
         }
 
         public DisplayBuilder IsNotFavorite(bool Value) {
@@ -81,16 +81,16 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsSigned(bool Value) {
-            return this.If(Value).Add("Signed");
+            return this.If(Value, Then => Then.Add("Signed"));
         }
 
         public DisplayBuilder IsNotSigned(bool Value) {
-            return this.If(Value).Add("UNSIGNED");
+            return this.If(Value, Then => Then.Add("UNSIGNED"));
         }
 
 
         public DisplayBuilder IsLocked(bool Value) {
-            return this.If(Value).Add("Locked");
+            return this.If(Value, Then => Then.Add("Locked"));
         }
 
         public DisplayBuilder IsNotDeleted(bool Value) {
@@ -98,7 +98,7 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsDeleted(bool Value) {
-            return this.If(Value).Add("Deleted");
+            return this.If(Value, Then => Then.Add("Deleted"));
         }
 
         public DisplayBuilder IsNotRoot(bool Value) {
@@ -106,7 +106,7 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsRoot(bool Value) {
-            return this.If(Value).Add("Root");
+            return this.If(Value, Then => Then.Add("Root"));
         }
 
         public DisplayBuilder IsNotPrimary(bool Value) {
@@ -114,7 +114,7 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsPrimary(bool Value) {
-            return this.If(Value).Add("Primary");
+            return this.If(Value, Then => Then.Add("Primary"));
         }
 
         public DisplayBuilder IsNotPrivate(bool Value) {
@@ -122,7 +122,7 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsPrivate(bool Value) {
-            return this.If(Value).Add("Private");
+            return this.If(Value, Then => Then.Add("Private"));
         }
 
         public DisplayBuilder IsNotArchived(bool Value) {
@@ -130,7 +130,7 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsArchived(bool Value) {
-            return this.If(Value).Add("Archived");
+            return this.If(Value, Then => Then.Add("Archived"));
         }
 
         public DisplayBuilder IsNotRequired(bool Value) {
@@ -138,11 +138,11 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsRequired(bool Value) {
-            return this.If(Value).Add("Required");
+            return this.If(Value, Then => Then.Add("Required"));
         }
 
         public DisplayBuilder IsRedacted(bool Value) {
-            return this.If(Value).Add("Redacted");
+            return this.If(Value, Then => Then.Add("Redacted"));
         }
 
         public DisplayBuilder IsNotRedacted(bool Value) {
@@ -150,7 +150,7 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsOwner(bool Value) {
-            return this.If(Value).Add("Owner");
+            return this.If(Value, Then => Then.Add("Owner"));
         }
 
         public DisplayBuilder IsNotOwner(bool Value) {
@@ -158,7 +158,7 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsDefault(bool Value) {
-            return this.If(Value).Add("Default");
+            return this.If(Value, Then => Then.Add("Default"));
         }
 
         public DisplayBuilder IsNotDefault(bool Value) {
@@ -179,7 +179,7 @@ namespace System.Diagnostics {
 
 
         public DisplayBuilder IsSuccess(bool Value) {
-            return this.If(Value).Add("Success");
+            return this.If(Value, Then => Then.Add("Success"));
         }
 
         public DisplayBuilder IsNotSuccess(bool Value) {
@@ -187,7 +187,7 @@ namespace System.Diagnostics {
         }
 
         public DisplayBuilder IsError(bool Value) {
-            return this.If(Value).Add("Error");
+            return this.If(Value, Then => Then.Add("Error"));
         }
 
         public DisplayBuilder IsNotError(bool Value) {

@@ -2,7 +2,7 @@
 
 namespace System.Security.Licensing {
     public record LicenseEngineKey : DisplayRecord {
-        public string Key { get; init; } = string.Empty;
+        public string Key { get; init; } = Strings.Empty;
     }
 
 }

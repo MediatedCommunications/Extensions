@@ -21,7 +21,7 @@
         private const string Vowels = "AEIOU";
 
         // For tracking position within current string
-        private string _text = string.Empty;
+        private string _text = Strings.Empty;
         private int _pos;
 
         /// <summary>

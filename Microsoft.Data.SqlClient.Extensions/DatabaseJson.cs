@@ -10,14 +10,14 @@ namespace Microsoft.Data.SqlClient {
 
     public record DatabaseJson : DisplayRecord {
         public long Id { get; init; }
-        public string Name { get; init; } = string.Empty;
+        public string Name { get; init; } = Strings.Empty;
 
         public SqlDatabaseType Type { get; init; }
         
         public DateTime Created_At { get; init; }
         public SqlDatabaseCompatibilityLevel Compatibility { get; init; }
 
-        public string Collation { get; init; } = string.Empty;
+        public string Collation { get; init; } = Strings.Empty;
         public SqlDatabaseRecoveryModel RecoveryModel { get; init; }
         public SqlDatabaseStatus Status { get; init; }
 

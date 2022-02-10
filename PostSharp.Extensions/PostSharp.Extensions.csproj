@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\__Shared\Shared.targets" Label="Shared" />
     
     <PropertyGroup>
@@ -9,7 +9,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-      <PackageReference Include="PostSharp" Version="6.10.5" />
+      <PackageReference Include="PostSharp" Version="6.10.6" />
     </ItemGroup>
   
 

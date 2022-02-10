@@ -4,8 +4,8 @@ using System.Diagnostics;
 namespace System
 {
     public record PhoneNumberCountryCode : DisplayRecord {
-        public string Name { get; init; } = string.Empty;
-        public string Number { get; init; } = string.Empty;
+        public string Name { get; init; } = Strings.Empty;
+        public string Number { get; init; } = Strings.Empty;
 
         public static string DefaultIdentifier => "+";
 

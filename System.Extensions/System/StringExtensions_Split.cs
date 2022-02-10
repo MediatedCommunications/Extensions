@@ -14,25 +14,17 @@ namespace System
             return ret;
         }
 
-        public static string[] SplitSpace(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
+        public static string[] SplitColon(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
             return This
                 .Coalesce()
-                .Split(new[] { Strings.Space }, SplitOptions)
+                .Split(new[] { Strings.Colon }, SplitOptions)
                 ;
         }
-
 
         public static string[] SplitComma(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
             return This
                 .Coalesce()
                 .Split(new[] { Strings.Comma }, SplitOptions)
-                ;
-        }
-
-        public static string[] SplitDot(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
-            return This
-                .Coalesce()
-                .Split(new[] { Strings.Dot }, SplitOptions)
                 ;
         }
 
@@ -43,6 +35,20 @@ namespace System
                 ;
         }
 
+        public static string[] SplitDot(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
+            return This
+                .Coalesce()
+                .Split(new[] { Strings.Dot }, SplitOptions)
+                ;
+        }
+
+        public static string[] SplitNull(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
+            return This
+                .Coalesce()
+                .Split(new[] { Strings.Null }, SplitOptions)
+                ;
+        }
+
         public static string[] SplitPipe(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
             return This
                 .Coalesce()
@@ -50,10 +56,38 @@ namespace System
                 ;
         }
 
+        public static string[] SplitSemicolon(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
+            return This
+                .Coalesce()
+                .Split(new[] { Strings.Semicolon }, SplitOptions)
+                ;
+        }
+
+        public static string[] SplitSpace(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
+            return This
+                .Coalesce()
+                .Split(new[] { Strings.Space }, SplitOptions)
+                ;
+        }
+
+        public static string[] SplitTab(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
+            return This
+                .Coalesce()
+                .Split(new[] { Strings.Tab }, SplitOptions)
+                ;
+        }
+
         public static string[] SplitUnderscore(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
             return This
                 .Coalesce()
                 .Split(new[] { Strings.Underscore }, SplitOptions)
+                ;
+        }
+
+        public static string[] SplitSeparator(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
+            return This
+                .Coalesce()
+                .Split(new[] { Strings.Separator }, SplitOptions)
                 ;
         }
 
@@ -92,10 +126,7 @@ namespace System
                 ;
         }
 
-        public static string[] SplitNull(this string? This, StringSplitOptions SplitOptions = Split_DefaultOptions) {
-            return This.Coalesce()
-                .Split(new[] { Strings.Null }, SplitOptions);
-        }
+
 
 
     }

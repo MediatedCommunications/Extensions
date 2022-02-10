@@ -107,6 +107,22 @@ namespace System.Collections.Generic {
             }
         }
 
+        public static IEnumerable<T> GetConsumingEnumerableEnd<T>(this List<T>? This) {
+
+            if (This is { } V1) {
+                while(V1.Count > 0) {
+                    var RemoveAt = V1.Count - 1;
+                    
+                    var tret = V1[RemoveAt];
+                    
+                    V1.RemoveAt(RemoveAt);
+                    yield return tret;
+
+                }
+
+            }
+        }
+
         public static IEnumerable<T> GetConsumingEnumerableLast<T>(this List<T>? This, Func<T, bool>? Condition = default) {
             var MyCondition = Condition ?? Condition_Default<T>;
 

@@ -11,8 +11,8 @@ namespace System.Collections.Generic {
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
                 .Data.Add(Range)
-                .Postfix.If(StartIs != RangeEndpoint.Inclusive).Add($@"{nameof(StartIs)}:{StartIs}")
-                .Postfix.If(StartIs != RangeEndpoint.Exclusive).Add($@"{nameof(EndIs)}:{EndIs}")
+                .If(StartIs != RangeEndpoint.Inclusive, Then => Then.Postfix.Add($@"{nameof(StartIs)}:{StartIs}"))
+                .If(StartIs != RangeEndpoint.Exclusive, Then => Then.Postfix.Add($@"{nameof(EndIs)}:{EndIs}"))
                 ;
         }
 

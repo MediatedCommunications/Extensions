@@ -221,8 +221,9 @@ namespace System.IO
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
-                .Data.If(Tag is { }).Add(Tag)
-                .Data.If(Tag is null).Add(FullPath)
+                .If(Tag is { }, 
+                    Then => Then.Data.Add(Tag), 
+                    Else => Else.Data.Add(FullPath))
                 ;
         }
 

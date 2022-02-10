@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 namespace System.Net.Http.Message.Modifiers {
-    public record SetReferrerHeaderModifier : SetHeadersModifier {
+    public record SetRefererHeaderModifier : SetHeadersModifier {
 
 
         private static IEnumerable<KeyValuePair<string, string>> GenerateValues(string? Input) {
@@ -12,7 +12,7 @@ namespace System.Net.Http.Message.Modifiers {
             };
 
             foreach (var Value in Values) {
-                var ret = KeyValuePair.Create("Referrer", Value);
+                var ret = KeyValuePair.Create("Referer", Value);
 
                 yield return ret;
             }
@@ -20,7 +20,7 @@ namespace System.Net.Http.Message.Modifiers {
 
         }
 
-        public SetReferrerHeaderModifier(string? Value = default, bool? RemoveFirst = null, bool? Enabled = null) : base(GenerateValues(Value), RemoveFirst, Enabled) {
+        public SetRefererHeaderModifier(string? Value = default, bool? RemoveFirst = null, bool? Enabled = null) : base(GenerateValues(Value), RemoveFirst, Enabled) {
         }
 
         protected override Task ModifyEnabledAsync(HttpRequestMessage Message) {

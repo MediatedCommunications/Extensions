@@ -2,7 +2,7 @@
 
 namespace System {
     public record CompanyName : EntityName {
-        public string Name { get; init; } = string.Empty;
+        public string Name { get; init; } = Strings.Empty;
         public override string Full => Name;
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {

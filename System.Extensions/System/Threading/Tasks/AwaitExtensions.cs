@@ -45,7 +45,15 @@ namespace System.Threading.Tasks {
             return This.ContinueOnAnyThread();
         }
 
+        public static ConfiguredValueTaskAwaitable DefaultAwait(this ValueTask This) {
+            return This.ContinueOnAnyThread();
+        }
+
         public static ConfiguredValueTaskAwaitable<T> DefaultAwait<T>(this ValueTask<T> This) {
+            return This.ContinueOnAnyThread();
+        }
+
+        public static ConfiguredAsyncDisposable DefaultAwait<T>(this IAsyncDisposable This) {
             return This.ContinueOnAnyThread();
         }
 
@@ -64,7 +72,15 @@ namespace System.Threading.Tasks {
             return ConfigureAwait(This, __RunOnAnyThread);
         }
 
+        public static ConfiguredValueTaskAwaitable ContinueOnAnyThread(this ValueTask This) {
+            return ConfigureAwait(This, __RunOnAnyThread);
+        }
+
         public static ConfiguredValueTaskAwaitable<T> ContinueOnAnyThread<T>(this ValueTask<T> This) {
+            return This.ConfigureAwait(__RunOnAnyThread);
+        }
+
+        public static ConfiguredAsyncDisposable ContinueOnAnyThread(this IAsyncDisposable This) {
             return This.ConfigureAwait(__RunOnAnyThread);
         }
 
@@ -82,10 +98,17 @@ namespace System.Threading.Tasks {
             return ConfigureAwait(This, __RunOnThisThread);
         }
 
+        public static ConfiguredValueTaskAwaitable ContinueOnThisThread(this ValueTask This) {
+            return ConfigureAwait(This, __RunOnThisThread);
+        }
+
         public static ConfiguredValueTaskAwaitable<T> ContinueOnThisThread<T>(this ValueTask<T> This) {
             return ConfigureAwait(This, __RunOnThisThread);
         }
 
+        public static ConfiguredAsyncDisposable ContinueOnThisThread(this IAsyncDisposable This) {
+            return This.ConfigureAwait(__RunOnThisThread);
+        }
 
     }
 

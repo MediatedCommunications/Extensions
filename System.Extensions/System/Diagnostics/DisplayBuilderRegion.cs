@@ -26,6 +26,27 @@ namespace System.Diagnostics
             return ret;
         }
 
+        public virtual DisplayBuilder If(
+                bool Condition,
+                Func<DisplayBuilderRegion, DisplayBuilder> Then
+            ) { 
+            return If(Condition, Then, x => x.Parent);
+        }
+
+        public virtual DisplayBuilder If(
+            bool Condition, 
+            Func<DisplayBuilderRegion, DisplayBuilder> Then,
+            Func<DisplayBuilderRegion, DisplayBuilder> Else
+            ) {
+
+            if (Condition) {
+                return Then(this);
+            } else {
+                return Else(this);
+            }
+
+        }
+
 
 
         public DisplayBuilder AddPhrase(params object?[] Values) {
@@ -71,16 +92,48 @@ namespace System.Diagnostics
             return this.If(Condition).Add(Name);
         }
 
+        public DisplayBuilder AddCount(string Count, [CallerArgumentExpression("Count")] string? Name = default) {
+            var ret = Parent;
+
+            if (Count.IsNotBlank()) {
+                var ActualName = new[] {
+                    Name,
+                    "Items"
+                }.WhereIsNotBlank().Coalesce();
+
+                ret = Add($@"{Count} {ActualName}");
+            }
+
+            return ret;
+        }
+
         public DisplayBuilder AddCount(long Count, [CallerArgumentExpression("Count")] string? Name = default) {
+            var ret = Parent;
 
-            var ActualCount = Count;
-            
-            var ActualName = new[] {
-                Name,
-                "Items"
-            }.WhereIsNotBlank().Coalesce();
+            if (Count != 0) {
+                ret = AddCount($@"{Count}", Name);
+            }
+            return ret;
+        }
 
-            return Add($@"{ActualCount} {ActualName}");
+
+        public DisplayBuilder AddCount(decimal Count, [CallerArgumentExpression("Count")] string? Name = default) {
+            var ret = Parent;
+
+            if (Count != 0.0m) {
+                ret = AddCount($@"{Count}", Name);
+            }
+            return ret;
+        }
+
+
+        public DisplayBuilder AddCount(double Count, [CallerArgumentExpression("Count")] string? Name = default) {
+            var ret = Parent;
+
+            if (Count != 0.0d) {
+                ret = AddCount($@"{Count}", Name);
+            }
+            return ret;
         }
 
         public DisplayBuilder AddCount<T>(IEnumerable<T> Collection, [CallerArgumentExpression("Collection")] string? Name = default)
@@ -178,7 +231,7 @@ namespace System.Diagnostics
         }
 
         public string GetDebuggerDisplay() {
-            var ret = string.Empty;
+            var ret = Strings.Empty;
             var V = Values.JoinSeparator();
             if(V.Length > 0) {
                 ret = string.Format(Format, V);

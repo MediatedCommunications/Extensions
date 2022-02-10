@@ -69,7 +69,7 @@ namespace System.Windows.Registry.Uninstaller
 
         private static string GetString(RegistryKey? Key, string Name)
         {
-            var ret = string.Empty;
+            var ret = Strings.Empty;
 
             try
             {

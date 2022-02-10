@@ -6,7 +6,7 @@ namespace System.Reflection {
 
         private static string GetPath(Assembly? Asm) {
             var Location = Asm?.Location;
-            var ret = IO.Path.GetDirectoryName(Location) ?? string.Empty;
+            var ret = IO.Path.GetDirectoryName(Location) ?? Strings.Empty;
 
             return ret;
         }

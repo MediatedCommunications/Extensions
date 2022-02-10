@@ -6,7 +6,7 @@ namespace System.Threading
 {
     public record Invoker : DisplayRecord
     {
-        public string ThreadName { get; init; } = string.Empty;
+        public string ThreadName { get; init; } = Strings.Empty;
         public ApartmentState ApartmentState { get; init; }
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder)

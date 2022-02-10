@@ -52,7 +52,7 @@ namespace System {
         public static string Coalesce(this IEnumerable<string?>? This) {
             var ret = EnumerableExtensions.EmptyIfNull(This)
                 .WhereIsNotNull()
-                .FirstOrDefault(string.Empty)
+                .FirstOrDefault(Strings.Empty)
                 ;
 
             return ret;
@@ -138,7 +138,11 @@ namespace System {
 
         }
 
-
+        public static string Replace(this string? This, RegionalizedString Find, string Replace) {
+            var tret = This?.Replace(Find.Value.Coalesce(), Replace, Find.Comparison);
+            var ret = tret.Coalesce();
+            return ret;
+        }
 
         public static string Replace(this string? This, Func<string, string> Adjuster) {
             return Replace(This, (x, y) => Adjuster(y));
@@ -167,7 +171,7 @@ namespace System {
                 .Replace("  ", " ")
                 .Replace(Strings.CR, " ")
                 .Replace(Strings.LF, " ")
-                .Replace(Strings.TAB, " ")
+                .Replace(Strings.Tab, " ")
             );
         }
 
@@ -175,7 +179,7 @@ namespace System {
             return This.Replace(x => x
                 .TrimSafe()
                 .Replace("  ", " ")
-                .Replace(Strings.TAB, " ")
+                .Replace(Strings.Tab, " ")
             );
         }
 

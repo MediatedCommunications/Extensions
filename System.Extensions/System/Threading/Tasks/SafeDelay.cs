@@ -29,7 +29,6 @@
                 ex.Ignore();
             }
 
-
         }
 
         public static void Delay(CancellationToken Token)

@@ -6,8 +6,8 @@ using System.IO;
 namespace CsvHelper {
 
     public record PageWriterOptions : DisplayRecord {
-        public string FolderPath { get; init; } = string.Empty;
-        public string FileName { get; init; } = string.Empty;
+        public string FolderPath { get; init; } = Strings.Empty;
+        public string FileName { get; init; } = Strings.Empty;
         public string FileNameExtension { get; init; } = "csv";
 
         public bool Page { get; init; }
@@ -42,7 +42,7 @@ namespace CsvHelper {
             TW = default;
             FS = default;
 
-            this.CurrentFileName = string.Empty;
+            this.CurrentFileName = Strings.Empty;
         }
 
 
@@ -112,7 +112,7 @@ namespace CsvHelper {
         private StreamWriter? TW { get; set; }
         private CsvWriter? Writer { get; set; }
 
-        public string CurrentFileName { get; private set; } = string.Empty;
+        public string CurrentFileName { get; private set; } = Strings.Empty;
         
         public long CurrentPageIndex { get; private set; }
         public long CurrentPageItemsWritten { get; private set; }

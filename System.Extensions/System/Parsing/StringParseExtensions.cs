@@ -78,6 +78,18 @@ namespace System {
             };
         }
 
+        public static DateOnlyValueParser AsDateOnly(this ParseValue This) {
+            return new DateOnlyValueParser() {
+                Input = This.Value
+            };
+        }
+
+        public static TimeOnlyValueParser AsTimeOnly(this ParseValue This) {
+            return new TimeOnlyValueParser() {
+                Input = This.Value
+            };
+        }
+
         public static DateTimeOffsetStructParser AsDateTimeOffset(this ParseValue This, DateTimeStyles Style = default, IFormatProvider? FormatProvider = default) {
             return new DateTimeOffsetStructParser() {
                 Input = This.Value,

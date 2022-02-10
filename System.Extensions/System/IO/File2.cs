@@ -68,7 +68,7 @@ namespace System.IO
             var Copy = false;
             var Overwrite = false;
 
-            var DeleteSource = true;
+            var DeleteSource = false;
 
             if (Options.HasFlag(TransferOptions.Move)) {
                 Move = true;

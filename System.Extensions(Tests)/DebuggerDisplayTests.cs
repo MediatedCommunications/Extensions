@@ -28,7 +28,7 @@ namespace System
             public long Id { get; set; }
             public bool Enabled { get; set; }
             public bool Hidden { get; set; }
-            public string Name { get; set; } = string.Empty;
+            public string Name { get; set; } = Strings.Empty;
             public decimal Total { get; set; }
             public decimal Rate { get; set; }
 

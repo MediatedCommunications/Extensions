@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace System.Data {
     public class DataReaderParserContext {
-        public ImmutableHashSet<string> Columns { get; }
+        public ImmutableHashSet<string> ColumnNames { get; }
+        public ImmutableList<string> ColumnPositions { get; }
         public IDataReader DataReader { get; }
-        public DataReaderParserContext(IDataReader DataReader, IEnumerable<string> Columns) {
+        public DataReaderParserContext(IDataReader DataReader, ImmutableList<string> Columns) {
             this.DataReader = DataReader;
-            this.Columns = Columns.ToImmutableHashSet(StringComparer.InvariantCultureIgnoreCase);
+            this.ColumnPositions = Columns;
+            this.ColumnNames = Columns.ToImmutableHashSet(StringComparer.InvariantCultureIgnoreCase);
         }
     }
 

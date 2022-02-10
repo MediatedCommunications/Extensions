@@ -3,12 +3,19 @@ using System.Linq;
 
 namespace System {
     public static class Strings {
-        public const string Space = " ";
-        public const string Dot = ".";
-        public const string Pipe = "|";
+
+        public const string Empty = "";
+
+        public const string Colon = ":";
         public const string Comma = ",";
         public const string Dash = "-";
+        public const string Dot = ".";
+        public const string Pipe = "|";
+        public const string Semicolon = ";";
+        public const string Space = " ";
+        public const string Tab = "\t";
         public const string Underscore = "_";
+
         public const string Separator = " - ";
         public static readonly ImmutableArray<string> Dots = new[] { Dot }.ToImmutableArray();
 
@@ -20,7 +27,7 @@ namespace System {
         public const string CR = "\r";
         public const string LF = "\n";
         public const string CRLF = CR + LF;
-        public const string TAB = "\t";
+        
 
         public const string Null = "\0";
         public static readonly ImmutableArray<string> NewLines = new[] { CRLF, CR, LF }.ToImmutableArray();

@@ -6,9 +6,9 @@ namespace System {
         /// <summary>
         /// MAILBOX+ALIAS@DOMAIN
         /// </summary>
-        public string Mailbox { get; init; } = string.Empty;
+        public string Mailbox { get; init; } = Strings.Empty;
         public string? Alias { get; init; } = default;
-        public string Domain { get; init; } = string.Empty;
+        public string Domain { get; init; } = Strings.Empty;
 
         public string Address {
             get {

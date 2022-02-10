@@ -15,7 +15,7 @@ namespace System {
         }
 
         public override string GetValue() {
-            return GetValue(string.Empty);
+            return GetValue(Strings.Empty);
         }
     }
 
