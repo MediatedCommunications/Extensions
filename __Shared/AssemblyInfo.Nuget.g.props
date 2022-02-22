@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
-
-  <Import Project="Shared.targets" Label="SharedBase" />
-  
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <UseWPF>true</UseWPF>
+    <AssemblyVersion>22.02.18.0643</AssemblyVersion>
+    <FileVersion>22.02.18.0643</FileVersion>
+    <Version>22.02.18.0643</Version>
   </PropertyGroup>
 </Project>
 

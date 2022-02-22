@@ -97,6 +97,18 @@ namespace System.Collections.Generic {
         public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T>? source) {
             return Coalesce(source, Enumerable.Empty<T>());
         }
+        public static T? NullIfEmpty<T, U>(this T? source) where T : IEnumerable<U> {
+            var ret = default(T?);
+            if (source is { }) {
+                var count = source.Count();
+
+                if (count > 0) {
+                    ret = source;
+                }
+            }
+
+            return ret;
+        }
 
         public static IEnumerable<T> Coalesce<T>(this IEnumerable<T>? source, params T[] Values) {
             return Coalesce(source, Values.AsEnumerable());

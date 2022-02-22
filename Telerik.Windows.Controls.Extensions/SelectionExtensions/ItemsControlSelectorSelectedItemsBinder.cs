@@ -1,33 +1,35 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Collections.Generic;
+using System.Windows.Controls;
+using Telerik.Windows.Controls.Primitives;
 
 namespace Telerik.Windows.Controls {
-    public abstract class DataControlSelectedItemsBinder<TControl> : SelectedItemsBinder<TControl> where TControl : DataControl {
-        protected DataControlSelectedItemsBinder(TControl Control, object Container) : base(Control, Container) {
+    public abstract class ItemsControlSelectorSelectedItemsBinder<TControl> : SelectedItemsBinder<TControl> where TControl : ItemsControlSelector {
+        public ItemsControlSelectorSelectedItemsBinder(TControl Control, object Container) : base(Control, Container) {
 
         }
 
         public override void Control_Events_Enable(bool Enable) {
             Control.SelectionChanged -= this.Control_SelectionChanged;
+
             if (Enable) {
                 Control.SelectionChanged += this.Control_SelectionChanged;
             }
+
         }
 
-        private void Control_SelectionChanged(object? sender, SelectionChangeEventArgs e) {
-            SelectedItems_Update(e.AddedItems, e.RemovedItems, true, false);
+        private void Control_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            SelectedItems_Update(e.AddedItems.OfType<object>(), e.RemovedItems.OfType<object>(), true, false);
         }
 
         protected override void Control_SelectedItems_Add(IEnumerable<object> items) {
-
             foreach (var item in items) {
                 Control.SelectedItems.Add(item);
             }
-            
         }
 
         protected override List<object> Control_SelectedItems_Get() {
-            return Control.SelectedItems.ToList();
+            return Control.SelectedItems.OfType<object>().ToList();
         }
 
         protected override void Control_SelectedItems_Remove(IEnumerable<object> items) {
@@ -37,8 +39,7 @@ namespace Telerik.Windows.Controls {
             }
 
         }
-
-
     }
+
 
 }

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace System
 {
-    public record RegexValuesParser : ListParser<string> {
+    public record RegexStringMatchParser : ListParser<string> {
 
         public Regex Regex { get; init; } = RegularExpressions.None;
 

@@ -1,16 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\__Shared\Windows-Shared.targets" Label="Shared" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\__Shared\Shared-Windows.props" />
 
-  <PropertyGroup>
-    <UseWindowsForms>true</UseWindowsForms>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="SixLabors.ImageSharp" Version="2.0.0" />
-  </ItemGroup>
+	<PropertyGroup>
+		<PackageId>MC.SixLabors.ImageSharp.Extensions</PackageId>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <PackageId>MC.SixLabors.ImageSharp.Extensions</PackageId>
-  </PropertyGroup>
+	<PropertyGroup>
+		<UseWindowsForms>true</UseWindowsForms>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="SixLabors.ImageSharp" Version="2.0.0" />
+	</ItemGroup>
+
+
 
 </Project>

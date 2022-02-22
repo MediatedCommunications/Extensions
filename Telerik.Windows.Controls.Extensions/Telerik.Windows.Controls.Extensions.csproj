@@ -1,6 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\__Shared\Windows-Shared.targets" Label="Shared" />
-  <ItemGroup>
+  <Import Project="..\__Shared\Shared-Windows.props" />
+
+	<PropertyGroup>
+		<PackageId>MC.Telerik.Windows.Controls.Extensions</PackageId>
+	</PropertyGroup>
+	
+    <ItemGroup>
     <ProjectReference Include="..\System.Extensions\System.Extensions.csproj" />
   </ItemGroup>
 
@@ -10,6 +15,9 @@
     </Reference>
     <Reference Include="Telerik.Windows.Controls.FileDialogs">
       <HintPath>..\__PACKAGES\Telerik.Windows.Controls\Binaries.NoXaml\WPF60\Telerik.Windows.Controls.FileDialogs.dll</HintPath>
+    </Reference>
+	<Reference Include="Telerik.Windows.Controls.Input">
+      <HintPath>..\__PACKAGES\Telerik.Windows.Controls\Binaries.NoXaml\WPF60\Telerik.Windows.Controls.Input.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.GridView">
       <HintPath>..\__PACKAGES\Telerik.Windows.Controls\Binaries.NoXaml\WPF60\Telerik.Windows.Controls.GridView.dll</HintPath>
@@ -22,8 +30,6 @@
     </Reference>
   </ItemGroup>
 
-  <PropertyGroup>
-    <PackageId>MC.Telerik.Windows.Controls.Extensions</PackageId>
-  </PropertyGroup>
+
 
 </Project>

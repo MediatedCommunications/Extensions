@@ -1,0 +1,10 @@
+<Project>
+  <Import Project="Shared.props" Label="SharedBase" />
+  
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+	
+</Project>
+

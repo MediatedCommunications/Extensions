@@ -6,6 +6,8 @@ namespace System.Collections.Generic {
         where TKey1 : notnull
         where TKey2 : notnull
         {
+        
+        public static TreeTable<TItem, TKey1, TKey2, TValue> Empty { get; } = new();
 
         public ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableList<TValue>>> Values { get; init; } = ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableList<TValue>>>.Empty;
 

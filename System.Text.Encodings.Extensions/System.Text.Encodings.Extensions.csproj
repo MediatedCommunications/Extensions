@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\__Shared\Shared.targets" Label="Shared" />
+	<Import Project="..\__Shared\Shared.props" Label="Shared" />
 
 	<ItemGroup>
 		<PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />

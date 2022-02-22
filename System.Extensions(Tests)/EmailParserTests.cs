@@ -25,7 +25,7 @@ namespace Framework.Tests
         }
 
         private static void TestEmailParsing(string Input, IEnumerable<string> Expected) {
-            var V1 = Input.Parse().AsEmails().Select(x => x.Address).ToArray();
+            var V1 = Input.Parse().EmailAddresses().Select(x => x.Address).ToArray();
             var V2 = Expected.ToArray();
 
 

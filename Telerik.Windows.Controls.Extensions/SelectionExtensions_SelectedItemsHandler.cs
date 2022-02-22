@@ -26,18 +26,26 @@ namespace Telerik.Windows.Controls {
 
             public static SelectedItemsBinder CreateBinderFor(object O, object Container) {
                 var ret = O switch {
-                    RadGridView V1 => CreateBinderFor(V1, Container),
+                    RadGridView x => CreateBinderFor(x, Container),
+                    RadComboBox x => CreateBinderFor(x, Container),
+                    RadListBox x => CreateBinderFor(x, Container),
                     _ => throw new NotImplementedException(),
                 };
 
                 return ret;
             }
 
-            public static SelectedItemsBinder CreateBinderFor(RadGridView V1, object Container) {
-                return new RadGridViewSelectedItemsBinder(V1, Container);
+            public static SelectedItemsBinder CreateBinderFor(RadGridView Item, object Container) {
+                return new RadGridViewSelectedItemsBinder(Item, Container);
             }
 
+            public static SelectedItemsBinder CreateBinderFor(RadComboBox Item, object Container) {
+                return new RadComboBoxSelectedItemsBinder(Item, Container);
+            }
 
+            public static SelectedItemsBinder CreateBinderFor(RadListBox Item, object Container) {
+                return new RadListBoxSelectedItemsBinder(Item, Container);
+            }
 
         }
 

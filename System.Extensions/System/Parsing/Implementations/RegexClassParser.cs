@@ -6,11 +6,8 @@ namespace System
 {
     public abstract record RegexClassParser<TResult> : ListParser<TResult> {
         public Regex Regex { get; init; } = RegularExpressions.None;
-        private TryGetValue<Match, TResult> ClassParser { get; init; }
-        
-        public RegexClassParser(TryGetValue<Match, TResult> ClassParser) {
-            this.ClassParser = ClassParser;
-        }
+
+        protected abstract bool TryGetValue(Match Input, [NotNullWhen(true)] out TResult? result);
 
         public override bool TryGetValue([NotNullWhen(true)] out LinkedList<TResult>? Result) {
             var ret = false;
@@ -26,7 +23,7 @@ namespace System
 
                 foreach (var Match in Matches) {
 
-                    if(ClassParser(Match, out var TItem)) {
+                    if(TryGetValue(Match, out var TItem)) {
                         TResult.Add(TItem);
                     }
 

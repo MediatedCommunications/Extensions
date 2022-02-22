@@ -4,18 +4,14 @@ using System.Text.RegularExpressions;
 
 namespace System {
     public record KeyValueNamedCaptureRegexParser : RegexClassParser<KeyValuePair<string, string>> {
-        public KeyValueNamedCaptureRegexParser() : base(ClassParser) {
-
-        }
-
-        static bool ClassParser(Match Input, [NotNullWhen(true)] out KeyValuePair<string, string> Result) {
+        public string KeyField { get; init; } = KeyValueFields.Key;
+        public string ValueField { get; init; } = KeyValueFields.Key;
+        
+        protected override bool TryGetValue(Match Input, [NotNullWhen(true)] out KeyValuePair<string, string> Result) {
             var ret = false;
             Result = default;
 
-            var KeyKey = nameof(KeyValuePair<string, string>.Key);
-            var ValueKey = nameof(KeyValuePair<string, string>.Value);
-
-            if (Input.Groups.TryGetValue(KeyKey, out var KeyGroup) && Input.Groups.TryGetValue(ValueKey, out var ValueGroup)) {
+            if (Input.Groups.TryGetValue(KeyField, out var KeyGroup) && Input.Groups.TryGetValue(ValueField, out var ValueGroup)) {
 
                 var Key = KeyGroup.Value;
                 var Value = ValueGroup.Value;
@@ -29,5 +25,14 @@ namespace System {
 
     }
 
+    public static class KeyValueFields {
+        public static string Key { get; }
+        public static string Value { get; }
+
+        static KeyValueFields() {
+            Key = nameof(KeyValuePair<string, string>.Key);
+            Value = nameof(KeyValuePair<string, string>.Value);
+        }
+    }
 
 }

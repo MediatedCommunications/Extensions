@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\__Shared\Windows-Shared.targets" Label="Shared" />
+  <Import Project="..\__Shared\Shared-Windows.props" Label="Shared" />
 
   <PropertyGroup>
     <PackageId>MC.System.Windows.Registry.Extensions</PackageId>

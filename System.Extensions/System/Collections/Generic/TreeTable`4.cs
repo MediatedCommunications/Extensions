@@ -2,10 +2,13 @@
 using System.Linq;
 
 namespace System.Collections.Generic {
+
     public record TreeTable<TItem, TKey1, TKey2, TKey3, TValue> : TreeTable<TItem, TValue>
         where TKey1 : notnull
         where TKey2 : notnull
         where TKey3 : notnull {
+
+        public static TreeTable<TItem, TKey1, TKey2, TKey3, TValue> Empty { get; } = new();
 
         public ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableDictionary<TKey3, ImmutableList<TValue>>>> Values { get; init; } = ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableDictionary<TKey3, ImmutableList<TValue>>>>.Empty;
 

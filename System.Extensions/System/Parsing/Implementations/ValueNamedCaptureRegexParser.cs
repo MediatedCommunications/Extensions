@@ -4,17 +4,13 @@ using System.Text.RegularExpressions;
 
 namespace System {
     public record ValueNamedCaptureRegexParser : RegexClassParser<string> {
-        public ValueNamedCaptureRegexParser() : base(ClassParser) {
+        public string ValueField { get; init; } = KeyValueFields.Value;
 
-        }
-
-        static bool ClassParser(Match Input, [NotNullWhen(true)] out string? Result) {
+        protected override bool TryGetValue(Match Input, [NotNullWhen(true)] out string? Result) {
             var ret = false;
             Result = default;
 
-            var ValueKey = nameof(KeyValuePair<string, string>.Value);
-
-            if (Input.Groups.TryGetValue(ValueKey, out var ValueGroup)) { 
+            if (Input.Groups.TryGetValue(ValueField, out var ValueGroup)) { 
                 var Value = ValueGroup.Value;
 
                 Result = Value;

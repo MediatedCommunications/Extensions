@@ -8,6 +8,8 @@ namespace System.Collections.Generic {
         where TKey3 : notnull
         where TKey4 : notnull {
 
+        public static TreeTable<TItem, TKey1, TKey2, TKey3, TKey4, TValue> Empty { get; } = new();
+
         public ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableDictionary<TKey3, ImmutableDictionary<TKey4, ImmutableList<TValue>>>>> Values { get; init; } = ImmutableDictionary<TKey1, ImmutableDictionary<TKey2, ImmutableDictionary<TKey3, ImmutableDictionary<TKey4, ImmutableList<TValue>>>>>.Empty;
 
         public Func<TItem, TKey1>? Key1Extractor { get; init; }

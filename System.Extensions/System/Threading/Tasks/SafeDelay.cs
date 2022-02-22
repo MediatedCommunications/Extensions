@@ -24,9 +24,12 @@
                         .DefaultAwait()
                         ;
                 }
+            } catch(TaskCanceledException ex) {
+                ex.Ignore();
 
             } catch (Exception ex) {
                 ex.Ignore();
+                throw;
             }
 
         }

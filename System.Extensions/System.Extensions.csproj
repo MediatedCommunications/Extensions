@@ -1,18 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\__Shared\Shared.targets" Label="Shared" />
+	<Import Project="..\__Shared\Shared.props" />
 
-  <PropertyGroup>
-    <PackageId>MC.System.Extensions</PackageId>
-  </PropertyGroup>
+	<PropertyGroup>
+		<LangVersion>preview</LangVersion>
+		<EnablePreviewFeatures>True</EnablePreviewFeatures>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="System\Environment\**" />
-    <EmbeddedResource Remove="System\Environment\**" />
-    <None Remove="System\Environment\**" />
-  </ItemGroup>
-	
+	<PropertyGroup>
+		<PackageId>MC.System.Extensions</PackageId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="System\Environment\**" />
+		<EmbeddedResource Remove="System\Environment\**" />
+		<None Remove="System\Environment\**" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="System.Linq.Async" Version="6.0.1" />
 	</ItemGroup>
+
+
 
 </Project>

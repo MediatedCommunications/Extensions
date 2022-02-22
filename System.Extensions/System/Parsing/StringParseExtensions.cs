@@ -98,31 +98,41 @@ namespace System {
             };
         }
 
-        public static KeyValueNamedCaptureRegexParser AsKeyValueRegexMatches(this ParseValue This, Regex RX) {
+        public static KeyValueNamedCaptureRegexParser KeyValues(this ParseValue This, Regex RX, string? KeyField = default, string? ValueField = default) {
             return new KeyValueNamedCaptureRegexParser() {
                 Input = This.Value,
                 Regex = RX,
+
+                KeyField = KeyField ?? KeyValueFields.Key,
+                ValueField = ValueField ?? KeyValueFields.Value,
             };
         }
 
-        public static KeyValueNamedCaptureRegexParser AsKeyValueRegexMatches(this ParseValue This, string RX, RegexOptions? Options = default) {
+        public static KeyValueNamedCaptureRegexParser KeyValues(this ParseValue This, string RX, string? KeyField = default, string? ValueField = default, RegexOptions ? Options = default) {
             return new KeyValueNamedCaptureRegexParser() {
                 Input = This.Value,
                 Regex = new Regex(RX, Options ?? RegularExpressions.Options),
+
+                KeyField = KeyField ?? KeyValueFields.Key,
+                ValueField = ValueField ?? KeyValueFields.Value,
             };
         }
 
-        public static ValueNamedCaptureRegexParser AsValueRegexMatches(this ParseValue This, Regex RX) {
+        public static ValueNamedCaptureRegexParser Values(this ParseValue This, Regex RX, string? ValueField = default) {
             return new ValueNamedCaptureRegexParser() {
                 Input = This.Value,
                 Regex = RX,
+
+                ValueField = ValueField ?? KeyValueFields.Value,
             };
         }
 
-        public static ValueNamedCaptureRegexParser AsValueRegexMatches(this ParseValue This, string RX, RegexOptions? Options = default) {
+        public static ValueNamedCaptureRegexParser Values(this ParseValue This, string RX, string? ValueField = default, RegexOptions? Options = default) {
             return new ValueNamedCaptureRegexParser() {
                 Input = This.Value,
                 Regex = new Regex(RX, Options ?? RegularExpressions.Options),
+
+                ValueField = ValueField ?? KeyValueFields.Value,
             };
         }
 
@@ -134,35 +144,35 @@ namespace System {
             };
         }
 
-        public static RegexMatchParser AsRegexMatches(this ParseValue This, Regex RX) {
+        public static RegexMatchParser Matches(this ParseValue This, Regex RX) {
             return new RegexMatchParser() {
                 Input = This.Value,
                 Regex = RX,
             };
         }
 
-        public static RegexMatchParser AsRegexMatches(this ParseValue This, string RX, RegexOptions? Options = default) {
+        public static RegexMatchParser Matches(this ParseValue This, string RX, RegexOptions? Options = default) {
             return new RegexMatchParser() {
                 Input = This.Value,
                 Regex = new Regex(RX, Options ?? RegularExpressions.Options),
             };
         }
 
-        public static RegexValuesParser AsRegexValues(this ParseValue This, Regex RX) {
-            return new RegexValuesParser() {
+        public static RegexStringMatchParser StringMatches(this ParseValue This, Regex RX) {
+            return new RegexStringMatchParser() {
                 Input = This.Value,
                 Regex = RX
             };
         }
 
-        public static RegexValuesParser AsRegexValues(this ParseValue This, string RX, RegexOptions? Options = default) {
-            return new RegexValuesParser() {
+        public static RegexStringMatchParser StringMatches(this ParseValue This, string RX, RegexOptions? Options = default) {
+            return new RegexStringMatchParser() {
                 Input = This.Value,
                 Regex = new Regex(RX, Options ?? RegularExpressions.Options),
             };
         }
 
-        public static EmailAddressParser AsEmails(this ParseValue This) {
+        public static EmailAddressParser EmailAddresses(this ParseValue This) {
             return new EmailAddressParser() {
                 Input = This.Value,
             };

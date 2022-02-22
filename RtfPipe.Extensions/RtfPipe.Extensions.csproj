@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\__Shared\Shared.targets" Label="Shared" />
+  <Import Project="..\__Shared\Shared.props" Label="Shared" />
   <ItemGroup>
     <PackageReference Include="BracketPipe" Version="0.7.7232.28997" />
     

@@ -11,7 +11,7 @@ namespace System.Text.Json.Serialization
             var tret = default(DateTimeOffset);
             var Success = false;
 
-            if (Input.Parse().AsRegexMatches(RX).FirstOrDefault() is { } M && M.Groups[Value].Value.Parse().AsLong().TryGetValue(out var MS)) {
+            if (Input.Parse().Matches(RX).FirstOrDefault() is { } M && M.Groups[Value].Value.Parse().AsLong().TryGetValue(out var MS)) {
                 tret = DateTimeOffset.FromUnixTimeMilliseconds(MS);
                 Success = true;
             } else if (Input.Parse().AsDateTimeOffset(Globalization.DateTimeStyles.AssumeUniversal).TryGetValue(out var SuccessValue)) {

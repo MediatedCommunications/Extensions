@@ -1,0 +1,31 @@
+<Project>
+	<Import Project="AssemblyInfo.nuget.g.props" />
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+		<LangVersion>preview</LangVersion>
+		<EnablePreviewFeatures>True</EnablePreviewFeatures>
+
+		<nullable>enable</nullable>
+		<DisableImplicitNamespaceImports>false</DisableImplicitNamespaceImports>
+		<NoWarn>CA1416;CS1998;NU1602;PS0131;IDE0025;IDE0037;IDE1006;VSTHRD100;</NoWarn>
+
+		<OutputPath>..\..\__BUILD\__CURRENT</OutputPath>
+
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Visible="false" Include="..\__SHARED\AssemblyInfo.Internal.g.cs" />
+		<Compile Visible="false" Include="..\__SHARED\AssemblyInfo.Internal.Attributes.cs" />
+	</ItemGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<PackageProjectUrl>https://github.com/MediatedCommunications/Extensions</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/MediatedCommunications/Extensions</RepositoryUrl>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+
+</Project>
+

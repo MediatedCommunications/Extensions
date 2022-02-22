@@ -17,7 +17,10 @@
         Encrypted = 1<< 14,
         Offline = 1 << 15,
         Empty = 1 << 16,
+
         EmptyTree = 1 << 17,
+        SystemGenerated = 1 << 18,
+        Executable = 1 << 19,
 
         SparseFile = 1 << 20,
         ReparsePoint = 1 << 21,

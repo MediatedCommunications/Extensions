@@ -30,7 +30,7 @@ namespace System
 
         private static string DisplayNameOnly(this TimeZoneInfo This) {
             var ret = This.DisplayName;
-            if (ret.Parse().AsRegexMatches(DisplayNameOnlyRegex).FirstOrDefault() is { } V) {
+            if (ret.Parse().Matches(DisplayNameOnlyRegex).FirstOrDefault() is { } V) {
                 ret = V.Groups["Name"].Value;
             }
 

@@ -145,11 +145,15 @@ namespace System.IO
             }
 
             if (IsSystemGeneratedName(Name)) {
-                ret |= FileSystemAttributes.System;
+                ret |= FileSystemAttributes.SystemGenerated;
             }
 
             if (IsHiddenName(Name)) {
                 ret |= FileSystemAttributes.Hidden;
+            }
+
+            if (IsExecutableName(Name)) {
+                ret |= FileSystemAttributes.Executable;
             }
 
             return ret;
@@ -157,6 +161,7 @@ namespace System.IO
 
         public static FileSystemAttributes GetAttributesFromPath(string Path) {
             var ret = FileSystemAttributes.None;
+
             if (File.Exists(Path)) {
                 var Info = new FileInfo(Path);
                 var Attribs = Info.Attributes;

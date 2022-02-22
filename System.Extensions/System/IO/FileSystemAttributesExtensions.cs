@@ -19,6 +19,10 @@
                 || This.HasFlag(FileSystemAttributes.System)
                 || This.HasFlag(FileSystemAttributes.ReadOnly)
                 || This.HasFlag(FileSystemAttributes.Archive)
+
+                || This.HasFlag(FileSystemAttributes.SystemGenerated)
+                || This.HasFlag(FileSystemAttributes.Executable)
+
                 || This.HasFlag(FileSystemAttributes.Temporary)
                 || This.HasFlag(FileSystemAttributes.Compressed)
                 || This.HasFlag(FileSystemAttributes.Encrypted)
