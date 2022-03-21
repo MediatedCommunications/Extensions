@@ -5,6 +5,15 @@ using System.Linq;
 using System.Text;
 
 namespace System.Threading.Tasks {
+
+    public abstract class AsyncInitializer<TContext> : AsyncInitializer {
+        protected TContext Options { get; }
+
+        public AsyncInitializer(TContext Context, params AsyncInitializer[] AsyncInitializers) {
+            this.Options = Context;
+        }
+    }
+
     public abstract class AsyncInitializer {
 
         protected ImmutableArray<AsyncInitializer> AsyncInitializers { get; }

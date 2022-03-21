@@ -6,15 +6,12 @@ namespace System {
 
     public record PhoneNumberParser : DefaultClassParser<PhoneNumber> {
 
-        public override PhoneNumber GetValue() {
+        protected override PhoneNumber GetDefaultValue() {
             var ret = new PhoneNumber();
-            if(TryGetValue(out var NewValue)) {
-                ret = NewValue;
-            }
             return ret;
         }
 
-        public override bool TryGetValue([NotNullWhen(true)] out PhoneNumber? Result) {
+        public override bool TryGetValue(string? Input, [NotNullWhen(true)] out PhoneNumber? Result) {
             var ret = false;
             Result = default;
 

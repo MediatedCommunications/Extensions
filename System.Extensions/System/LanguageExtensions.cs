@@ -9,5 +9,10 @@
             return o;
         }
 
+        public static T Capture<T>(this T This, out T ret) {
+            ret = This;
+            return ret;
+        }
+
     }
 }

@@ -34,7 +34,7 @@ namespace Telerik.Windows.Controls {
 
             }
 
-            private static void Loaded(object sender, EventArgs e) {
+            private static void Loaded(object sender, RoutedEventArgs e) {
                 ApplyValues(sender);
             }
 

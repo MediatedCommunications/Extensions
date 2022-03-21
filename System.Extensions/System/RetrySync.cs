@@ -24,7 +24,7 @@ namespace System
         }
 
         private RetryResult<T> TryInvoke(bool CanThrowException, CancellationToken Token) {
-            var LinkedToken = CancellationTokenSource.CreateLinkedTokenSource(Token, this.Token);
+            var LinkedToken = CancellationTokenSources.Create(Token, this.Token);
 
             var Result_Success = false;
             var Result_Exception = default(Exception?);

@@ -3,11 +3,13 @@
 namespace System {
     public static class StringParseExtensions { 
 
-        public static JsonValueParser<TJson> AsJson<TJson>(this ParseValue This, ConfiguredJsonSerializer? Serializer = default) where TJson : class {
-            return new JsonValueParser<TJson>() {
-                Input = This.Value,
+        public static ClassParserContext<JsonValueParser<TJson>, TJson> AsJson<TJson>(this ParseValue This, ConfiguredJsonSerializer? Serializer = default) where TJson : class {
+            var Parser = new JsonValueParser<TJson>() {
                 Serializer = Serializer ?? ConfiguredJsonSerializers.Default
             };
+
+            return ClassParserContext.Create<JsonValueParser<TJson>, TJson>(This, Parser);
+
         }
 
     }

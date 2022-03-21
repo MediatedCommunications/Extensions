@@ -44,7 +44,11 @@ namespace System.Net.Http
             return Cookie(This, Values, Encode, Enabled);
         }
 
-        
+        public static HttpRequestMessageBuilder AcceptJson(this HttpRequestMessageBuilder This, bool? RemoveFirst = default, bool? Enabled = default) {
+            var Value = "application/json, text/plain, */*";
+
+            return Accept(This, new string[] { Value }, RemoveFirst, Enabled);
+        }
 
         public static HttpRequestMessageBuilder Accept(this HttpRequestMessageBuilder This, string Value, bool? RemoveFirst = default, bool? Enabled = default) {
             return Accept(This, new string[] { Value }, RemoveFirst, Enabled);

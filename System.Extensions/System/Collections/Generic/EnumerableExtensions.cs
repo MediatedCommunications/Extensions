@@ -9,6 +9,17 @@ namespace System.Collections.Generic {
 
     public static class EnumerableExtensions {
 
+        public static IEnumerable<T> Item<T>(this IEnumerable<T> This, int Index) {
+            return This.Skip(Index).Take(1);
+        }
+
+        public static IEnumerable<T> Item<T>(this IEnumerable<T> This, Index Index) {
+            if (Index.IsFromEnd) {
+                return This.TakeLast(Index.Value).Take(1);
+            }
+            return This.Skip(Index.Value).Take(1);
+        }
+
         public static bool IsEmpty<T>(this IEnumerable<T> This)
         {
             return !This.Any();
@@ -67,18 +78,17 @@ namespace System.Collections.Generic {
             return ret;
         }
 
-        public static IEnumerable<T> GetRange<T>(this IEnumerable<T>? source, Range Values) {
-            var IE = source.EmptyIfNull();
-            var Count = IE.Count();
-            var Start = Values.Start.GetOffset(Count);
-            var Finish = Values.End.GetOffset(Count);
+        public static T[] TakeRange<T>(this IEnumerable<T>? source, Range Range) {
+            var tret = source.EmptyIfNull().ToArray();
+            var (Offset, Length) = Range.GetOffsetAndLength(tret.Length);
 
-            var Length = Finish - Start;
-            if(Length < 0) {
-                Length = 0;
-            }
+            var Start = Offset;
+            Start = Math.Clamp(Start, 0, Start);
 
-            var ret = IE.Skip(Start).Take(Length);
+            var End = Offset + Length;
+            End = Math.Clamp(End, 0, tret.Length);
+
+            var ret = tret[Start..End];
 
             return ret;
         }
@@ -93,6 +103,18 @@ namespace System.Collections.Generic {
                 Index += 1;
             }
         }
+
+        public static async IAsyncEnumerable<WithIndexItem<T>> WithIndexes<T>(this IAsyncEnumerable<T>? source, int FirstIndex = 0) {
+            var Index = FirstIndex;
+
+            await foreach (var Item in source.EmptyIfNull().DefaultAwait()) {
+                var ret = WithIndexItem.Create(Index, Item);
+                yield return ret;
+
+                Index += 1;
+            }
+        }
+
 
         public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T>? source) {
             return Coalesce(source, Enumerable.Empty<T>());

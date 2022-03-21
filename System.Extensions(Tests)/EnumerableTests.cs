@@ -13,7 +13,7 @@ namespace System.Extensions
         public Task TestRange() {
             static void TestRange(int[] Items, Range R) {
                 var V1 = Items[R].ToList();
-                var V2 = Items.GetRange(R).ToList();
+                var V2 = Items.TakeRange(R).ToList();
                 Assert.AreEqual(V1, V2);
             }
 

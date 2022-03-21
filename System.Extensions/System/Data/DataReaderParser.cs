@@ -1,59 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using System.Data.Common;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.Data {
-    public class DataReaderParserContext {
-        public ImmutableHashSet<string> ColumnNames { get; }
-        public ImmutableList<string> ColumnPositions { get; }
-        public IDataReader DataReader { get; }
-        public DataReaderParserContext(IDataReader DataReader, ImmutableList<string> Columns) {
-            this.DataReader = DataReader;
-            this.ColumnPositions = Columns;
-            this.ColumnNames = Columns.ToImmutableHashSet(StringComparer.InvariantCultureIgnoreCase);
-        }
-    }
 
     public delegate T? DataReaderParserFunc<T>(DataReaderParserContext Context);
 
     public static class DataReaderParser {
 
-        public static IEnumerable<T> List<T>(Func<IDbCommand> Source, DataReaderParserFunc<T> Parser) {
-            using var CMD = Source();
-
-            var query = List(CMD.ExecuteReader, Parser);
-
-            foreach (var item in query) {
-                yield return item;
-            }
-
-
-        }
-
-        public static IEnumerable<T> List<T>(Func<IDataReader> Source, DataReaderParserFunc<T> Parser) {
+        public static async IAsyncEnumerable<T> ListAsync<T>(Func<DbDataReader> Source, DataReaderParserFunc<T> Parser, [EnumeratorCancellation] CancellationToken Token = default) {
             using var DR = Source();
 
-            var query = List(DR, Parser);
+            var query = ListAsync(DR, Parser, Token)
+                .DefaultAwait()
+                ;
 
-            foreach (var item in query) {
+            await foreach (var item in query) {
                 yield return item;
             }
 
         }
 
-        public static IEnumerable<T> List<T>(IDataReader DR, DataReaderParserFunc<T> Parser) {
+        public static async IAsyncEnumerable<T> ListAsync<T>(DbDataReader DR, DataReaderParserFunc<T> Parser, [EnumeratorCancellation] CancellationToken Token = default) {
             var Columns = DR.GetColumnNames();
 
             var Context = new DataReaderParserContext(DR, Columns);
 
-            while (DR.Read()) {
+            while (await DR.ReadAsync().DefaultAwait()) {
                 var tret = Parser(Context);
+
                 if (tret is { }) {
                     yield return tret;
                 }
+
+                if (Token.ShouldStop()) {
+                    yield break;
+                }
+
             }
         }
     }

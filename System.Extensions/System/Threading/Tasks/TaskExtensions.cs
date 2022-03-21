@@ -62,7 +62,7 @@ namespace System.Threading.Tasks
 
             } else {
 
-                var AggregateToken = CancellationTokenSource.CreateLinkedTokenSource(Token);
+                var AggregateToken = CancellationTokenSources.Create(Token);
                 var DelayTask = SafeDelay.DelayAsync(AggregateToken.Token);
 
                 var Tasks = This.EmptyIfNull().WhereIsNotNull().ToLinkedList();
@@ -89,7 +89,7 @@ namespace System.Threading.Tasks
             };
 
             if(Token != default) {
-                AggregateToken = CancellationTokenSource.CreateLinkedTokenSource(Token);
+                AggregateToken = CancellationTokenSources.Create(Token);
                 Tasks.Add(SafeDelay.DelayAsync(AggregateToken.Token));
             }
 
@@ -111,7 +111,7 @@ namespace System.Threading.Tasks
             };
 
             if (Token != default) {
-                AggregateToken = CancellationTokenSource.CreateLinkedTokenSource(Token);
+                AggregateToken = CancellationTokenSources.Create(Token);
                 Tasks.Add(SafeDelay.DelayAsync(AggregateToken.Token));
             }
 

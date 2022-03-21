@@ -2,9 +2,9 @@
 
 namespace PostSharp.Extensions {
     [PSerializable]
-    public class IgnoreNullAttribute : AllowNullAttribute {
+    public class IgnoreNullAttribute : IgnoreValuesAttribute {
 
-        public IgnoreNullAttribute(bool Ignore = true) : base(!Ignore) {
+        public IgnoreNullAttribute() : base(new object?[] { null }) {
             
         }
 

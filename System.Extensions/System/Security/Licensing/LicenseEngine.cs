@@ -14,20 +14,20 @@ namespace System.Security.Licensing {
         where TCompiled : DisplayRecord
         {
 
-        public ImmutableList<TCompiled> Licenses { get; private set; } = ImmutableList<TCompiled>.Empty;
-
-        protected ImmutableArray<LicenseFormatBase<TCompiled>> LicenseFormats { get; }
+        public ImmutableList<TCompiled> LicenseCodes { get; private set; } = ImmutableList<TCompiled>.Empty;
+        protected ImmutableList<LicenseFormatBase<TCompiled>> LicenseFormats { get; }
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
-                .Data.AddCount(Licenses)
+                .Data.AddCount(LicenseCodes)
+                .Data.AddCount(LicenseFormats)
                 ;
         }
 
         public LicenseEngine()
         {
             this.LicenseFormats = InitializeLicenseFormats()
-                .ToImmutableArray()
+                .ToImmutableList()
                 ;
 
         }
@@ -39,14 +39,14 @@ namespace System.Security.Licensing {
 
 
         private void AddLicense(TCompiled? License) {
-            if(License is { } V1 && !Licenses.Contains(V1)) {
-                Licenses = Licenses.Add(V1);
+            if(License is { } V1 && !LicenseCodes.Contains(V1)) {
+                LicenseCodes = LicenseCodes.Add(V1);
             }
         }
 
         private void RemoveLicense(TCompiled? License) {
             if (License is { }) {
-                Licenses = Licenses.Remove(License);
+                LicenseCodes = LicenseCodes.Remove(License);
             }
         }
 

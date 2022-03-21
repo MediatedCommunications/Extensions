@@ -1,207 +1,305 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace System {
+    public static class Parsers {
+        public static BoolParser Bool { get; }
+        public static DateOnlyParser DateOnly { get; }
+        public static DateTimeOffsetParser DateTimeOffset { get; }
+        public static DateTimeParser DateTime { get; }
+        public static DecimalParser Decimal { get; }
+        public static DoubleParser Double { get; }
+        public static EmailAddressParser EmailAddress { get; }
+        public static EntityNameParser EntityName { get; }
+        public static FloatParser Float { get; }
+        public static GuidParser Guid { get; }
+        public static IntParser Int { get; }
+        public static KeyValueNamedCaptureParser KeyValue { get; }
+        public static LongParser Long { get; }
+        public static MemoryStreamParser MemoryStream { get; }
+        public static PhoneNumberParser PhoneNumber { get; }
+        public static RegexParser Regex { get; }
+        public static RegexMatchParser RegexMatch { get; }
+        public static RegexStringMatchParser RegexStringMatch { get; }
+        public static StringParser StringValue { get; }
+        public static StringSplitParser StringSplit { get; }
+        public static TimeOnlyParser TimeOnly { get; }
+        public static TimeSpanParser TimeSpan { get; }
+        public static UriParser Uri { get; }
+
+        public static AggregateValueNamedCaptureRegexParser AggregateValueNamedCapture { get; }
+        public static ValueNamedCaptureParser ValueNamedCapture { get; }
+        
+        public static EnumParser<T> Enum<T>() where T :struct => DefaultEnum<T>.Default;
+
+        private static class DefaultEnum<T> where T : struct{
+            public static EnumParser<T> Default { get; }
+            static DefaultEnum() {
+                Default = new();
+            }
+
+        }
+
+        static Parsers() {
+
+            Bool = new();
+            DateOnly = new();
+            DateTimeOffset = new();
+            DateTime = new();
+            Decimal = new();
+            Double = new();
+            EmailAddress = new();
+            EntityName = new();
+            Float = new();
+            Guid = new();
+            Int = new();
+            KeyValue = new();
+            Long = new();
+            MemoryStream = new();
+            PhoneNumber = new();
+            Regex = new();
+            RegexMatch = new();
+            RegexStringMatch = new();
+            StringValue = new();
+            StringSplit = new();
+            TimeOnly = new();
+            TimeSpan = new();
+            Uri = new();
+
+            AggregateValueNamedCapture = new();
+            ValueNamedCapture = new();
+        }
+
+    }
+
     public static class StringParseExtensions { 
 
         public static ParseValue Parse(this string? This) {
             return new ParseValue(This);
         }
 
-        public static StringValueParser AsString(this ParseValue This) {
-            return new StringValueParser() {
-                Input = This.Value,
-            };
+        public static DefaultClassParserContext<StringParser, string> AsString(this ParseValue This) {
+            return DefaultClassParserContext.Create<StringParser, string>(This, Parsers.StringValue);
         }
 
-        public static GuidStructParser AsGuid(this ParseValue This) {
-            return new GuidStructParser() {
-                Input = This.Value
-            };
+        public static ListParserContext<StringSplitParser, string> AsSplitString(this ParseValue This) {
+            return ListParserContext.Create<StringSplitParser, string>(This, Parsers.StringSplit);
         }
 
-        public static BoolStructParser AsBool(this ParseValue This) {
-            return new BoolStructParser() {
-                Input = This.Value
-            };
+        public static StructParserContext<GuidParser, Guid> AsGuid(this ParseValue This) {
+            return StructParserContext.Create<GuidParser, Guid>(This, Parsers.Guid);
         }
 
-        public static IntStructParser AsInt(this ParseValue This) {
-            return new IntStructParser() {
-                Input = This.Value
-            };
+        public static StructParserContext<BoolParser, bool> AsBool(this ParseValue This) {
+            return StructParserContext.Create<BoolParser, bool>(This, Parsers.Bool);
         }
 
-        public static LongStructParser AsLong(this ParseValue This) {
-            return new LongStructParser() {
-                Input = This.Value
-            };
+        public static StructParserContext<IntParser, int> AsInt(this ParseValue This) {
+            return StructParserContext.Create<IntParser, int>(This, Parsers.Int);
         }
 
-        public static FloatStructParser AsFloat(this ParseValue This) {
-            return new FloatStructParser() {
-                Input = This.Value,
-            };
+        public static StructParserContext<LongParser, long> AsLong(this ParseValue This) {
+            return StructParserContext.Create<LongParser, long>(This, Parsers.Long);
         }
 
-        public static DecimalStructParser AsDecimal(this ParseValue This) {
-            return new DecimalStructParser() {
-                Input = This.Value
-            };
+        public static StructParserContext<FloatParser, float> AsFloat(this ParseValue This) {
+            return StructParserContext.Create<FloatParser, float>(This, Parsers.Float);
         }
 
-        public static DoubleValueParser AsDouble(this ParseValue This) {
-            return new DoubleValueParser() {
-                Input = This.Value
-            };
+        public static StructParserContext<DecimalParser, decimal> AsDecimal(this ParseValue This) {
+            return StructParserContext.Create<DecimalParser, decimal>(This, Parsers.Decimal);
         }
 
-        public static EnumStructParser<T> AsEnum<T>(this ParseValue This) where T : struct {
-            return new EnumStructParser<T>() {
-                Input = This.Value
-            };
+        public static StructParserContext<DoubleParser, double> AsDouble(this ParseValue This) {
+            return StructParserContext.Create<DoubleParser, double>(This, Parsers.Double);
         }
 
-        public static TimeSpanStructParser AsTimeSpan(this ParseValue This, TimeSpanFormat Format = TimeSpanFormat.TimeSpan) {
-            return new TimeSpanStructParser() {
-                Input = This.Value,
+        public static StructParserContext<EnumParser<T>, T> AsEnum<T>(this ParseValue This) where T : struct {
+            return StructParserContext.Create<EnumParser<T>, T>(This, Parsers.Enum<T>());
+        }
+
+        public static StructParserContext<TimeSpanParser, TimeSpan> AsTimeSpan(this ParseValue This) {
+            return StructParserContext.Create<TimeSpanParser, TimeSpan>(This, Parsers.TimeSpan);
+        }
+
+        public static StructParserContext<TimeSpanParser, TimeSpan> AsTimeSpan(this ParseValue This, TimeSpanFormat Format) {
+            var Parser = Parsers.TimeSpan with
+            {
                 Format = Format,
             };
+            return StructParserContext.Create<TimeSpanParser, TimeSpan>(This, Parser);
         }
 
-        public static DateTimeValueParser AsDateTime(this ParseValue This) {
-            return new DateTimeValueParser() {
-                Input = This.Value
+        public static StructParserContext<DateTimeParser, DateTime> AsDateTime(this ParseValue This) {
+            return StructParserContext.Create<DateTimeParser, DateTime>(This, Parsers.DateTime);
+        }
+
+        public static StructParserContext<DateOnlyParser, DateOnly> AsDateOnly(this ParseValue This) {
+            return StructParserContext.Create<DateOnlyParser, DateOnly>(This, Parsers.DateOnly);
+        }
+
+        public static StructParserContext<TimeOnlyParser, TimeOnly> AsTimeOnly(this ParseValue This) {
+            return StructParserContext.Create<TimeOnlyParser, TimeOnly>(This, Parsers.TimeOnly);
+        }
+
+        public static StructParserContext<DateTimeOffsetParser, DateTimeOffset> AsDateTimeOffset(this ParseValue This) {
+            return StructParserContext.Create<DateTimeOffsetParser, DateTimeOffset>(This, Parsers.DateTimeOffset);
+        }
+
+        public static StructParserContext<DateTimeOffsetParser, DateTimeOffset> AsDateTimeOffset(this ParseValue This, DateTimeStyles DateTimeStyles) {
+            var Parser = Parsers.DateTimeOffset with
+            {
+                Style = DateTimeStyles,
             };
+            
+            return StructParserContext.Create<DateTimeOffsetParser, DateTimeOffset>(This, Parser);
         }
 
-        public static DateOnlyValueParser AsDateOnly(this ParseValue This) {
-            return new DateOnlyValueParser() {
-                Input = This.Value
-            };
-        }
-
-        public static TimeOnlyValueParser AsTimeOnly(this ParseValue This) {
-            return new TimeOnlyValueParser() {
-                Input = This.Value
-            };
-        }
-
-        public static DateTimeOffsetStructParser AsDateTimeOffset(this ParseValue This, DateTimeStyles Style = default, IFormatProvider? FormatProvider = default) {
-            return new DateTimeOffsetStructParser() {
-                Input = This.Value,
-                Style = Style,
-                FormatProvider = FormatProvider,
-            };
-        }
-
-        public static KeyValueNamedCaptureRegexParser KeyValues(this ParseValue This, Regex RX, string? KeyField = default, string? ValueField = default) {
-            return new KeyValueNamedCaptureRegexParser() {
-                Input = This.Value,
-                Regex = RX,
-
-                KeyField = KeyField ?? KeyValueFields.Key,
-                ValueField = ValueField ?? KeyValueFields.Value,
-            };
-        }
-
-        public static KeyValueNamedCaptureRegexParser KeyValues(this ParseValue This, string RX, string? KeyField = default, string? ValueField = default, RegexOptions ? Options = default) {
-            return new KeyValueNamedCaptureRegexParser() {
-                Input = This.Value,
-                Regex = new Regex(RX, Options ?? RegularExpressions.Options),
-
-                KeyField = KeyField ?? KeyValueFields.Key,
-                ValueField = ValueField ?? KeyValueFields.Value,
-            };
-        }
-
-        public static ValueNamedCaptureRegexParser Values(this ParseValue This, Regex RX, string? ValueField = default) {
-            return new ValueNamedCaptureRegexParser() {
-                Input = This.Value,
-                Regex = RX,
-
-                ValueField = ValueField ?? KeyValueFields.Value,
-            };
-        }
-
-        public static ValueNamedCaptureRegexParser Values(this ParseValue This, string RX, string? ValueField = default, RegexOptions? Options = default) {
-            return new ValueNamedCaptureRegexParser() {
-                Input = This.Value,
-                Regex = new Regex(RX, Options ?? RegularExpressions.Options),
-
-                ValueField = ValueField ?? KeyValueFields.Value,
-            };
-        }
-
-
-        public static RegexParser AsRegex(this ParseValue This, RegexOptions? Options = default) {
-            return new RegexParser() {
-                Input = This.Value,
-                Options = Options ?? RegularExpressions.Options,
-            };
-        }
-
-        public static RegexMatchParser Matches(this ParseValue This, Regex RX) {
-            return new RegexMatchParser() {
-                Input = This.Value,
+        public static ListParserContext<KeyValueNamedCaptureParser, KeyValuePair<string, string>> KeyValues(this ParseValue This, Regex RX) {
+            var Parser = Parsers.KeyValue with
+            {
                 Regex = RX,
             };
+
+            return ListParserContext.Create<KeyValueNamedCaptureParser, KeyValuePair<string, string>>(This, Parser);
+
         }
 
-        public static RegexMatchParser Matches(this ParseValue This, string RX, RegexOptions? Options = default) {
-            return new RegexMatchParser() {
-                Input = This.Value,
-                Regex = new Regex(RX, Options ?? RegularExpressions.Options),
+        public static ListParserContext<KeyValueNamedCaptureParser, KeyValuePair<string, string>> KeyValues(this ParseValue This, string RX, RegexOptions ? Options = default) {
+            var Parser = Parsers.KeyValue with
+            {
+                Regex = CreateRegex(RX, Options),
             };
+
+            return ListParserContext.Create<KeyValueNamedCaptureParser, KeyValuePair<string, string>>(This, Parser);
+
         }
 
-        public static RegexStringMatchParser StringMatches(this ParseValue This, Regex RX) {
-            return new RegexStringMatchParser() {
-                Input = This.Value,
+        public static ListParserContext<ValueNamedCaptureParser, string> Values(this ParseValue This, Regex RX) {
+            var Parser = Parsers.ValueNamedCapture with
+            {
+                Regex = RX,
+            };
+
+            return ListParserContext.Create<ValueNamedCaptureParser, string>(This, Parser);
+
+        }
+
+        public static ListParserContext<ValueNamedCaptureParser, string> Values(this ParseValue This, string RX, RegexOptions? Options = default) {
+            var Parser = Parsers.ValueNamedCapture with
+            {
+                Regex = CreateRegex(RX, Options),
+            };
+
+            return ListParserContext.Create<ValueNamedCaptureParser, string>(This, Parser);
+        }
+
+        public static ListParserContext<AggregateValueNamedCaptureRegexParser, string> AggregateValues(this ParseValue This, Regex RX) {
+            var Parser = Parsers.AggregateValueNamedCapture with
+            {
+                Regex = RX,
+            };
+
+            return ListParserContext.Create<AggregateValueNamedCaptureRegexParser, string>(This, Parser);
+        }
+
+        public static ListParserContext<AggregateValueNamedCaptureRegexParser, string> AggregateValues(this ParseValue This, string RX, RegexOptions? Options = default) {
+            var Parser = Parsers.AggregateValueNamedCapture with
+            {
+                Regex = CreateRegex(RX, Options),
+            };
+
+            return ListParserContext.Create<AggregateValueNamedCaptureRegexParser, string>(This, Parser);
+
+        }
+
+
+        public static DefaultClassParserContext<RegexParser, Regex> AsRegex(this ParseValue This) {
+            return DefaultClassParserContext.Create<RegexParser, Regex>(This, Parsers.Regex);
+
+        }
+
+        public static ListParserContext<RegexMatchParser, Match> Matches(this ParseValue This, Regex RX) {
+            var Parser = Parsers.RegexMatch with
+            {
+                Regex = RX,
+            };
+
+            return ListParserContext.Create<RegexMatchParser, Match>(This, Parser);
+
+        }
+
+        public static ListParserContext<RegexMatchParser, Match> Matches(this ParseValue This, string RX, RegexOptions? Options = default) {
+            var Parser = Parsers.RegexMatch with
+            {
+                Regex = CreateRegex(RX, Options),
+            };
+
+            return ListParserContext.Create<RegexMatchParser, Match>(This, Parser);
+        }
+
+        public static ListParserContext<RegexStringMatchParser, string> StringMatches(this ParseValue This, Regex RX) {
+            var Parser = Parsers.RegexStringMatch with
+            {
                 Regex = RX
             };
+
+            return ListParserContext.Create<RegexStringMatchParser, string>(This, Parser);
         }
 
-        public static RegexStringMatchParser StringMatches(this ParseValue This, string RX, RegexOptions? Options = default) {
-            return new RegexStringMatchParser() {
-                Input = This.Value,
-                Regex = new Regex(RX, Options ?? RegularExpressions.Options),
-            };
+        private static Regex CreateRegex(string RX, RegexOptions? Options) {
+            return new Regex(RX, Options ?? RegularExpressions.Options);
         }
 
-        public static EmailAddressParser EmailAddresses(this ParseValue This) {
-            return new EmailAddressParser() {
-                Input = This.Value,
+        public static ListParserContext<RegexStringMatchParser, string> StringMatches(this ParseValue This, string RX, RegexOptions? Options = default) {
+            var Parser = Parsers.RegexStringMatch with
+            {
+                Regex = CreateRegex(RX, Options),
             };
+
+            return ListParserContext.Create<RegexStringMatchParser, string>(This, Parser);
         }
 
-        public static PhoneNumberParser AsPhoneNumber(this ParseValue This) {
-            return new PhoneNumberParser() {
-                Input = This.Value
-            };
+        public static ListParserContext<EmailAddressParser, EmailAddress> EmailAddresses(this ParseValue This) {
+            return ListParserContext.Create<EmailAddressParser, EmailAddress>(This, Parsers.EmailAddress);
         }
 
-        public static EntityNameParser AsName(this ParseValue This, IEnumerable<PersonNameFormat>? Formats = default) {
-            return new EntityNameParser() {
-                Input = This.Value,
-                Formats = (Formats ?? PersonNameFormats.All).ToImmutableArray()
-            };
+        public static DefaultClassParserContext<PhoneNumberParser, PhoneNumber> AsPhoneNumber(this ParseValue This) {
+            return DefaultClassParserContext.Create<PhoneNumberParser, PhoneNumber>(This, Parsers.PhoneNumber);
         }
 
-        public static UriValueParser AsUri(this ParseValue This) {
-            return new UriValueParser() {
-                Input = This.Value,
-            };
+        public static DefaultClassParserContext<EntityNameParser, EntityName> AsName(this ParseValue This) {
+            return DefaultClassParserContext.Create<EntityNameParser, EntityName>(This, Parsers.EntityName);
         }
 
-        public static MemoryStreamParser AsMemoryStream(this ParseValue This, Encoding? Encoding = default) {
-            return new MemoryStreamParser() {
-                Input = This.Value,
-                Encoding = Encoding ?? Encoding.Default,
+        public static DefaultClassParserContext<EntityNameParser, EntityName> AsName(this ParseValue This, params PersonNameFormat[] Formats) {
+            var Parser = Parsers.EntityName with
+            {
+                Formats = Formats.ToImmutableArray(),
             };
+            return DefaultClassParserContext.Create<EntityNameParser, EntityName>(This, Parser);
+        }
+
+        public static ClassParserContext<UriParser, Uri> AsUri(this ParseValue This) {
+            return ClassParserContext.Create<UriParser, Uri>(This, Parsers.Uri);
+        }
+
+
+        public static DefaultClassParserContext<MemoryStreamParser, MemoryStream> AsMemoryStream(this ParseValue This) {
+            return DefaultClassParserContext.Create<MemoryStreamParser, MemoryStream>(This, Parsers.MemoryStream);
+        }
+
+        public static DefaultClassParserContext<MemoryStreamParser, MemoryStream> AsMemoryStream(this ParseValue This, System.Text.Encoding Encoding) {
+            var Parser = Parsers.MemoryStream with
+            {
+                Encoding = Encoding
+            };
+            
+            return DefaultClassParserContext.Create<MemoryStreamParser, MemoryStream>(This, Parser);
         }
 
         public static PathParser AsPath(this ParseValue This) {

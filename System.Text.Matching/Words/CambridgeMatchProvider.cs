@@ -20,7 +20,7 @@ namespace System.Text.Matching
             //Left Inner Chars
             var LChars = ImmutableList<string>.Empty;
             if(v1.Count >= 3) {
-                LChars = v1.GetRange(1..^1).ToImmutableList();
+                LChars = v1.TakeRange(1..^1).ToImmutableList();
             }
             var LeftLetters = LChars.Select(x => x.ToString()).ToImmutableHashSet(Comparer);
 
@@ -28,7 +28,7 @@ namespace System.Text.Matching
             //Right Inner Chars
             var RChars = ImmutableList<string>.Empty;
             if (v2.Count >= 3) {
-                RChars = v2.GetRange(1..^1).ToImmutableList();
+                RChars = v2.TakeRange(1..^1).ToImmutableList();
             }
             var RightLetters = RChars.Select(x => x.ToString()).ToImmutableHashSet(Comparer);
 

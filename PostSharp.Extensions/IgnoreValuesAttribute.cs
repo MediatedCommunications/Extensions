@@ -1,20 +1,21 @@
 ﻿using PostSharp.Aspects;
 using PostSharp.Serialization;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PostSharp.Extensions {
     [PSerializable]
-    public class AllowNullAttribute : LocationInterceptionAspect {
-        private bool Allow;
+    public class IgnoreValuesAttribute : LocationInterceptionAspect {
+        private List<object?> Values;
 
-        public AllowNullAttribute(bool Allow = true) {
-            this.Allow = Allow;
+        public IgnoreValuesAttribute(params object?[] Values) {
             this.AspectPriority = 1;
+            this.Values = Values.ToList();
         }
 
         public override void OnSetValue(LocationInterceptionArgs args) {
             var Allowed = false
-                || Allow
-                || args.Value is { }
+                || !Values.Contains(args.Value)
                 ;
 
             if (Allowed) {

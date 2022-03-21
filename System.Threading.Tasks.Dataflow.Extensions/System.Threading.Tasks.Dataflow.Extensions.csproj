@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\__Shared\Shared.props" />
+
+	<PropertyGroup>
+		<PackageId>MC.System.Threading.Tasks.Dataflow.Extensions</PackageId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\System.Extensions\System.Extensions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.Threading.Tasks.Dataflow" Version="6.0.0" />
+	</ItemGroup>
+
+</Project>

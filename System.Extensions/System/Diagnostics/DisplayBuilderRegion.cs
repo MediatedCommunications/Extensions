@@ -88,8 +88,38 @@ namespace System.Diagnostics
             return Parent;
         }
 
+        public DisplayBuilder AddFlag(object? Condition, [CallerArgumentExpression("Condition")] string? Name = default) {
+            return AddFlag(Condition is { }, Name);
+        }
+
         public DisplayBuilder AddFlag(bool Condition, [CallerArgumentExpression("Condition")] string? Name = default) {
             return this.If(Condition).Add(Name);
+        }
+
+        public DisplayBuilder AddCount<T>(IEnumerable<T>? Collection, [CallerArgumentExpression("Collection")] string? Name = default) {
+            var ActualCount = Collection.EmptyIfNull().Count();
+
+            return AddCount(ActualCount, Name);
+        }
+
+        public DisplayBuilder AddCount(long Count, [CallerArgumentExpression("Count")] string? Name = default) {
+            var ret = AddCount($@"{Count}", Name);
+
+            return ret;
+        }
+
+
+        public DisplayBuilder AddCount(decimal Count, [CallerArgumentExpression("Count")] string? Name = default) {
+            var ret = AddCount($@"{Count}", Name);
+
+            return ret;
+        }
+
+
+        public DisplayBuilder AddCount(double Count, [CallerArgumentExpression("Count")] string? Name = default) {
+            var ret = AddCount($@"{Count}", Name);
+
+            return ret;
         }
 
         public DisplayBuilder AddCount(string Count, [CallerArgumentExpression("Count")] string? Name = default) {
@@ -107,43 +137,7 @@ namespace System.Diagnostics
             return ret;
         }
 
-        public DisplayBuilder AddCount(long Count, [CallerArgumentExpression("Count")] string? Name = default) {
-            var ret = Parent;
-
-            if (Count != 0) {
-                ret = AddCount($@"{Count}", Name);
-            }
-            return ret;
-        }
-
-
-        public DisplayBuilder AddCount(decimal Count, [CallerArgumentExpression("Count")] string? Name = default) {
-            var ret = Parent;
-
-            if (Count != 0.0m) {
-                ret = AddCount($@"{Count}", Name);
-            }
-            return ret;
-        }
-
-
-        public DisplayBuilder AddCount(double Count, [CallerArgumentExpression("Count")] string? Name = default) {
-            var ret = Parent;
-
-            if (Count != 0.0d) {
-                ret = AddCount($@"{Count}", Name);
-            }
-            return ret;
-        }
-
-        public DisplayBuilder AddCount<T>(IEnumerable<T> Collection, [CallerArgumentExpression("Collection")] string? Name = default)
-        {
-            var ActualCount = Collection.Count();
-
-            return AddCount(ActualCount, Name);
-        }
-
-        public DisplayBuilder AddNameValue<TValue>(IEnumerable<KeyValuePair<string, TValue>>? Values) {
+        public DisplayBuilder AddNameValue<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>>? Values) {
             foreach (var item in Values.EmptyIfNull()) {
                 AddNameValue(item.Key, item.Value);
             }
@@ -152,8 +146,9 @@ namespace System.Diagnostics
         }
 
 
-        public DisplayBuilder AddNameValue(string? Name, object? Value) {
-            return AddExpression(Value, Name);
+        public DisplayBuilder AddNameValue(object? Name, object? Value) {
+            var NewName = StringValue(Name);
+            return AddExpression(Value, NewName);
         }
 
         public DisplayBuilder AddExpression(object? Value, [CallerArgumentExpression("Value")] string? Name = default) {

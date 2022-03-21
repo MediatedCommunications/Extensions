@@ -1,8 +1,8 @@
 ﻿namespace System {
-    public record TimeSpanStructParser : StructParser<TimeSpan> {
-        public TimeSpanFormat Format { get; init; }
+    public record TimeSpanParser : StructParser<TimeSpan> {
+        public TimeSpanFormat Format { get; init; } = TimeSpanFormat.TimeSpan;
 
-        public override bool TryGetValue(out TimeSpan Result) {
+        public override bool TryGetValue(string? Input, out TimeSpan Result) {
             var ret = false;
             Result = TimeSpan.Zero;
 

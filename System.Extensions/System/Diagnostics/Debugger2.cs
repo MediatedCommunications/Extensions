@@ -7,46 +7,33 @@ namespace System.Diagnostics {
 
         public const string DebuggerDisplay = "{GetDebuggerDisplay(),nq}";
 
+        static Debugger2() {
+            IsAttachedAtStartup = IsAttached;
+        }
+
         public static bool IsAttached {
             get {
                 return Debugger.IsAttached;
             }
         }
 
+        public static bool IsAttachedAtStartup { get; }
+
+
         //https://social.msdn.microsoft.com/Forums/vstudio/en-US/fe36c6d9-fc3d-4a81-9156-da19d6117c6c/bug-static-checking-inverts-custom-parameter-validation-logic?forum=codecontracts
-        //When I put the DebuggerHidden on it, it causes the break to occur at the callign function, not at this function.
+        //When I put the DebuggerHidden on it, it causes the break to occur at the calling function, not at this function.
         [Conditional(Build.DEBUG)]
         [DebuggerHidden, Pure]
         public static void BreakIfAttached() {
-            if (Debugger.IsAttached) {
-                Debugger.Break();
+            if (IsAttached) {
+                Break();
             }
         }
 
+        [Conditional(Build.DEBUG)]
         [DebuggerHidden, Pure]
-        [Obsolete("Do not use this in production")]
-        public static void WaitForAttach(long DelayInMs)
-        {
-            var TS = TimeSpan.FromMilliseconds(DelayInMs);
-
-            WaitForAttach(TS);
-        }
-
-        [DebuggerHidden, Pure]
-        [Obsolete("Do not use this in production")]
-        public static void WaitForAttach(TimeSpan TS)
-        {
-            var SW = System.Diagnostics.Stopwatch.StartNew();
-            while(SW.Elapsed < TS && !Debugger.IsAttached)
-            {
-                Thread.Yield();
-            }
-
-            if (Debugger.IsAttached)
-            {
-                Debugger.Break();
-            }
-
+        public static void Break() {
+            Debugger.Break();
         }
 
     }

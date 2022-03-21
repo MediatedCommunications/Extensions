@@ -35,11 +35,11 @@ namespace System.Extensions
             foreach (var item in Names) {
                 var Text = item.Key;
                 var Expected = item.Value;
-                
-                var Actual = Text.Parse().AsName().GetValue();
+
+                var Actual = Text.Parse().AsName().TryGetValue();
 
                 var ExpectedText = Expected.GetDebuggerDisplay();
-                var ActualText = Actual.GetDebuggerDisplay();
+                var ActualText = Actual?.GetDebuggerDisplay();
                 
                 Assert.AreEqual(ExpectedText, ActualText);
 

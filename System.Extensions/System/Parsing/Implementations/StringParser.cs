@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
 namespace System {
-    public record StringValueParser : DefaultClassParser<string> {
+    public record StringParser : DefaultClassParser<string> {
 
-        public override bool TryGetValue([NotNullWhen(true)] out string? Result) {
+        public override bool TryGetValue(string? Input, [NotNullWhen(true)] out string? Result) {
             bool ret;
 
             (Result, ret) = Input is { } V1
@@ -14,8 +14,8 @@ namespace System {
             return ret;
         }
 
-        public override string GetValue() {
-            return GetValue(Strings.Empty);
+        protected override string GetDefaultValue() {
+            return Strings.Empty;
         }
     }
 

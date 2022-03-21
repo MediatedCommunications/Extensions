@@ -20,6 +20,19 @@ namespace System.Collections.Generic
             }
         }
 
+        public static IEnumerable<T?> NullIfEmpty<T>(this IEnumerable<T>? This) where T:struct {
+            var tret = This.EmptyIfNull().ToList();
+
+            if(tret.Count == 0) {
+                yield return null;
+            } else {
+                foreach (var item in tret) {
+                    yield return item;
+                }
+            }
+
+        } 
+
     }
 
 }

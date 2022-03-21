@@ -111,6 +111,23 @@ namespace System.Text
             return ret;
         }
 
+        public static byte[]? TryConvertFromStringFormatted(string Input) {
+            var SafeInput = RemoveInvalidCharacters(Input);
+            var ret = TryConvertFromString(SafeInput);
+            return ret;
+        }
+
+        public static byte[]? TryConvertFromString(string Input) {
+            var ret = default(byte[]?);
+            var Dest = new byte[Input.Length];
+
+            if(Convert.TryFromBase64String(Input, Dest, out var Length)) {
+                ret = Dest[..Length];
+            }
+
+            return ret;
+        }
+
 
         public static byte[] ConvertFromStringFormatted(string Input) {
             var SafeInput = RemoveInvalidCharacters(Input);

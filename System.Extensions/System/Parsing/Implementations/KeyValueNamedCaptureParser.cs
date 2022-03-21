@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 namespace System {
-    public record KeyValueNamedCaptureRegexParser : RegexClassParser<KeyValuePair<string, string>> {
+    public record KeyValueNamedCaptureParser : RegexClassParser<KeyValuePair<string, string>> {
         public string KeyField { get; init; } = KeyValueFields.Key;
         public string ValueField { get; init; } = KeyValueFields.Key;
         
@@ -11,7 +11,14 @@ namespace System {
             var ret = false;
             Result = default;
 
-            if (Input.Groups.TryGetValue(KeyField, out var KeyGroup) && Input.Groups.TryGetValue(ValueField, out var ValueGroup)) {
+            if (true
+                && Input.Groups.TryGetValue(KeyField, out var KeyGroup) 
+                && KeyGroup.Success
+
+                && Input.Groups.TryGetValue(ValueField, out var ValueGroup)
+                && ValueGroup.Success
+
+                ) {
 
                 var Key = KeyGroup.Value;
                 var Value = ValueGroup.Value;
@@ -23,16 +30,6 @@ namespace System {
             return ret;
         }
 
-    }
-
-    public static class KeyValueFields {
-        public static string Key { get; }
-        public static string Value { get; }
-
-        static KeyValueFields() {
-            Key = nameof(KeyValuePair<string, string>.Key);
-            Value = nameof(KeyValuePair<string, string>.Value);
-        }
     }
 
 }

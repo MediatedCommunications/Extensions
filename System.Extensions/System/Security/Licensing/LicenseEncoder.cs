@@ -105,6 +105,7 @@ namespace System.Security.Licensing
             return ret;
         }
 
+
         protected virtual string Serialization_Add<T>(T License)
         {
             return System.Text.Json.JsonSerializer.Serialize(License);

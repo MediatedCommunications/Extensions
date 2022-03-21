@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
@@ -9,17 +10,16 @@ namespace System
 
         protected abstract bool TryGetValue(Match Input, [NotNullWhen(true)] out TResult? result);
 
-        public override bool TryGetValue([NotNullWhen(true)] out LinkedList<TResult>? Result) {
+        public override bool TryGetValue(string? Input, [NotNullWhen(true)] out ImmutableList<TResult>? Result) {
             var ret = false;
             Result = default;
 
             var MatchParser = new RegexMatchParser() {
                 Regex = Regex,
-                Input = Input,
             };
 
-            if (MatchParser.TryGetValue(out var Matches)) {
-                var TResult = new LinkedList<TResult>();
+            if (MatchParser.TryGetValue(Input, out var Matches)) {
+                var TResult = new List<TResult>();
 
                 foreach (var Match in Matches) {
 
@@ -31,7 +31,7 @@ namespace System
 
                 if(TResult.Count > 0) {
                     ret = true;
-                    Result = TResult;
+                    Result = TResult.ToImmutableList();
                 }
             }
 

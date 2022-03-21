@@ -9,6 +9,7 @@ namespace System {
         public const string Colon = ":";
         public const string Comma = ",";
         public const string Dash = "-";
+        public const string Dash3 = "---";
         public const string Dot = ".";
         public const string Pipe = "|";
         public const string Semicolon = ";";

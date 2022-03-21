@@ -8,14 +8,14 @@ namespace System
         public Encoding Encoding { get; init; } = System.Text.Encoding.UTF8;
 
 
-        public override bool TryGetValue([NotNullWhen(true)] out MemoryStream? Result) {
+        public override bool TryGetValue(string? Input, [NotNullWhen(true)] out MemoryStream? Result) {
             Result = Encoding.GetBytes(Input.ToStringSafe()).ToMemoryStream();
 
             return true;
         }
 
-        public override MemoryStream GetValue() {
-            return GetValue(new MemoryStream());
+        protected override MemoryStream GetDefaultValue() {
+            return new MemoryStream();
         }
 
     }

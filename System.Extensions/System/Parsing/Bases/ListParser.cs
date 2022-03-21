@@ -1,22 +1,13 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 
-namespace System
-{
-    public abstract record ListParser<T> : DefaultClassParser<LinkedList<T>>, IEnumerable<T> {
+namespace System {
+    public abstract record ListParser<T> : DefaultClassParser<ImmutableList<T>> {
 
-        public override LinkedList<T> GetValue() {
-            return GetValue(new LinkedList<T>());
+        protected override ImmutableList<T> GetDefaultValue() {
+            return ImmutableList<T>.Empty;
         }
 
-        public IEnumerator<T> GetEnumerator() {
-            return GetValue().GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() {
-            return GetEnumerator();
-        }
     }
-
 
 }
