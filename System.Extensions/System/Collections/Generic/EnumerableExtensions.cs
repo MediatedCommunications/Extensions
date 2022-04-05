@@ -79,16 +79,24 @@ namespace System.Collections.Generic {
         }
 
         public static T[] TakeRange<T>(this IEnumerable<T>? source, Range Range) {
-            var tret = source.EmptyIfNull().ToArray();
-            var (Offset, Length) = Range.GetOffsetAndLength(tret.Length);
+            var ret = Array.Empty<T>();
 
-            var Start = Offset;
-            Start = Math.Clamp(Start, 0, Start);
+            try {
 
-            var End = Offset + Length;
-            End = Math.Clamp(End, 0, tret.Length);
+                var tret = source.EmptyIfNull().ToArray();
 
-            var ret = tret[Start..End];
+                var (Offset, Length) = Range.GetOffsetAndLength(tret.Length);
+
+                var Start = Offset;
+                Start = Math.Clamp(Start, 0, Start);
+
+                var End = Offset + Length;
+                End = Math.Clamp(End, 0, tret.Length);
+
+                ret = tret[Start..End];
+            } catch(Exception ex) {
+                ex.Ignore();
+            }
 
             return ret;
         }
@@ -168,7 +176,7 @@ namespace System.Collections.Generic {
         }
 
         public static IAsyncEnumerable<T> Coalesce<T>(this IAsyncEnumerable<T>? source, params T[] Values) {
-            return Coalesce(source, Values.AsAsyncEnumerable());
+            return Coalesce(source, Values.ToAsyncEnumerable());
         }
 
 
@@ -224,24 +232,8 @@ namespace System.Collections.Generic {
             }
         }
 
-        public static IAsyncEnumerable<T> AsAsyncEnumerable<T>(this IEnumerable<T> This) {
-            return This.AsAsyncEnumerable(x => Task.FromResult(x));
-        }
-
-        public static async IAsyncEnumerable<TOutput> AsAsyncEnumerable<TInput, TOutput>(this IEnumerable<TInput> This, Func<TInput, Task<TOutput>> Convert) {
-
-            foreach (var item in This.EmptyIfNull()) {
-                var Converted = await Convert(item)
-                    .DefaultAwait()
-                    ;
-
-                yield return Converted;
-            }
-
-        }
-
         public static IAsyncEnumerable<TInput> MergeAsync<TInput>(this IEnumerable<IAsyncEnumerable<TInput>> This, Func<int>? Proposed_Concurrency = default, Func<TimeSpan?>? Evaluate_Concurrency = default) {
-            return This.AsAsyncEnumerable().MergeAsync(Proposed_Concurrency, Evaluate_Concurrency);
+            return This.ToAsyncEnumerable().MergeAsync(Proposed_Concurrency, Evaluate_Concurrency);
         }
 
         public static IAsyncEnumerable<TInput> MergeAsync<TInput>(this IAsyncEnumerable<IAsyncEnumerable<TInput>> This, Func<int>? Proposed_Concurrency = default, Func<TimeSpan?>? Evaluate_Concurrency = default) {

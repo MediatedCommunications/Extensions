@@ -68,51 +68,76 @@ namespace CsvHelper {
             return ret;
         }
 
-        public static IEnumerable<DynamicCsvRecord> DynamicRecords(this CsvReader This, bool Include_Column_Headers = true, bool Trim = true) {
-            var IndexToHeaders = ImmutableDictionary<int, string>.Empty;
+        public static DynamicCsvRecord? GetDynamicCsvHeader(this CsvReader This, bool Trim = true) {
+            var ret = default(DynamicCsvRecord?);
 
-            if (Include_Column_Headers) {
-                var tret = new Dictionary<int, string>();
-                if (This.Read()) {
-                    for (var i = 0; i < This.Parser.Record.Length; ++i) {
-                        var value = This.Parser.Record[i];
-                        if (Trim) {
-                            value = value.TrimSafe();
-                        }
-                        
-                        tret[i] = value;
-                    }
-                }
-                IndexToHeaders = tret.ToImmutableDictionary();
+            if(GetDynamicCsvRecord(This, Trim) is { } tret) {
+
+                var Values = tret.Values;
+                
+                var IndexToHeaders = Values.WithIndexes().ToImmutableDictionary(x => x.Index, x => x.Item);
+                
+                var HeadersToIndex = IndexToHeaders
+                    .GroupBy(x => x.Value, x => x.Key, StringComparer.InvariantCultureIgnoreCase)
+                    .ToImmutableDictionary(x => x.Key, x => x.ToImmutableArray(), StringComparer.InvariantCultureIgnoreCase)
+                    ;
+
+                var HeaderToIndex = HeadersToIndex
+                    .ToImmutableDictionary(x => x.Key, x => x.Value.First(), StringComparer.InvariantCultureIgnoreCase)
+                    ;
+
+                ret = new DynamicCsvRecord()
+                {
+                    Values = Values,
+                    HeadersToIndex = HeadersToIndex,
+                    HeaderToIndex = HeaderToIndex,
+                    IndexToHeaders = IndexToHeaders,
+                };
             }
-            
-            var HeadersToIndex = IndexToHeaders
-                .GroupBy(x => x.Value, x => x.Key, StringComparer.InvariantCultureIgnoreCase)
-                .ToImmutableDictionary(x => x.Key, x => x.ToImmutableArray(), StringComparer.InvariantCultureIgnoreCase)
-                ;
 
-            var HeaderToIndex = HeadersToIndex
-                .ToImmutableDictionary(x => x.Key, x => x.Value.First(), StringComparer.InvariantCultureIgnoreCase);
+            return ret;
+        }
 
+        public static DynamicCsvRecord? GetDynamicCsvRecord(this CsvReader This, bool Trim = true) {
+            var ret = default(DynamicCsvRecord?);
 
-            while (This.Read()) {
-                var tret = new List<string>();
+            if (This.Read()) {
+                var Values = new List<string>();
                 for (var i = 0; i < This.Parser.Record.Length; ++i) {
                     var value = This.Parser.Record[i];
-
                     if (Trim) {
                         value = value.TrimSafe();
                     }
 
-                    tret.Add(value);
+                    Values.Add(value);
                 }
-                var Values = tret.ToImmutableArray();
+
+                ret = new DynamicCsvRecord()
+                {
+                    Values = Values.ToImmutableArray(),
+                };
+
+            }
+
+            return ret;
+        }
+
+
+        public static IEnumerable<DynamicCsvRecord> GetDynamicRecords(this CsvReader This, bool Include_Column_Headers = true, bool Trim = true) {
+
+            var Header = default(DynamicCsvRecord?);
+            
+            if (Include_Column_Headers) {
+                Header = GetDynamicCsvHeader(This, Trim);
+            }
+            
+            while (GetDynamicCsvRecord(This, Trim) is { } V1) {
 
                 var ret = new DynamicCsvRecord() {
-                    IndexToHeaders = IndexToHeaders,
-                    HeadersToIndex = HeadersToIndex,
-                    HeaderToIndex = HeaderToIndex,
-                    Values = Values,
+                    IndexToHeaders = Header?.IndexToHeaders ?? V1.IndexToHeaders,
+                    HeadersToIndex = Header?.HeadersToIndex ?? V1.HeadersToIndex,
+                    HeaderToIndex = Header?.HeaderToIndex ?? V1.HeaderToIndex,
+                    Values = V1.Values,
                 };
 
                 yield return ret;

@@ -40,8 +40,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostSharp.Extensions", "Pos
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Threading.Tasks.Dataflow.Extensions", "System.Threading.Tasks.Dataflow.Extensions\System.Threading.Tasks.Dataflow.Extensions.csproj", "{71784B12-81D9-4431-8B8D-615A6FCBDA2F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Text.Json.Extensions(Tests)", "System.Text.Json.Extensions(Tests)\System.Text.Json.Extensions(Tests).csproj", "{1DA8DD24-3F80-43DC-AD6A-DBE5E5528DA9}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		__Shared\Shared.props*{1da8dd24-3f80-43dc-ad6a-dbe5e5528da9}*SharedItemsImports = 5
 		__Shared\Shared.props*{ed1392cf-58f2-4d7f-8056-27cd0cf40a17}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +112,10 @@ Global
 		{71784B12-81D9-4431-8B8D-615A6FCBDA2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71784B12-81D9-4431-8B8D-615A6FCBDA2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71784B12-81D9-4431-8B8D-615A6FCBDA2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DA8DD24-3F80-43DC-AD6A-DBE5E5528DA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DA8DD24-3F80-43DC-AD6A-DBE5E5528DA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DA8DD24-3F80-43DC-AD6A-DBE5E5528DA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DA8DD24-3F80-43DC-AD6A-DBE5E5528DA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

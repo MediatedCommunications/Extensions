@@ -2,9 +2,9 @@
   <Import Project="..\__Shared\Shared.props" Label="Shared" />
 
   <ItemGroup>
-    <PackageReference Include="PostSharp" Version="6.10.8" />
+    <PackageReference Include="PostSharp" Version="6.10.9" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-    <PackageReference Include="NUnit" Version="3.13.2" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

@@ -20,6 +20,18 @@ namespace System.Collections.Generic
             }
         }
 
+        public static T? FirstOrNull<T>(this IEnumerable<T>? This) where T : struct {
+            var ret = default(T?);
+
+            var tret = This.EmptyIfNull().Take(1).ToList();
+
+            if(tret.Count > 0) {
+                ret = tret[0];
+            }
+
+            return ret;
+        }
+
         public static IEnumerable<T?> NullIfEmpty<T>(this IEnumerable<T>? This) where T:struct {
             var tret = This.EmptyIfNull().ToList();
 

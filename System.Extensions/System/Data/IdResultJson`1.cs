@@ -13,6 +13,8 @@ namespace System.Data {
             if (ret is null) {
                 if (typeof(TKey) == typeof(string)) {
                     ret = (TKey)(object)Strings.Empty;
+                } else if (typeof(TKey) == typeof(object)) {
+                    ret = (TKey) Type.Missing;
                 }
             }
             if(ret is null) {

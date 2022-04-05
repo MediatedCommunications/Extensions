@@ -35,6 +35,7 @@ namespace System.Text.Json.Serialization
 
         [Test]
         public Task RoundTrip() {
+
             var Input = TestPerson();
 
             var InputText = JsonSerializer.Serialize(Input);
@@ -95,17 +96,18 @@ namespace System.Text.Json.Serialization
         }
 
         public record SuperPerson : Person {
-            public Optional<string> SuperHeroName { get; init; }
+            public Optional<string?> SuperHeroName { get; init; }
         }
 
         [OptionalJsonIgnore]
         public record Person {
-            public Optional<long> Id { get; init; }
-            public Optional<string> FirstName { get; init; }
-            public Optional<string> MiddleName { get; init; }
-            public Optional<string> LastName { get; init; }
+            public Optional<long?> Id { get; init; }
+            public Optional<string?> FirstName { get; init; }
+            public Optional<string?> MiddleName { get; init; }
+            public Optional<string?> LastName { get; init; }
             public Optional<int> Age { get; init; }
             public Optional<ImmutableList<Person>> Children { get; init; }
+            public Optional<string?> NEVER_SET_THIS_PROPERTY { get; init; }
         }
 
 

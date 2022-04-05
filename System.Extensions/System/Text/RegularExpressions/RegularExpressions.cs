@@ -24,6 +24,12 @@ namespace System.Text.RegularExpressions {
         public static Regex Any { get; }
         public static string AnyPattern { get; }
 
+        /// <summary>
+        /// A regex that only matches an empty string
+        /// </summary>
+        public static Regex Empty { get; }
+        public static string EmptyPattern { get; }
+
         static RegularExpressions()
         {
             Options = RegexOptions.None
@@ -34,10 +40,13 @@ namespace System.Text.RegularExpressions {
 
             NonePattern = $@"(?!)";
             AnyPattern = $@".*";
+            EmptyPattern = $@"^$";
 
             None = new Regex(NonePattern, Options);
 
             Any = new Regex(AnyPattern, Options);
+
+            Empty = new Regex(EmptyPattern, Options);
         }
 
     }

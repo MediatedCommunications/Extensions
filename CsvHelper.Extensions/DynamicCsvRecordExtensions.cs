@@ -7,7 +7,7 @@ namespace CsvHelper
 
 
 
-        public static string TryGetValue(this DynamicCsvRecord This, string ColumnHeader) {
+        public static string TryGetValue(this DynamicCsvRecord This, string? ColumnHeader) {
             This.TryGetValue(ColumnHeader, out var tret);
             
             var ret = tret.Coalesce();
@@ -15,11 +15,11 @@ namespace CsvHelper
             return ret;
         }
 
-        public static bool TryGetValue(this DynamicCsvRecord This, string ColumnHeader, [NotNullWhen(true)] out string? Result) {
+        public static bool TryGetValue(this DynamicCsvRecord This, string? ColumnHeader, [NotNullWhen(true)] out string? Result) {
             var ret = false;
             Result = default;
 
-            if(This.HeaderToIndex.TryGetValue(ColumnHeader, out var Index) && Index < This.Values.Length) {
+            if(ColumnHeader is { } V1 && This.HeaderToIndex.TryGetValue(V1, out var Index) && Index < This.Values.Length) {
                 ret = true;
                 Result = This.Values[Index];
             }

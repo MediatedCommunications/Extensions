@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,44 +65,6 @@ namespace HtmlAgilityPack {
             return ret;
 
         }
-    }
-
-    public record InputNode : DisplayRecord {
-        public InputNode(HtmlNode Node, string Name, string Value) {
-            this.Node = Node;
-            this.Name= Name;
-            this.Value = Value;
-        }
-
-        public HtmlNode Node { get; init; }
-        public string Name { get; init; } = Strings.Empty;
-        public string Value { get; init; } = Strings.Empty;
-
-        public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
-            return base.GetDebuggerDisplayBuilder(Builder)
-                .Data.AddNameValue(Name, Value)
-                ;
-        }
-
-    }
-
-    public static class InputNodeNames {
-        public static ImmutableHashSet<string> AspNet { get; }
-
-        public static string EventTarget { get; } = "__EVENTTARGET";
-        public static string EventArgument { get; } = "__EVENTARGUMENT";
-        public static string EventValidation { get; } = "__EVENTVALIDATION";
-        public static string ViewState { get; } = "__VIEWSTATE";
-        public static string ViewStateGenerator { get; } = "__VIEWSTATEGENERATOR";
-
-        static InputNodeNames() {
-            AspNet = new[] {
-                EventTarget, EventArgument, EventValidation,
-                ViewState, ViewStateGenerator
-            }.ToImmutableHashSet(StringComparer.InvariantCultureIgnoreCase);
-
-        }
-
     }
 
 
