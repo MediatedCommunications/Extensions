@@ -115,6 +115,10 @@ namespace System.Net.Http
             return This.Add(new SetMultiPartFormContentMessageModifier(Content, Enabled));
         }
 
+        public static HttpRequestMessageBuilder MultiPartContent(this HttpRequestMessageBuilder This, Action<MultipartFormDataContent> Content, bool? Enabled = default) {
+            return This.Add(new SetMultiPartFormContentMessageModifier(Content, Enabled));
+        }
+
         public static HttpRequestMessageBuilder NoContent(this HttpRequestMessageBuilder This, bool? Enabled = default) {
             return This.Add(new SetNoContentMessageModifier(Enabled));
         }

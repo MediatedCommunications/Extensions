@@ -22,18 +22,22 @@ namespace System.Dynamic
         public static ExpandoObject AddProperty(this ExpandoObject This, string[] PropertyPath, object? Value) {
             var D = This as IDictionary<string, object?>;
 
-            for (var i = 0; i < PropertyPath.Length - 1; i++) {
+            var Last = PropertyPath.Length - 1;
 
-                if (D.TryGetValue(PropertyPath[i], out var PropVal) && PropVal is ExpandoObject V1) {
-                    D = V1;
-                } else {
-                    var NewValue = new ExpandoObject();
-                    D[PropertyPath[i]] = NewValue;
-                    D = NewValue;
+            if (Last >= 0) {
+                for (var i = 0; i < Last; i++) {
+
+                    if (D.TryGetValue(PropertyPath[i], out var PropVal) && PropVal is ExpandoObject V1) {
+                        D = V1;
+                    } else {
+                        var NewValue = new ExpandoObject();
+                        D[PropertyPath[i]] = NewValue;
+                        D = NewValue;
+                    }
                 }
-            }
 
-            D[PropertyPath[^1]] = Value;
+                D[PropertyPath[Last]] = Value;
+            }
 
             return This;
         }

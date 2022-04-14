@@ -29,12 +29,28 @@ namespace System {
             };
         }
 
+        public override string ToString() {
+            return Address;
+        }
+
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
                 .Data.Add(Address)
                 ;
         }
 
+    }
+
+    public static class EmailAddresses {
+        public static EmailAddress Unknown { get; }
+
+        static EmailAddresses() {
+            Unknown = new EmailAddress()
+            {
+                Mailbox = "Unknown",
+                Domain = "Example.com",
+            };
+        }
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 
 namespace System.IO
 {
@@ -120,13 +121,24 @@ namespace System.IO
 
             if (ret < IdealLength) {
                 //WARNING!  SOMEHOW WE DID MATH WRONG!
+                Debugger2.BreakIfAttached();
             }
 
             return ret;
         }
 
-        public static bool TryReadBytes(this Stream This, int MaxCount, out byte[] Data, out int Length) {
-            return TryReadBytes(This, MaxCount, MaxCount, out Data, out Length);
+
+        public static async Task<int> CountBlocksAsync(this Stream This, int BlockSize) {
+            var ret = 0;
+
+            var Size = This.Length;
+
+            var Chunks = (int)Math.Ceiling((double)Size / (double)BlockSize);
+            if (Chunks > 0) {
+                ret = Chunks;
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -134,31 +146,38 @@ namespace System.IO
         /// Reading from a stream doesn't always return the amount you want and this fixes that.
         /// </summary>
         /// <param name="This"></param>
-        /// <param name="MinCount"></param>
-        /// <param name="MaxCount"></param>
-        /// <param name="Data"></param>
-        /// <param name="Length"></param>
+        /// <param name="BlockSize"></param>
         /// <returns></returns>
-        public static bool TryReadBytes(this Stream This, int MinCount, int MaxCount, out byte[] Data, out int Length) {
-            var BufferSize = CalculateBufferSize(MaxCount);
-            Data = new byte[BufferSize];
+        public static async Task<byte[]> ReadBlockAsync(this Stream This, int BlockSize) {
+
+            var BufferSize = CalculateBufferSize(BlockSize);
+            var Buffer = new byte[BufferSize];
 
             var StartIndex = 0;
-            var Remaining = MaxCount;
+            var Remaining = BlockSize;
             var Actual = 0;
 
-            while (Actual < MinCount) {
-                var NewRead = This.Read(Data, StartIndex, Remaining);
+            while (Remaining > 0) {
+
+                var NewRead = await This
+                    .ReadAsync(Buffer, StartIndex, Remaining)
+                    .DefaultAwait()
+                    ;
 
                 Actual += NewRead;
 
                 StartIndex += NewRead;
                 Remaining -= NewRead;
+
+                if(NewRead == 0) {
+                    break;
+                }
             }
 
-            Length = Actual;
 
-            return true;
+            var ret = Buffer[0..Actual];
+
+            return ret;
         }
 
     }

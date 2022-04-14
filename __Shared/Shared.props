@@ -9,7 +9,7 @@
 		<EnablePreviewFeatures>True</EnablePreviewFeatures>
 
 		<nullable>enable</nullable>
-		<DisableImplicitNamespaceImports>false</DisableImplicitNamespaceImports>
+		<ImplicitUsings>enable</ImplicitUsings>
 		<NoWarn>CA1416;CS1998;NU1602;PS0131;IDE0025;IDE0037;IDE1006;VSTHRD100;</NoWarn>
 
 		<OutputPath>..\..\__BUILD\__CURRENT</OutputPath>

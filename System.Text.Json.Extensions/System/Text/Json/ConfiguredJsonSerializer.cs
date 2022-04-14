@@ -184,7 +184,7 @@ namespace System.Text.Json {
 
         public bool TryDeserializeFromFile<T>(string FullPath, out T? ret) {
             var Success = false;
-            ret = default(T?);
+            ret = default;
             try {
                 ret = DeserializeFromFile<T>(FullPath);
                 Success = true;

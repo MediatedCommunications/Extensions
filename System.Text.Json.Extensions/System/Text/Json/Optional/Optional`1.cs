@@ -17,6 +17,10 @@ namespace System.Text.Json {
         bool IOptional.IsMissing => IsMissing;
         object? IOptional.Value => Value;
 
+        public Optional<T> Clone() {
+            return new Optional<T>(Value, IsPresent);
+        }
+
         public Optional() {
             this.Value = default;
             this.IsPresent = false;

@@ -11,6 +11,10 @@ namespace System.Net.Http.Message.Modifiers
             
         }
 
+        public SetMultiPartFormContentMessageModifier(Action<MultipartFormDataContent> Content, bool? Enabled = null) : this(CreateContent(Content), Enabled) {
+
+        }
+
         private static Func<MultipartFormDataContent> CreateContent(IEnumerable<KeyValuePair<string, string>> content) {
             var Values = content.ToImmutableArray();
 
@@ -27,9 +31,21 @@ namespace System.Net.Http.Message.Modifiers
             return CreateContentInternal;
         }
 
+        private static Func<MultipartFormDataContent> CreateContent(Action<MultipartFormDataContent> content) {
+            MultipartFormDataContent CreateContentInternal() {
+                var ret = new MultipartFormDataContent();
+                content(ret);
+                return ret;
+            }
+
+            return CreateContentInternal;
+        }
+
         public SetMultiPartFormContentMessageModifier(Func<MultipartFormDataContent> Content, bool? Enabled = null) : base(Enabled) {
             this.Content = Content;
         }
+
+
 
         protected override Task ModifyEnabledAsync(HttpRequestMessage Message) {
 

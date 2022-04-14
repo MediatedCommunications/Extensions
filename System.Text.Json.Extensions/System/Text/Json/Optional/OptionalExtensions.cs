@@ -19,6 +19,7 @@ namespace System.Text.Json {
             Value = default;
 
             if (This.IsPresent && This.Value is { } V1) {
+                ret = true;
                 Value = V1;
             }
 
