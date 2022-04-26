@@ -1,9 +1,10 @@
-﻿using System.Runtime.Loader;
+﻿using System.Diagnostics;
+using System.Runtime.Loader;
 
 namespace System.Reflection {
-    public class AssemblyResolver {
+    public class AssemblyResolver : DisplayClass  {
 
-        protected AssemblyLoadContext Context { get; private set; }
+        protected AssemblyLoadContext Context { get; }
 
         public AssemblyResolver(AssemblyLoadContext? Context = default) {
             this.Context = Context ?? AssemblyLoadContext.Default;
@@ -37,7 +38,16 @@ namespace System.Reflection {
         protected virtual Assembly? Context_Resolving(AssemblyLoadContext Context, AssemblyName Name) {
             return default;
         }
+
+        public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
+            return base.GetDebuggerDisplayBuilder(Builder)
+                .Status.IsEnabled(Enabled)
+                ;
+        }
+
     }
 
+    public sealed class NullAssemblyResolver : AssemblyResolver {
 
+    }
 }

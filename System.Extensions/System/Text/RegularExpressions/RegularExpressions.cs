@@ -33,6 +33,7 @@ namespace System.Text.RegularExpressions {
         static RegularExpressions()
         {
             Options = RegexOptions.None
+                | RegexOptions.ExplicitCapture
                 | RegexOptions.IgnoreCase 
                 | RegexOptions.IgnorePatternWhitespace 
                 | RegexOptions.Compiled

@@ -11,7 +11,7 @@ namespace System {
                 ;
         }
 
-        private static bool TextOperation(string? This, string?[] Values, Func<string, string, bool> Condition) {
+        private static bool TextOperation(string? This, IEnumerable<string?> Values, Func<string, string, bool> Condition) {
             var ret = false;
 
             foreach (var Value in Values) {
@@ -25,26 +25,54 @@ namespace System {
         }
 
         public bool Starts(params string?[] CompareTo) {
-            return TextOperation(Value, CompareTo, (x, y) => y.StartsWith(x, Comparison));
+            return Starts(CompareTo.AsEnumerable());
         }
 
         public bool Ends(params string?[] CompareTo) {
-            return TextOperation(Value, CompareTo, (x, y) => y.EndsWith(x, Comparison));
+            return Ends(CompareTo.AsEnumerable());
         }
 
         public bool StartsWith(params string?[] CompareTo) {
-            return TextOperation(Value, CompareTo, (x, y) => x.StartsWith(y, Comparison));
+            return StartsWith(CompareTo.AsEnumerable());
         }
 
         public bool EndsWith(params string?[] CompareTo) {
-            return TextOperation(Value, CompareTo, (x, y) => x.EndsWith(y, Comparison));
+            return EndsWith(CompareTo.AsEnumerable());
         }
 
         public bool Contains(params string?[] CompareTo) {
-            return TextOperation(Value, CompareTo, (x, y) => x.Contains(y, Comparison));
+            return Contains(CompareTo.AsEnumerable());
         }
 
         public bool Equals(params string?[] CompareTo) {
+            return Equals(CompareTo.AsEnumerable());
+        }
+
+
+
+
+
+        public bool Starts(IEnumerable<string?> CompareTo) {
+            return TextOperation(Value, CompareTo, (x, y) => y.StartsWith(x, Comparison));
+        }
+
+        public bool Ends(IEnumerable<string?> CompareTo) {
+            return TextOperation(Value, CompareTo, (x, y) => y.EndsWith(x, Comparison));
+        }
+
+        public bool StartsWith(IEnumerable<string?> CompareTo) {
+            return TextOperation(Value, CompareTo, (x, y) => x.StartsWith(y, Comparison));
+        }
+
+        public bool EndsWith(IEnumerable<string?> CompareTo) {
+            return TextOperation(Value, CompareTo, (x, y) => x.EndsWith(y, Comparison));
+        }
+
+        public bool Contains(IEnumerable<string?> CompareTo) {
+            return TextOperation(Value, CompareTo, (x, y) => x.Contains(y, Comparison));
+        }
+
+        public bool Equals(IEnumerable<string?> CompareTo) {
             return TextOperation(Value, CompareTo, (x, y) => x.Equals(y, Comparison));
         }
 

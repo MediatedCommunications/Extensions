@@ -15,26 +15,34 @@ namespace System.Security.Licensing {
         {
 
         public ImmutableList<TCompiled> LicenseCodes { get; private set; } = ImmutableList<TCompiled>.Empty;
-        protected ImmutableList<LicenseFormatBase<TCompiled>> LicenseFormats { get; }
+        protected ImmutableList<LicenseParserBase<TCompiled>> Parsers { get; }
 
         public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
             return base.GetDebuggerDisplayBuilder(Builder)
                 .Data.AddCount(LicenseCodes)
-                .Data.AddCount(LicenseFormats)
+                .Data.AddCount(Parsers)
                 ;
         }
 
         public LicenseEngine()
         {
-            this.LicenseFormats = InitializeLicenseFormats()
+            this.Parsers = InitializeLicenseParsers()
+                .ToImmutableList()
+                ;
+
+            this.LicenseCodes = InitializeDefaultLicenses()
                 .ToImmutableList()
                 ;
 
         }
 
-        protected virtual IEnumerable<LicenseFormatBase<TCompiled>> InitializeLicenseFormats()
+        protected virtual IEnumerable<TCompiled> InitializeDefaultLicenses() {
+            yield break;
+        }
+
+        protected virtual IEnumerable<LicenseParserBase<TCompiled>> InitializeLicenseParsers()
         {
-            yield return Licensing.LicenseFormats.Default<TCompiled>.Instance;
+            yield return LicenseParsers.Default<TCompiled>();
         }
 
 
@@ -100,15 +108,6 @@ namespace System.Security.Licensing {
             RemoveLicense(License);
         }
 
-
-
-        protected string Create(TCompiled License)
-        {
-            var ret = LicenseFormats.First().Create(License);
-
-            return ret;
-
-        }
 
         public virtual IEnumerable<Exception> Validate(TCompiled License) {
             yield break;
@@ -182,11 +181,11 @@ namespace System.Security.Licensing {
             License = default;
             Errors = ImmutableArray<Exception>.Empty;
 
-            foreach (var Format in LicenseFormats)
+            foreach (var Parser in Parsers)
             {
                 try
                 {
-                    License = Format.Parse(LicenseText);
+                    License = Parser.Parse(LicenseText);
                     ret = true;
                     break;
                 } catch (Exception ex)

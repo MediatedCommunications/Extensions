@@ -1,53 +1,8 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.ExceptionServices;
+﻿using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace System
-{
-
-    public record RetryResult<T> : DisplayRecord {
-        public bool Success { get; init; }
-        public Exception? Exception { get; init; }
-        public T Result {  get; init; }
-
-        public RetryResult(T Result) {
-            this.Result = Result;
-        }
-
-        public override DisplayBuilder GetDebuggerDisplayBuilder(DisplayBuilder Builder) {
-            return base.GetDebuggerDisplayBuilder(Builder)
-                .Status.IsSuccess(Success);
-        }
-    }
-
-    public static class RetryResultExtensions { 
-        public static bool IsSuccess<T>(this RetryResult<T> This, out T Result) {
-            Result = This.Result;
-            return This.Success;
-        }
-
-        public static bool IsError<T>(this RetryResult<T> This, out T ResultOrDefault) {
-            return This.IsError(out ResultOrDefault);
-        }
-
-        public static bool IsError<T>(this RetryResult<T> This, out T ResultOrDefault, [NotNullWhen(true)] out Exception? Error) {
-            var ret = !This.Success;
-
-            ResultOrDefault = This.Result;
-
-            Error = default;
-
-            if (ret) {
-                Error = This.Exception ?? new Exception();
-            }
-
-            
-            return ret;
-        }
-
-    }
+namespace System {
 
 
     public record RetryAsync<T> : RetryBase {

@@ -9,7 +9,7 @@ namespace System.Threading.Tasks {
     public abstract class AsyncInitializer<TContext> : AsyncInitializer {
         protected TContext Options { get; }
 
-        public AsyncInitializer(TContext Context, params AsyncInitializer[] AsyncInitializers) {
+        public AsyncInitializer(TContext Context, params AsyncInitializer[] AsyncInitializers) : base(AsyncInitializers) {
             this.Options = Context;
         }
     }

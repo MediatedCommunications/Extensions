@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace System.Security
-{
+namespace System.Security {
 
-    public record AesEncryptor : Encryptor {
+
+    public record AesEncryptor : DisplayRecord, IEncryptor, IDecryptor {
 
         public static AesEncryptor Default { get; } = new();
 
@@ -37,7 +38,7 @@ namespace System.Security
         }
 
 
-        public override string Encrypt(string plainText) {
+        public string Encrypt(string plainText) {
             var Bytes = Encoding.UTF8.GetBytes(plainText);
             var EncryptedBytes = Encrypt(Bytes);
             var EncryptedString = Convert.ToBase64String(EncryptedBytes);
@@ -45,14 +46,7 @@ namespace System.Security
             return ret;
         }
 
-        public override string Decrypt(string cipherText) {
-            var EncryptedBytes = Convert.FromBase64String(cipherText);
-            var DecryptedBytes = Decrypt(EncryptedBytes);
-            var DecryptedString = Encoding.UTF8.GetString(DecryptedBytes);
-            var ret = DecryptedString;
-            return ret;
-        }
-        public override byte[] Encrypt(byte[] Value) {
+        public byte[] Encrypt(byte[] Value) {
             var NewSafeSalt = Salt;
             var NewSafePassword = Password;
             using var Key = new Rfc2898DeriveBytes(NewSafePassword, NewSafeSalt);
@@ -61,9 +55,8 @@ namespace System.Security
             using var ms = new MemoryStream();
 
             aes.Key = Key.GetBytes(aes.KeySize / 8);
-            
-            ms.Write(BitConverter.GetBytes(aes.IV.Length), 0, sizeof(int));
-            ms.Write(aes.IV, 0, aes.IV.Length);
+
+            WriteByteArray(ms, aes.IV);
 
             var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
@@ -75,7 +68,15 @@ namespace System.Security
             return ret;
         }
 
-        public override byte[] Decrypt(byte[] Value) {
+        public string Decrypt(string cipherText) {
+            var EncryptedBytes = Convert.FromBase64String(cipherText);
+            var DecryptedBytes = Decrypt(EncryptedBytes);
+            var DecryptedString = Encoding.UTF8.GetString(DecryptedBytes);
+            var ret = DecryptedString;
+            return ret;
+        }
+
+        public byte[] Decrypt(byte[] Value) {
             var NewSafeSalt = Salt;
             var NewSafePassword = Password;
 
@@ -94,12 +95,20 @@ namespace System.Security
             return plaintext;
         }
 
+        private static void WriteByteArray(Stream s, ReadOnlySpan<byte> value) {
+            var v1 = BitConverter.GetBytes(value.Length);
+            var v2 = value;
+
+            s.Write(v1);
+            s.Write(v2);
+        }
+
         private static byte[] ReadByteArray(Stream s) {
             byte[] ret;
 
             var rawLength = new byte[sizeof(int)];
             if (s.Read(rawLength, 0, rawLength.Length) != rawLength.Length) {
-                throw new FormatException("Stream did not contain properly formatted byte array");
+                throw new FormatException("Stream did not contain a properly formatted byte array");
             }
 
             var BufferSize = BitConverter.ToInt32(rawLength, 0);

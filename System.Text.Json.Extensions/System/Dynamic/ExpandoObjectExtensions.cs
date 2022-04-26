@@ -26,8 +26,8 @@ namespace System.Dynamic {
             return This;
         }
 
-        public static ExpandoObject AddProperty<T, U>(this ExpandoObject This, string PropertyPath, Optional<T> Value, Func<T?, U> Converter) {
-            if (Value.IsPresent) {
+        public static ExpandoObject AddProperty<T, U>(this ExpandoObject This, string PropertyPath, Optional<T> Value, Func<T?, U> Converter, bool Condition = true) {
+            if (Value.IsPresent && Condition) {
                 var NewValue = Converter(Value.Value);
                 This.AddProperty(PropertyPath, NewValue);
             }

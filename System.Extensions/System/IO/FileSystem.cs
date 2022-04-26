@@ -91,6 +91,13 @@ namespace System.IO
 
             ret = RemoveInvalidCharacters(ret);
             ret = ReplaceInvalidNames(ret);
+            ret = TrimLongName(ret);
+
+            return ret;
+        }
+
+        private static string TrimLongName(string Input) {
+            var ret = Input.EllipsizeMiddle(250);
 
             return ret;
         }

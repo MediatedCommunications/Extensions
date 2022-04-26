@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 namespace System {
     public record KeyValueNamedCaptureParser : RegexClassParser<KeyValuePair<string, string>> {
         public string KeyField { get; init; } = KeyValueFields.Key;
-        public string ValueField { get; init; } = KeyValueFields.Key;
+        public string ValueField { get; init; } = KeyValueFields.Value;
         
         protected override bool TryGetValue(Match Input, [NotNullWhen(true)] out KeyValuePair<string, string> Result) {
             var ret = false;

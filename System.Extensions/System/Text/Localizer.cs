@@ -23,6 +23,9 @@ namespace System.Text {
         public virtual string Localize(Type Type) {
             string? ret;
             if(!FriendlyTypeNames.TryGetValue(Type, out ret)) {
+
+                //System.Diagnostics.Debugger2.BreakIfAttached();
+
                 var NewName = Type.GetFriendlyName();
                 ret = NewName;
             }
