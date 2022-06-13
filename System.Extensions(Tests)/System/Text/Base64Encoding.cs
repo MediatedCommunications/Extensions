@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Licensing;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace System.Extensions.Tests
 {
     [TestFixture]
-    public class Base64Encoding {
+    public class Base64EncodingTests {
 
         [Test]
         public Task GetValidSections() {
@@ -52,7 +53,7 @@ namespace System.Extensions.Tests
 
             for (var i = 0; i < InputItems.Length; i++) {
                 var Input = InputItems[i];
-                var Actual = System.Text.Base64Encoding.GetValidSections(Input).ToList();
+                var Actual = Base64Encoding.GetValidSections(Input).ToList();
                 var Expected = ExpectedItems[i];
 
                 Assert.AreEqual(Expected, Actual);

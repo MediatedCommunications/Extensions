@@ -13,7 +13,7 @@ namespace System.Linq {
         }
 
         public static ParallelQuery<T> SingleThreadInDebug<T>(this ParallelQuery<T> This) {
-            return This.SingleThread(Debugger2.IsAttached);
+            return This.SingleThread(Debugger2.WasAttachedAtStartup);
             
         }
     }

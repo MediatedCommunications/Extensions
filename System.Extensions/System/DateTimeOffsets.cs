@@ -34,6 +34,7 @@
         Day,
         Month,
         Year,
+        Universe,
     }
 
     public static class DateTimeOffsetExtensions {
@@ -49,31 +50,31 @@
 
         public static DateTimeOffset StartOf(this DateTimeOffset This, DatePart Part) {
             var Parts = new List<DatePart>();
-            if(Part is DatePart.Year or DatePart.Month or DatePart.Day or DatePart.Hour or DatePart.Minute or DatePart.Second or DatePart.MilliSecond) {
+            if(Part is DatePart.Universe or DatePart.Year or DatePart.Month or DatePart.Day or DatePart.Hour or DatePart.Minute or DatePart.Second) {
                 Parts.Add(DatePart.MilliSecond);
             }
 
-            if (Part is DatePart.Year or DatePart.Month or DatePart.Day or DatePart.Hour or DatePart.Minute or DatePart.Second) {
+            if (Part is DatePart.Universe or DatePart.Year or DatePart.Month or DatePart.Day or DatePart.Hour or DatePart.Minute) {
                 Parts.Add(DatePart.Second);
             }
 
-            if (Part is DatePart.Year or DatePart.Month or DatePart.Day or DatePart.Hour or DatePart.Minute) {
+            if (Part is DatePart.Universe or DatePart.Year or DatePart.Month or DatePart.Day or DatePart.Hour) {
                 Parts.Add(DatePart.Minute);
             }
 
-            if (Part is DatePart.Year or DatePart.Month or DatePart.Day or DatePart.Hour) {
+            if (Part is DatePart.Universe or DatePart.Year or DatePart.Month or DatePart.Day) {
                 Parts.Add(DatePart.Hour);
             }
 
-            if (Part is DatePart.Year or DatePart.Month or DatePart.Day) {
+            if (Part is DatePart.Universe or DatePart.Year or DatePart.Month) {
                 Parts.Add(DatePart.Day);
             }
 
-            if (Part is DatePart.Year or DatePart.Month) {
+            if (Part is DatePart.Universe or DatePart.Year) {
                 Parts.Add(DatePart.Month);
             }
 
-            if (Part is DatePart.Year) {
+            if (Part is DatePart.Universe) {
                 Parts.Add(DatePart.Year);
             }
 
@@ -108,36 +109,29 @@
             var MilliSecond = This.Millisecond;
             var Offset = This.Offset;
 
-            if(Part is DatePart.Year) {
-                Year = 1;
-            }
-            if (Part is DatePart.Month) {
-                Month = 1;
-            }
+            if (Part is DatePart.Universe) {
+                return DateTimeOffset.MinValue;
+            } else {
+                if (Part is DatePart.Year) {
+                    Year = 1;
+                } else if (Part is DatePart.Month) {
+                    Month = 1;
+                } else if (Part is DatePart.Day) {
+                    Day = 1;
+                } else if (Part is DatePart.Hour) {
+                    Hour = 0;
+                } else if (Part is DatePart.Minute) {
+                    Minute = 0;
+                } else if (Part is DatePart.Second) {
+                    Second = 0;
+                } else if (Part is DatePart.MilliSecond) {
+                    MilliSecond = 0;
+                }
 
-            if (Part is DatePart.Day) {
-                Day = 1;
+                var ret = new DateTimeOffset(Year, Month, Day, Hour, Minute, Second, MilliSecond, Offset);
+
+                return ret;
             }
-
-            if (Part is DatePart.Hour) {
-                Hour = 0;
-            }
-
-            if (Part is DatePart.Minute) {
-                Minute = 0;
-            }
-
-            if (Part is DatePart.Second) {
-                Second = 0;
-            }
-
-            if (Part is DatePart.MilliSecond) {
-                MilliSecond = 0;
-            }
-
-            var ret = new DateTimeOffset(Year, Month, Day, Hour, Minute,Second, MilliSecond, Offset);
-
-            return ret;
         }
 
     }

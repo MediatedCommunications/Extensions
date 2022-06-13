@@ -43,6 +43,7 @@ namespace System {
 
     public static class EmailAddresses {
         public static EmailAddress Unknown { get; }
+        public static string UnknownAddress { get; }
 
         static EmailAddresses() {
             Unknown = new EmailAddress()
@@ -50,6 +51,9 @@ namespace System {
                 Mailbox = "Unknown",
                 Domain = "Example.com",
             };
+
+            UnknownAddress = Unknown.Address;
+
         }
     }
 

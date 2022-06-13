@@ -7,7 +7,7 @@ namespace System.Reflection {
 
         static AssemblyResolvers() {
             None = new NullAssemblyResolver();
-            EntryFolder = FromFilePath(EntryAssembly.FolderPath);
+            EntryFolder = FromFilePath(Entry.Assembly.FolderPath);
         }
 
         public static AssemblyResolver FromAssemblyPath(Assembly? Asm, AssemblyLoadContext? Context = default) {

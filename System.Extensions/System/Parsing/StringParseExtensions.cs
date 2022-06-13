@@ -264,7 +264,7 @@ namespace System {
             return ListParserContext.Create<RegexStringMatchParser, string>(This, Parser);
         }
 
-        public static ListParserContext<EmailAddressParser, EmailAddress> EmailAddresses(this ParseValue This) {
+        public static ListParserContext<EmailAddressParser, EmailAddress> AsEmailAddresses(this ParseValue This) {
             return ListParserContext.Create<EmailAddressParser, EmailAddress>(This, Parsers.EmailAddress);
         }
 

@@ -24,18 +24,18 @@ namespace Telerik.Windows.Controls {
         private static class RowDefinitions {
 
             public static void PropertyChanged(object sender, DependencyPropertyChangedEventArgs e) {
-                if (sender is Grid { } V1 && e.NewValue is string { } NewValue) {
+                if (sender is Grid { } V1) {
                     V1.RowDefinitions.Clear();
 
-                    foreach (var Value in GridLengthParser.Parse(NewValue)) {
-                        var Row = new RowDefinition()
-                        {
-                            Height = Value
-                        };
+                    if (e.NewValue is string { } NewValue) {
+                        foreach (var Value in GridLengthParser.Parse(NewValue)) {
+                            var Row = new RowDefinition()
+                            {
+                                Height = Value
+                            };
 
-                        V1.RowDefinitions.Add(Row);
-
-
+                            V1.RowDefinitions.Add(Row);
+                        }
                     }
                 }
 

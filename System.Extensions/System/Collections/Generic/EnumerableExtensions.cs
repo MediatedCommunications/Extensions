@@ -7,7 +7,7 @@ namespace System.Collections.Generic {
 
 
 
-    public static class EnumerableExtensions {
+    public static partial class EnumerableExtensions {
 
         public static IEnumerable<T> Item<T>(this IEnumerable<T> This, int Index) {
             return This.Skip(Index).Take(1);
@@ -18,6 +18,10 @@ namespace System.Collections.Generic {
                 return This.TakeLast(Index.Value).Take(1);
             }
             return This.Skip(Index.Value).Take(1);
+        }
+
+        public static bool IsNotEmpty<T>(this IEnumerable<T> This) {
+            return This.Any();
         }
 
         public static bool IsEmpty<T>(this IEnumerable<T> This)
@@ -123,10 +127,6 @@ namespace System.Collections.Generic {
             }
         }
 
-
-        public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T>? source) {
-            return Coalesce(source, Enumerable.Empty<T>());
-        }
         public static T? NullIfEmpty<T, U>(this T? source) where T : IEnumerable<U> {
             var ret = default(T?);
             if (source is { }) {

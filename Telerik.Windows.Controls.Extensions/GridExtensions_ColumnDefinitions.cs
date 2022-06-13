@@ -24,18 +24,19 @@ namespace Telerik.Windows.Controls {
         private static class ColumnDefinitions {
 
             public static void PropertyChanged(object sender, DependencyPropertyChangedEventArgs e) {
-                if (sender is Grid { } V1 && e.NewValue is string { } NewValue) {
+                if (sender is Grid { } V1) {
                     V1.ColumnDefinitions.Clear();
 
-                    foreach (var Value in GridLengthParser.Parse(NewValue)) {
-                        var Column = new ColumnDefinition()
-                        {
-                            Width = Value
-                        };
+                    if (e.NewValue is string { } NewValue) {
 
-                        V1.ColumnDefinitions.Add(Column);
+                        foreach (var Value in GridLengthParser.Parse(NewValue)) {
+                            var Column = new ColumnDefinition()
+                            {
+                                Width = Value
+                            };
 
-
+                            V1.ColumnDefinitions.Add(Column);
+                        }
                     }
                 }
 

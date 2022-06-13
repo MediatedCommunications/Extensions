@@ -2,8 +2,8 @@
 using System.Data;
 using System.Linq;
 
-namespace System.Collections.Generic
-{
+namespace System.Collections.Generic {
+
     public static class CollectionExtensions_Add {
 
         public static ImmutableList<T> Add<T>(this ImmutableList<T> This, params T[] Group) {
@@ -36,6 +36,14 @@ namespace System.Collections.Generic
 
             This.Add(Values, Adder);
 
+        }
+
+        public static void Set<TKey, TValue>(this IDictionary<TKey, TValue> This, TKey Key, TValue Value) {
+            var Items = new[] {
+                KeyValuePair.Create(Key, Value)
+            };
+
+            This.Add(Items, true);
         }
 
         public static void Set<TKey, TValue>(this IDictionary<TKey, TValue> This, IEnumerable<KeyValuePair<TKey, TValue>>? Items) {

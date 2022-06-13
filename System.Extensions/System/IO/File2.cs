@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 
-namespace System.IO
-{
+namespace System.IO {
+
     [Flags]
     public enum TransferOptions {
         None = 0,

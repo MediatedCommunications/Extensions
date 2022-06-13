@@ -16,16 +16,40 @@ namespace System.Windows.Registry.Uninstaller
 
         public static UninstallerRegistry Default => User;
 
-        public static UninstallerRegistry User { get; private set; } = new UninstallerRegistry(RegistryHive.CurrentUser, RegistryView.Default);
-        public static UninstallerRegistry User32 { get; private set; } = new UninstallerRegistry(RegistryHive.CurrentUser, RegistryView.Registry32);
-        public static UninstallerRegistry User64 { get; private set; } = new UninstallerRegistry(RegistryHive.CurrentUser, RegistryView.Registry64);
+        public static UninstallerRegistry User { get; } 
+        public static UninstallerRegistry User32 { get; }
+        public static UninstallerRegistry User64 { get; }
 
-        public static UninstallerRegistry System { get; private set; } = new UninstallerRegistry(RegistryHive.LocalMachine, RegistryView.Default);
-        public static UninstallerRegistry System32 { get; private set; } = new UninstallerRegistry(RegistryHive.LocalMachine, RegistryView.Registry32);
-        public static UninstallerRegistry System64 { get; private set; } = new UninstallerRegistry(RegistryHive.LocalMachine, RegistryView.Registry64);
+        public static UninstallerRegistry System { get; }
+        public static UninstallerRegistry System32 { get; }
+        public static UninstallerRegistry System64 { get; }
 
+        public static ImmutableList<UninstallerRegistry> AllUsers { get; }
+        public static ImmutableList<UninstallerRegistry> AllSystems { get; }
+        public static ImmutableList<UninstallerRegistry> All { get; }
 
-        public UninstallerRegistry() : this(RegistryHive.CurrentUser, RegistryView.Default)
+        static UninstallerRegistry() {
+            User = new UninstallerRegistry(RegistryHive.CurrentUser, RegistryView.Default);
+            User32 = new UninstallerRegistry(RegistryHive.CurrentUser, RegistryView.Registry32);
+            User64 = new UninstallerRegistry(RegistryHive.CurrentUser, RegistryView.Registry64);
+
+            System = new UninstallerRegistry(RegistryHive.LocalMachine, RegistryView.Default);
+            System32 = new UninstallerRegistry(RegistryHive.LocalMachine, RegistryView.Registry32);
+            System64 = new UninstallerRegistry(RegistryHive.LocalMachine, RegistryView.Registry64);
+
+            if (Environment.Is64BitProcess) {
+                AllUsers = new[] { User64, User32 }.ToImmutableList();
+                AllSystems = new[] { System64, System32 }.ToImmutableList();
+            } else {
+                AllUsers = new[] { User32 }.ToImmutableList();
+                AllSystems = new[] { System32 }.ToImmutableList();
+            }
+
+            All = new[] { AllSystems, AllUsers }.SelectMany().ToImmutableList();
+
+        }
+
+    public UninstallerRegistry() : this(RegistryHive.CurrentUser, RegistryView.Default)
         {
 
         }
@@ -41,8 +65,8 @@ namespace System.Windows.Registry.Uninstaller
 
         }
 
-        public RegistryHive Hive { get; private set; }
-        public RegistryView View { get; private set; }
+        protected RegistryHive Hive { get; }
+        protected RegistryView View { get; }
         public UninstallerRegistry(RegistryHive Hive, RegistryView View)
         {
             this.Hive = Hive;

@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Security;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace System.Extensions
@@ -19,7 +20,7 @@ namespace System.Extensions
 
                 for (var j = 0; j < OriginalText.Length; j++) {
                     var Text = OriginalText[0..j];
-                    var Bytes = System.Text.Encoding.UTF8.GetBytes(Text);
+                    var Bytes = Encoding.UTF8.GetBytes(Text);
 
 
                     for (var k = 0; k < OriginalSalt.Length; k++) {

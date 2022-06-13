@@ -43,10 +43,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Text.Json.Extensions(Tests)", "System.Text.Json.Extensions(Tests)\System.Text.Json.Extensions(Tests).csproj", "{1DA8DD24-3F80-43DC-AD6A-DBE5E5528DA9}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		__Shared\Shared.props*{1da8dd24-3f80-43dc-ad6a-dbe5e5528da9}*SharedItemsImports = 5
-		__Shared\Shared.props*{ed1392cf-58f2-4d7f-8056-27cd0cf40a17}*SharedItemsImports = 5
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -125,5 +121,10 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C7C9AF4-FD3D-40DA-BBA8-CA90AE062570}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		__Shared\Shared.props*{03828462-3884-49a5-a5db-d259a8f3ace9}*SharedItemsImports = 5
+		__Shared\Shared.props*{1da8dd24-3f80-43dc-ad6a-dbe5e5528da9}*SharedItemsImports = 5
+		__Shared\Shared.props*{ed1392cf-58f2-4d7f-8056-27cd0cf40a17}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

@@ -60,6 +60,11 @@ namespace System.Diagnostics
             return Parent;
         }
 
+        public DisplayBuilder Clear() {
+            this.Values.Clear();
+            return Parent;
+        }
+
         public DisplayBuilder Add(params object?[] Values) {
             foreach (var Value in Values)
             {

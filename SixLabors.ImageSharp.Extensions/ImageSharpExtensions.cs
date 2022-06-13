@@ -1,14 +1,29 @@
 ﻿using SixLabors.ImageSharp.PixelFormats;
+using System.Collections.Immutable;
 using System.IO;
 
-namespace SixLabors.ImageSharp.Extensions {
+namespace SixLabors.ImageSharp {
     public static class ImageSharpExtensions {
 
-        public static Image<Rgba32> ToImageSharpImage(this System.Drawing.Bitmap This) {
-            return This.ToImageSharpImage<Rgba32>();
+        public static ImmutableArray<Image<Rgba32>> ToImageSharpImage(this IEnumerable<System.Drawing.Bitmap> This, bool Dispose = true) {
+            var ret = This.Select(x => x.ToImageSharpImage(Dispose)).ToImmutableArray();
+
+            return ret;
         }
 
-        public static Image<TPixel> ToImageSharpImage<TPixel>(this System.Drawing.Bitmap This) where TPixel : unmanaged, IPixel<TPixel> {
+        public static ImmutableArray<Image<TPixel>> ToImageSharpImage<TPixel>(this IEnumerable<System.Drawing.Bitmap> This, bool Dispose = true) where TPixel : unmanaged, IPixel<TPixel> {
+            var ret = This.Select(x => x.ToImageSharpImage<TPixel>(Dispose)).ToImmutableArray();
+
+            return ret;
+        }
+
+
+
+        public static Image<Rgba32> ToImageSharpImage(this System.Drawing.Bitmap This, bool Dispose = true) {
+            return This.ToImageSharpImage<Rgba32>(Dispose);
+        }
+
+        public static Image<TPixel> ToImageSharpImage<TPixel>(this System.Drawing.Bitmap This, bool Dispose = true) where TPixel : unmanaged, IPixel<TPixel> {
             
             using var memoryStream = new MemoryStream();
             
@@ -16,7 +31,13 @@ namespace SixLabors.ImageSharp.Extensions {
 
             memoryStream.Seek(0, SeekOrigin.Begin);
             
-            return Image.Load<TPixel>(memoryStream);
+            var ret = Image.Load<TPixel>(memoryStream);
+
+            if (Dispose) {
+                This.Dispose();
+            }
+
+            return ret;
         }
     }
 }

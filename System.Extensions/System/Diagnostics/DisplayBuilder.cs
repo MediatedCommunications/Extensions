@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace System.Diagnostics
@@ -12,6 +13,8 @@ namespace System.Diagnostics
             return new DisplayBuilder();
         }
 
+        protected ImmutableList<DisplayBuilderRegion> Regions { get; }
+
         public DisplayBuilder() {
             this.Id = new DisplayBuilderRegion("[{0}]", this);
             this.Type = new DisplayBuilderRegion("<{0}>", this);
@@ -19,7 +22,39 @@ namespace System.Diagnostics
             this.Data = new DisplayBuilderRegion("{0}", this);
             this.Postfix = new DisplayBuilderRegion("({0})", this);
             this.Status = new DisplayBuilderStatusRegion("<{0}>", this);
+
+            this.Regions = new[] {
+                Id, Type, Prefix, Data, Postfix, Status
+            }.ToImmutableList();
+
         }
+
+        public DisplayBuilder TryInherit(object? Value) {
+            var ret = this;
+
+            if(Value is IGetDebuggerDisplayBuilder { } V1) {
+                ret = Inherit(V1);
+            }
+
+            return ret;
+        }
+
+        public DisplayBuilder Inherit(IGetDebuggerDisplayBuilder Value) {
+            this.Clear();
+
+            Add(Value);
+
+            return this;
+        }
+
+        public DisplayBuilder TryAdd(params object?[] Items) {
+            return TryAdd(Items.AsEnumerable());
+        }
+
+        public DisplayBuilder TryAdd(IEnumerable<object?> Items) {
+            return Add(Items.OfType<IGetDebuggerDisplayBuilder>());
+        }
+
 
         public DisplayBuilder Add(params IGetDebuggerDisplayBuilder?[] Items) {
             return Add(Items.AsEnumerable());
@@ -28,6 +63,14 @@ namespace System.Diagnostics
         public DisplayBuilder Add(IEnumerable<IGetDebuggerDisplayBuilder?> Items) {
             foreach (var item in Items.WhereIsNotNull()) {
                 item.GetDebuggerDisplayBuilder(this);
+            }
+
+            return this;
+        }
+
+        public DisplayBuilder Clear() {
+            foreach (var Region in Regions) {
+                Region.Clear();
             }
 
             return this;

@@ -2,7 +2,7 @@
 	<Import Project="..\__Shared\Shared.props" />
 
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="6.3.0" />
+		<PackageReference Include="Autofac" Version="6.4.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\System.Extensions\System.Extensions.csproj" />

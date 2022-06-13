@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace SixLabors.ImageSharp.Extensions {
+namespace SixLabors.ImageSharp {
     public class LowResolutionSnapShotImageConverter : ImageConverter {
         public override void SaveAsPng(Image bitmap, MemoryStream MS) {
             

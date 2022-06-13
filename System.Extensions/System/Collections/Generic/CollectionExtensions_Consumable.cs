@@ -95,12 +95,15 @@ namespace System.Collections.Generic {
             var MyCondition = Condition ?? Condition_Default<T>;
 
             if (This is { } V1) {
+                var Index = 0;
 
-                while (V1.Count > 0) {
-                    if (MyCondition(V1[0])) {
-                        var tret = V1[0];
-                        V1.RemoveAt(0);
+                while (Index < V1.Count) {
+                    if (MyCondition(V1[Index])) {
+                        var tret = V1[Index];
+                        V1.RemoveAt(Index);
                         yield return tret;
+                    } else {
+                        Index += 1;
                     }
                 }
 
@@ -127,13 +130,18 @@ namespace System.Collections.Generic {
             var MyCondition = Condition ?? Condition_Default<T>;
 
             if (This is { } V1) {
-                for (var i = V1.Count -1; i >= 0; i--) {
-                    if (MyCondition(V1[i])) {
-                        var tret = V1[i];
-                        V1.RemoveAt(i);
+                var Index = V1.Count - 1;
+                while(Index >= 0) {
+                    
+                    if (MyCondition(V1[Index])) {
+                        var tret = V1[Index];
+                        V1.RemoveAt(Index);
                         yield return tret;
                     }
+
+                    Index -= 1;
                 }
+                
             }
         }
 

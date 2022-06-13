@@ -5,6 +5,13 @@ namespace System.IO
 {
     public static class StreamExtensions {
 
+        public static MemoryStream ToMemoryStream(this Stream This) {
+            var ret = new MemoryStream();
+            This.CopyTo(ret);
+            ret.Position = 0;
+            return ret;
+        }
+
         public static StreamReader ToStreamReader(this Stream This) {
             return new StreamReader(This);
         }

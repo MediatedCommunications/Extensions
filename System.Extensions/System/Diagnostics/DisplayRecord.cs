@@ -1,7 +1,7 @@
 ﻿namespace System.Diagnostics {
 
     [Serializable]
-    [DebuggerDisplay(Debugger2.DebuggerDisplay)]
+    [DebuggerDisplay(Debugger2.GetDebuggerDisplay)]
     public record DisplayRecord : IGetDebuggerDisplayBuilder {
         
         public string GetDebuggerDisplay() {

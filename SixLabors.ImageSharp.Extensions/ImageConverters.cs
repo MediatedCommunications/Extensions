@@ -1,4 +1,4 @@
-﻿namespace SixLabors.ImageSharp.Extensions {
+﻿namespace SixLabors.ImageSharp {
     public static class ImageConverters {
 
         public static class ScreenShots {

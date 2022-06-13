@@ -8,13 +8,13 @@ namespace System.Reflection
         public static List<string> List() {
             var ret = new List<string>();
             var Folders = new[] {
-                EntryAssembly.FolderPath
+                Entry.Assembly.FolderPath
             };
             
             foreach (var Folder in Folders) {
                 if (IO.Directory.Exists(Folder)) {
                     try {
-                        ret.Add(IO.Directory.GetFiles(EntryAssembly.FolderPath, "*.dll"));
+                        ret.Add(IO.Directory.GetFiles(Entry.Assembly.FolderPath, "*.dll"));
                     } catch (Exception ex) {
                         ex.Ignore();
                     }

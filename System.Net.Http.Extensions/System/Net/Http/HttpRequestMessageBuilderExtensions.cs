@@ -82,6 +82,10 @@ namespace System.Net.Http
             return This.Add(new SetContentHeadersModifier(Values, RemoveFirst, Enabled));
         }
 
+        public static HttpRequestMessageBuilder OAuthAuthorization(this HttpRequestMessageBuilder This, string? Value, bool? Enabled = default) {
+            return This.Add(new SetAuthorizationOAuthMessageModifier(Value, Enabled));
+        }
+
         public static HttpRequestMessageBuilder BearerAuthorization(this HttpRequestMessageBuilder This, string? Value, bool? Enabled = default) {
             return This.Add(new SetAuthorizationBearerMessageModifier(Value, Enabled));
         }

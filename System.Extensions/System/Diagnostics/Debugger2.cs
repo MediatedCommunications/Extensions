@@ -5,10 +5,10 @@ namespace System.Diagnostics {
 
     public class Debugger2 {
 
-        public const string DebuggerDisplay = "{GetDebuggerDisplay(),nq}";
+        public const string GetDebuggerDisplay = "{GetDebuggerDisplay(),nq}";
 
         static Debugger2() {
-            IsAttachedAtStartup = IsAttached;
+            WasAttachedAtStartup = IsAttached;
         }
 
         public static bool IsAttached {
@@ -17,7 +17,7 @@ namespace System.Diagnostics {
             }
         }
 
-        public static bool IsAttachedAtStartup { get; }
+        public static bool WasAttachedAtStartup { get; }
 
 
         //https://social.msdn.microsoft.com/Forums/vstudio/en-US/fe36c6d9-fc3d-4a81-9156-da19d6117c6c/bug-static-checking-inverts-custom-parameter-validation-logic?forum=codecontracts

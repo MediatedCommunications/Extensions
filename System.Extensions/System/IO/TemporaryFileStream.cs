@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace System.IO
 {
 
-    [DebuggerDisplay(Debugger2.DebuggerDisplay)]
+    [DebuggerDisplay(Debugger2.GetDebuggerDisplay)]
     public class TemporaryFileStream : FileStream, IGetDebuggerDisplayBuilder {
         private TemporaryFile? Internals { get; set; }
 

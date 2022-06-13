@@ -23,10 +23,10 @@ namespace System.Threading.Tasks {
         }
 
 
-        protected Task? InitializationTask { get; private set; }
+        protected volatile Task? InitializationTask;
 
         protected async Task InitializeAsync() {
-            await WaitForInitializationAsync(AsyncInitializers)
+            await AsyncInitializers.WaitForInitializationAsync()
                 .DefaultAwait()
                 ;
 
@@ -34,6 +34,8 @@ namespace System.Threading.Tasks {
                 .DefaultAwait()
                 ;
 
+            //We do this to null out any extra resources associated with the original task
+            InitializationTask = Task.CompletedTask;
         }
 
         protected abstract Task InitializeInternalAsync();
@@ -57,7 +59,10 @@ namespace System.Threading.Tasks {
             Completed.Ignore();
         }
 
-        public static async Task WaitForInitializationAsync(IEnumerable<AsyncInitializer> AsyncInitializers, CancellationToken Token = default) {
+    }
+
+    public static class AsyncInitializerExtensions {
+        public static async Task WaitForInitializationAsync(this IEnumerable<AsyncInitializer> AsyncInitializers, CancellationToken Token = default) {
             var Tasks = new List<Task>();
 
             foreach (var AsyncInitializer in AsyncInitializers) {
@@ -69,6 +74,7 @@ namespace System.Threading.Tasks {
                 .DefaultAwait()
                 ;
         }
-
     }
+
 }
+
