@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 
 namespace System.Data {
-    public record IdResultJson<TKey> : DisplayRecord, IIdResult<TKey> {
+    public record IdRecord<TKey> : DisplayRecord, IHasId<TKey> {
         public TKey Id { get; init; }
 
-        public IdResultJson() {
+        public IdRecord() {
             this.Id = DefaultId();
         }
 
@@ -31,10 +31,10 @@ namespace System.Data {
         }
     }
 
-    public record OptionalIdResultJson<TKey> : DisplayRecord, IIdResult<TKey?> {
+    public record OptionalIdRecord<TKey> : DisplayRecord, IHasId<TKey?> {
         public TKey? Id { get; init; }
 
-        public OptionalIdResultJson() {
+        public OptionalIdRecord() {
             this.Id = DefaultId();
         }
 

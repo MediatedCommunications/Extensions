@@ -1,10 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Data;
 using System.Linq;
 using System.Text;
 
 namespace System.Threading.Tasks {
+
+    public abstract class DictionaryAsyncInitializer<TContext, TId, TData> : ListAsyncInitializer<TContext, TData> 
+        where TId : notnull
+        {
+
+        public ImmutableDictionary<TId, TData> ById { get; private set; } = ImmutableDictionary<TId, TData>.Empty;
+
+        protected DictionaryAsyncInitializer(TContext Context, params AsyncInitializer[] AsyncInitializers) : base(Context, AsyncInitializers) {
+        
+        }
+
+        protected virtual TId GetId(TData Input) {
+            if(HasId.TryGetId<TId>(Input, out var V1) && V1 is { }) { 
+                return V1;
+            } else {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override async Task InitializeInternalAsync() {
+            await base.InitializeInternalAsync()
+                .DefaultAwait()
+                ;
+
+            this.ById = this.AsList
+                .ToImmutableDictionary(x => GetId(x))
+                ;
+
+        }
+
+    }
+
+    public abstract class ListAsyncInitializer<TContext, TData> : AsyncInitializer<TContext> {
+
+        public ImmutableArray<TData> AsList { get; private set; } = ImmutableArray<TData>.Empty;        
+
+        protected ListAsyncInitializer(TContext Context, params AsyncInitializer[] AsyncInitializers) : base(Context, AsyncInitializers) {
+        
+        }
+
+        protected abstract IAsyncEnumerable<TData> GetListAsync();
+
+        protected override async Task InitializeInternalAsync() {
+            var tret = await GetListAsync()
+                .ToListAsync()
+                .DefaultAwait()
+                ;
+
+            this.AsList = tret.ToImmutableArray();
+        }
+
+
+    }
 
     public abstract class AsyncInitializer<TContext> : AsyncInitializer {
         protected TContext Options { get; }

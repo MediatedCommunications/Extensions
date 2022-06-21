@@ -1,5 +1,5 @@
 ﻿namespace System.Data {
-    public record IdReferenceJson<TKey> : IdResultJson<TKey> {
+    public record IdReferenceJson<TKey> : IdRecord<TKey> {
 
     }
 
@@ -7,11 +7,11 @@
         
     }
 
-    public record OptionalIdReferenceJson<TKey> : OptionalIdResultJson<TKey> {
+    public record OptionalIdReferenceJson<TKey> : OptionalIdRecord<TKey> {
 
     }
 
-    public record OptionalIdReferenceJson<TKey, TReference> : OptionalIdResultJson<TKey> {
+    public record OptionalIdReferenceJson<TKey, TReference> : OptionalIdRecord<TKey> {
 
     }
 

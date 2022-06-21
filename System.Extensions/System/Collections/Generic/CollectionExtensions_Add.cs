@@ -51,7 +51,7 @@ namespace System.Collections.Generic {
         }
 
         public static void Set<TKey, TValue>(this IDictionary<TKey, TValue> This, IEnumerable<TValue>? Items)
-            where TValue : IIdResult<TKey> {
+            where TValue : IHasId<TKey> {
             This.Add(Items, true);
         }
 
@@ -68,7 +68,7 @@ namespace System.Collections.Generic {
         }
 
         public static void Add<TKey, TValue>(this IDictionary<TKey, TValue> This, IEnumerable<TValue>? Items, bool Set = false) 
-            where TValue : IIdResult<TKey>
+            where TValue : IHasId<TKey>
             {
             This.Add(Items, x => x.Id, x => x, Set);
         }
