@@ -30,6 +30,8 @@ namespace System.IO
                 $@"LPT1", $@"LPT2", $@"LPT3", $@"LPT4", $@"LPT5", $@"LPT6", $@"LPT7", $@"LPT8", $@"LPT9",
             }.ToImmutableHashSet(StringComparer.InvariantCultureIgnoreCase);
 
+
+            UniversalPathPrefix = $@"\\?\";
         }
 
 
@@ -39,6 +41,25 @@ namespace System.IO
         public static ImmutableDictionary<string, string> InvalidCharacterReplacements { get; } 
 
         public static ImmutableHashSet<string> InvalidNameReplacements { get; } 
+
+        public static string UniversalPathPrefix { get; }
+
+
+        public static bool IsUniversalPath(string FullPath) {
+            var ret = FullPath.StartsWith(UniversalPathPrefix);
+
+            return ret;
+        }
+
+        public static string ToUniversalPath(string FullPath) {
+            var ret = FullPath;
+
+            if (!IsUniversalPath(FullPath)) {
+                ret = $@"{UniversalPathPrefix}{FullPath}";
+            }
+
+            return ret;
+        }
 
         private static string RemoveInvalidCharacters(string FileName) {
             var ret = FileName;

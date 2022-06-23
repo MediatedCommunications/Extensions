@@ -15,6 +15,7 @@ namespace System {
         public static DoubleParser Double { get; }
         public static EmailAddressParser EmailAddress { get; }
         public static EntityNameParser EntityName { get; }
+        public static PersonNameParser PersonName { get; }
         public static FloatParser Float { get; }
         public static GuidParser Guid { get; }
         public static IntParser Int { get; }
@@ -54,6 +55,7 @@ namespace System {
             Double = new();
             EmailAddress = new();
             EntityName = new();
+            PersonName = new();
             Float = new();
             Guid = new();
             Int = new();
@@ -282,6 +284,18 @@ namespace System {
                 Formats = Formats.ToImmutableArray(),
             };
             return DefaultClassParserContext.Create<EntityNameParser, EntityName>(This, Parser);
+        }
+
+        public static DefaultClassParserContext<PersonNameParser, PersonName> AsPersonName(this ParseValue This) {
+            return DefaultClassParserContext.Create<PersonNameParser, PersonName>(This, Parsers.PersonName);
+        }
+
+        public static DefaultClassParserContext<PersonNameParser, PersonName> AsPersonName(this ParseValue This, params PersonNameFormat[] Formats) {
+            var Parser = Parsers.PersonName with
+            {
+                Formats = Formats.ToImmutableArray(),
+            };
+            return DefaultClassParserContext.Create<PersonNameParser, PersonName>(This, Parser);
         }
 
         public static ClassParserContext<UriParser, Uri> AsUri(this ParseValue This) {

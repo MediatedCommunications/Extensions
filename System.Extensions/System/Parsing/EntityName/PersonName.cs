@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 
 namespace System {
+
     public record PersonName : EntityName {
         public string Prefix { get; init; } = Strings.Empty;
 

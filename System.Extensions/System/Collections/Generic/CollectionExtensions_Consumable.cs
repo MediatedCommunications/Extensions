@@ -98,8 +98,8 @@ namespace System.Collections.Generic {
                 var Index = 0;
 
                 while (Index < V1.Count) {
-                    if (MyCondition(V1[Index])) {
-                        var tret = V1[Index];
+                    var tret = V1[Index];
+                    if (MyCondition(tret)) {
                         V1.RemoveAt(Index);
                         yield return tret;
                     } else {
@@ -133,8 +133,9 @@ namespace System.Collections.Generic {
                 var Index = V1.Count - 1;
                 while(Index >= 0) {
                     
-                    if (MyCondition(V1[Index])) {
-                        var tret = V1[Index];
+                    var tret = V1[Index];
+                    
+                    if (MyCondition(tret)) {
                         V1.RemoveAt(Index);
                         yield return tret;
                     }

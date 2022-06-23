@@ -6,7 +6,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-      <PackageReference Include="PostSharp" Version="6.10.12" />
+      <PackageReference Include="PostSharp" Version="6.10.13" />
     </ItemGroup>
   
 

@@ -46,10 +46,10 @@ namespace System.Threading.Tasks {
         
         }
 
-        protected abstract IAsyncEnumerable<TData> GetListAsync();
+        protected abstract IAsyncEnumerable<TData> ListItemsAsync();
 
         protected override async Task InitializeInternalAsync() {
-            var tret = await GetListAsync()
+            var tret = await ListItemsAsync()
                 .ToListAsync()
                 .DefaultAwait()
                 ;
