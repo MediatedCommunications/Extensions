@@ -20,6 +20,7 @@ namespace System {
         public const string Separator = " - ";
         public static readonly ImmutableArray<string> Dots = new[] { Dot }.ToImmutableArray();
 
+        public const string SlashUser = @" -> ";
         public const string SlashWindows = @"\";
         public const string SlashUnix = @"/";
         public const string SlashWeb = @"/";

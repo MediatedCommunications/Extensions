@@ -6,13 +6,13 @@ namespace System.IO {
     public enum TransferOptions {
         None = 0,
         Copy = 1,
-        Source_Delete = 2,
+        Original_Delete = 2,
         CreatePath = 4,
 
         IfDestExists_Overwrite = 128,
         IfDestExists_MoveToTemp = 256,
 
-        Move = Copy | Source_Delete,
+        Move = Copy | Original_Delete,
         TryOverwrite = IfDestExists_Overwrite,
         ForceOverwrite = IfDestExists_Overwrite | IfDestExists_MoveToTemp,
 
@@ -79,7 +79,7 @@ namespace System.IO {
                 Copy = true;
             }
 
-            if (Options.HasFlag(TransferOptions.Source_Delete))
+            if (Options.HasFlag(TransferOptions.Original_Delete))
             {
                 DeleteSource = true;
             }

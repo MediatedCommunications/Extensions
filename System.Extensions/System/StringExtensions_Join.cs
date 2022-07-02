@@ -77,6 +77,9 @@ namespace System
             return This.Join(Strings.SlashWeb, RepeatSeparator);
         }
 
+        public static string JoinPathUser<T>(this IEnumerable<T>? This, int RepeatSeparator = 1) {
+            return This.Join(Strings.SlashUser, RepeatSeparator);
+        }
 
 
     }
