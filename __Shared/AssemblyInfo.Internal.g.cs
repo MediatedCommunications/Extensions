@@ -5,10 +5,10 @@ using System;
 
     static internal partial class InternalAssemblyInfo {
 
-		public const string AssemblyBuildDateString = "06/28/2022 12:43:10 -05:00" ;
+		public const string AssemblyBuildDateString = "07/09/2022 13:57:41 -05:00" ;
 		public static DateTimeOffset AssemblyBuildDate {get; }
 
-        public const string AssemblyVersionString = "22.06.28.1243";
+        public const string AssemblyVersionString = "22.07.09.1357";
         public static Version AssemblyVersion {get; } 
 
 
