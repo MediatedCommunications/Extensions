@@ -2,29 +2,28 @@
 
 namespace System {
     public static class StringExtensions_Ellipsis {
-        private const string Ellipsis = "...";
 
-
-        public static string Ellipsize(this string? Value, int MaxLength) {
-            return EllipsizeRight(Value, MaxLength);
+        public static string Ellipsize(this string? Value, int MaxLength, string? Ellipsis = default) {
+            return EllipsizeRight(Value, MaxLength, Ellipsis);
         }
 
-        private static string EllipsizeNone(string? Value, int MaxLength) {
+        private static string EllipsizeNone(string? Value, int MaxLength, string? Ellipsis = default) {
             MaxLength.Ignore();
+            Ellipsis.Ignore();
 
             return Value.Coalesce();
         }
         
-        public static string EllipsizeLeft(this string? Value, int MaxLength) {
-            return Ellipsize(Value, MaxLength, 0.0);
+        public static string EllipsizeLeft(this string? Value, int MaxLength, string? Ellipsis = default) {
+            return Ellipsize(Value, MaxLength, 0.0, Ellipsis);
         }
 
-        public static string EllipsizeMiddle(this string? Value, int MaxLength) {
-            return Ellipsize(Value, MaxLength, .75);
+        public static string EllipsizeMiddle(this string? Value, int MaxLength, string? Ellipsis = default) {
+            return Ellipsize(Value, MaxLength, .75, Ellipsis);
         }
 
-        public static string EllipsizeRight(this string? Value, int MaxLength) {
-            return Ellipsize(Value, MaxLength, 1.0);
+        public static string EllipsizeRight(this string? Value, int MaxLength, string? Ellipsis = default) {
+            return Ellipsize(Value, MaxLength, 1.0, Ellipsis);
         }
 
         /// <summary>
@@ -34,13 +33,15 @@ namespace System {
         /// <param name="MaxLength"></param>
         /// <param name="RelativePosition">A value between 0 and 1 that positions where the ellipsis is inserted.</param>
         /// <returns></returns>
-        public static string Ellipsize(this string? Value, int MaxLength, double RelativePosition) {
+        public static string Ellipsize(this string? Value, int MaxLength, double RelativePosition, string? Ellipsis = default) {
             var CharacterPosition = (int)(MaxLength * RelativePosition);
 
-            return Ellipsize(Value, MaxLength, CharacterPosition);
+            return Ellipsize(Value, MaxLength, CharacterPosition, Ellipsis);
         }
 
-        public static string Ellipsize(this string? Value, int MaxLength, int CharacterPosition) {
+        public static string Ellipsize(this string? Value, int MaxLength, int CharacterPosition, string? Ellipsis = default) {
+            Ellipsis ??= Strings.Ellipsis3;
+
             if (CharacterPosition > MaxLength) {
                 CharacterPosition = MaxLength;
             }
@@ -73,12 +74,12 @@ namespace System {
             return ret;
         }
 
-        public static string Ellipsize(this string? Value, int MaxLength, EllipsizePosition Position) {
+        public static string Ellipsize(this string? Value, int MaxLength, EllipsizePosition Position, string? Ellipsis = default) {
             var ret = Position switch {
-                EllipsizePosition.Left => EllipsizeLeft(Value, MaxLength),
-                EllipsizePosition.Middle => EllipsizeMiddle(Value, MaxLength),
-                EllipsizePosition.Right => EllipsizeRight(Value, MaxLength),
-                _ => EllipsizeNone(Value, MaxLength),
+                EllipsizePosition.Left => EllipsizeLeft(Value, MaxLength, Ellipsis),
+                EllipsizePosition.Middle => EllipsizeMiddle(Value, MaxLength, Ellipsis),
+                EllipsizePosition.Right => EllipsizeRight(Value, MaxLength, Ellipsis),
+                _ => EllipsizeNone(Value, MaxLength, Ellipsis),
             };
 
             return ret;

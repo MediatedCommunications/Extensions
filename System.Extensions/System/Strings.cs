@@ -33,6 +33,9 @@ namespace System {
 
         public const string Null = "\0";
         public static readonly ImmutableArray<string> NewLines = new[] { CRLF, CR, LF }.ToImmutableArray();
+
+        public const string Ellipsis3 = "...";
+        public const string Ellipsis1 = "\u2026"; // …
     }
 
 }

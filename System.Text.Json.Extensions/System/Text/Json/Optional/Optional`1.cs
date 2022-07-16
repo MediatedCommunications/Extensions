@@ -4,8 +4,8 @@ using System.Text.Json.Serialization;
 
 namespace System.Text.Json {
     [JsonConverter(typeof(OptionalJsonConverterFactory))]
-    public class Optional<T>
-        : DisplayClass
+    public record Optional<T>
+        : DisplayRecord
         , IOptional {
 
         public bool IsPresent { get; init; }
@@ -16,10 +16,6 @@ namespace System.Text.Json {
         bool IOptional.IsPresent => IsPresent;
         bool IOptional.IsMissing => IsMissing;
         object? IOptional.Value => Value;
-
-        public Optional<T> Clone() {
-            return new Optional<T>(Value, IsPresent);
-        }
 
         public Optional() {
             this.Value = default;

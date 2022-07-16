@@ -6,6 +6,15 @@ namespace HarmonyLib {
 
 
     public static class Handlers {
+
+        public static MethodInfo Nothing() {
+            return Nothing<object>();
+        }
+
+        public static MethodInfo Nothing<TThis>() {
+            return ActionHandler<TThis>.Create<Nothing<TThis>>();
+        }
+
         public static MethodInfo AlwaysTrue() {
             return AlwaysTrue<object>();
         }

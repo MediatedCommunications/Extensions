@@ -9,7 +9,6 @@ namespace System
             for (var i = 0; i < RepeatSeparator; i++) {
                 NewSeparator += Separator;
             }
-
             var ret = string.Join(NewSeparator, This.EmptyIfNull());
 
             return ret;
@@ -63,6 +62,16 @@ namespace System
 
         public static string JoinLine<T>(this IEnumerable<T>? This, int RepeatSeparator = 1) {
             return This.Join(Strings.CR, RepeatSeparator);
+        }
+
+        public static string JoinPath<T>(this IEnumerable<T>? This) {
+            var Values = (
+                from x in This.EmptyIfNull()
+                let v = x.ToString()
+                select v
+                ).ToArray();
+
+            return System.IO.Path.Combine(Values);
         }
 
         public static string JoinPathWindows<T>(this IEnumerable<T>? This, int RepeatSeparator = 1) {

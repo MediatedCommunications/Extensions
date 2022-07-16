@@ -16,6 +16,14 @@ namespace System.Diagnostics
             
         }
 
+        public static Process? Run(this ProcessStartInfo This) {
+            var PSI = This;
+
+            return System.Diagnostics.Process.Start(PSI);
+        }
+
+
+
         public static Task<Process?> RunAsAsync(this ProcessStartInfo This, ProcessStartUser User)
         {
             return User switch
