@@ -12,7 +12,7 @@ namespace System.Scripting
 
         public static BatchScriptBuilder Kill(this BatchScriptBuilder This, params int[] ProcessIDs)
         {
-            return Kill(This, (IEnumerable<int>)ProcessIDs);
+            return Kill(This, ProcessIDs.AsEnumerable());
         }
 
 
@@ -47,7 +47,7 @@ namespace System.Scripting
 
         public static BatchScriptBuilder StartApplication(this BatchScriptBuilder This, params string[] Arguments)
         {
-            return StartApplication(This, (IEnumerable<string>)Arguments);
+            return StartApplication(This, Arguments.AsEnumerable());
         }
 
         public static BatchScriptBuilder StartApplication(this BatchScriptBuilder This, IEnumerable<string> Arguments)
@@ -58,7 +58,7 @@ namespace System.Scripting
 
         public static BatchScriptBuilder StartApplication(this BatchScriptBuilder This, bool QuoteFirst, bool QuoteRest, params string[] Arguments)
         {
-            return StartApplication(This, QuoteFirst, QuoteRest, (IEnumerable<string>)Arguments);
+            return StartApplication(This, QuoteFirst, QuoteRest, Arguments.AsEnumerable());
         }
 
         public static BatchScriptBuilder StartApplication(this BatchScriptBuilder This, bool QuoteFirst, bool QuoteRest, IEnumerable<string> Arguments)

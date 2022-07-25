@@ -8,7 +8,7 @@ namespace System.Scripting
     {
         public static BatchScriptBuilder ConfigureService(this BatchScriptBuilder This, ConfigureServiceParameters P, params string[] ServiceNames)
         {
-            return ConfigureService(This, P, (IEnumerable<string>)ServiceNames);
+            return ConfigureService(This, P, ServiceNames.AsEnumerable());
         }
 
         public static BatchScriptBuilder ConfigureService(this BatchScriptBuilder This, ConfigureServiceParameters P, IEnumerable<string> ServiceNames)
@@ -46,7 +46,7 @@ namespace System.Scripting
 
         public static BatchScriptBuilder DisableService(this BatchScriptBuilder This, params string[] ServiceNames)
         {
-            return DisableService(This, (IEnumerable<string>)ServiceNames);
+            return DisableService(This, ServiceNames.AsEnumerable());
         }
 
         public static BatchScriptBuilder DisableService(this BatchScriptBuilder This, IEnumerable<string> ServiceNames)
@@ -58,7 +58,7 @@ namespace System.Scripting
 
         public static BatchScriptBuilder StartService(this BatchScriptBuilder This, params string[] ServiceNames)
         {
-            return StartService(This, (IEnumerable<string>)ServiceNames);
+            return StartService(This, ServiceNames.AsEnumerable());
         }
 
         public static BatchScriptBuilder StartService(this BatchScriptBuilder This, IEnumerable<string> ServiceNames)
@@ -68,7 +68,7 @@ namespace System.Scripting
 
         public static BatchScriptBuilder StopService(this BatchScriptBuilder This, params string[] ServiceNames)
         {
-            return StopService(This, (IEnumerable<string>)ServiceNames);
+            return StopService(This, ServiceNames.AsEnumerable());
         }
 
         public static BatchScriptBuilder StopService(this BatchScriptBuilder This, IEnumerable<string> ServiceNames)
@@ -78,7 +78,7 @@ namespace System.Scripting
 
         public static BatchScriptBuilder PauseService(this BatchScriptBuilder This, params string[] ServiceNames)
         {
-            return PauseService(This, (IEnumerable<string>)ServiceNames);
+            return PauseService(This, ServiceNames.AsEnumerable());
         }
 
         public static BatchScriptBuilder PauseService(this BatchScriptBuilder This, IEnumerable<string> ServiceNames)

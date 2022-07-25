@@ -43,7 +43,7 @@ namespace System.Dynamic
         }
 
         public static ExpandoObject Merge(params ExpandoObject[] This) {
-            return Merge((IEnumerable<ExpandoObject>)This);
+            return Merge(This.AsEnumerable());
         }
 
         public static ExpandoObject Merge(this IEnumerable<ExpandoObject?>? This) {
@@ -80,7 +80,7 @@ namespace System.Dynamic
 
 
         public static ExpandoObject Merge(this ExpandoObject This, params object?[] Values) {
-            return Merge(This, (IEnumerable<object?>)Values);
+            return Merge(This, Values.AsEnumerable());
         }
 
         public static ExpandoObject Merge(this ExpandoObject This, IEnumerable<object?>? Values) {

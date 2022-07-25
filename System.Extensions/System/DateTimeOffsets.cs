@@ -21,6 +21,7 @@
 
             return ret;
         }
+
     }
 
 
@@ -38,6 +39,78 @@
     }
 
     public static class DateTimeOffsetExtensions {
+
+        public static DateTimeOffset WithYear(this DateTimeOffset This, int Value) {
+            var ret = new DateTimeOffset(Value, This.Month, This.Day, This.Hour, This.Minute, This.Second, This.Millisecond, This.Offset);
+
+            return ret;
+        }
+
+        public static DateTimeOffset WithMonth(this DateTimeOffset This, int Value) {
+            var ret = new DateTimeOffset(This.Year, Value, This.Day, This.Hour, This.Minute, This.Second, This.Millisecond, This.Offset);
+
+            return ret;
+        }
+
+
+        public static DateTimeOffset WithDay(this DateTimeOffset This, int Value) {
+            var ret = new DateTimeOffset(This.Year, This.Month, Value, This.Hour, This.Minute, This.Second, This.Millisecond, This.Offset);
+
+            return ret;
+        }
+
+
+        public static DateTimeOffset WithHour(this DateTimeOffset This, int Value) {
+            var ret = new DateTimeOffset(This.Year, This.Month, This.Day, Value, This.Minute, This.Second, This.Millisecond, This.Offset);
+
+            return ret;
+        }
+
+
+        public static DateTimeOffset WithMinute(this DateTimeOffset This, int Value) {
+            var ret = new DateTimeOffset(This.Year, This.Month, This.Day, This.Hour, Value, This.Second, This.Millisecond, This.Offset);
+
+            return ret;
+        }
+
+
+        public static DateTimeOffset WithSecond(this DateTimeOffset This, int Value) {
+            var ret = new DateTimeOffset(This.Year, This.Month, This.Day, This.Hour, This.Minute, Value, This.Millisecond, This.Offset);
+
+            return ret;
+        }
+
+
+        public static DateTimeOffset WithMilisecond(this DateTimeOffset This, int Value) {
+            var ret = new DateTimeOffset(This.Year, This.Month, This.Day, This.Hour, This.Minute, This.Second, Value, This.Offset);
+
+            return ret;
+        }
+
+        public static DateTimeOffset WithOffset(this DateTimeOffset This, TimeSpan Value) {
+            var ret = new DateTimeOffset(This.Year, This.Month, This.Day, This.Hour, This.Minute, This.Second, This.Millisecond, Value);
+
+            return ret;
+        }
+
+        public static DateTimeOffset WithDate(this DateTimeOffset This, DateOnly Value) {
+            var ret = new DateTimeOffset(Value.Year, Value.Month, Value.Day, This.Hour, This.Minute, This.Second, This.Millisecond, This.Offset);
+
+            return ret;
+        }
+
+        public static DateTimeOffset WithDate(this DateTimeOffset This, DateTime Value) {
+            var ret = new DateTimeOffset(Value.Year, Value.Month, Value.Day, This.Hour, This.Minute, This.Second, This.Millisecond, This.Offset);
+
+            return ret;
+        }
+
+        public static DateTimeOffset WithDateTime(this DateTimeOffset This, DateTime Value) {
+            var ret = new DateTimeOffset(Value.Year, Value.Month, Value.Day, Value.Hour, Value.Minute, Value.Second, Value.Millisecond, This.Offset);
+
+            return ret;
+        }
+
 
 
         public static DateTimeOffset StartOfYear(this DateTimeOffset This) {

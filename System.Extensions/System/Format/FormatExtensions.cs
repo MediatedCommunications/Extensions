@@ -48,6 +48,13 @@ namespace System {
             return ret;
         }
 
+        public static string AsSortableExtended(this FormatValue<DateTimeOffset> This) {
+            var ret = $@"{This.Value:yyyy-MM-dd @ HH:mm.ss.ffff}";
+
+            return ret;
+        }
+
+
         public static string AsSortableStandard(this FormatValue<DateTimeOffset?> This) {
             var ret = Strings.Empty;
             if(This.Value is { } Value) {

@@ -5,4 +5,11 @@
         }
     }
 
+    public class InvalidDomainException<T> : InvalidDomainException, IHasLicense<T> {
+        public T License { get; }
+        public InvalidDomainException(T License) {
+            this.License = License;
+        }
+    }
+
 }

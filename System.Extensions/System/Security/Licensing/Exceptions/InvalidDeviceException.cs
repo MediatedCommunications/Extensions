@@ -7,4 +7,11 @@
         }
     }
 
+    public class InvalidDeviceException<T> : InvalidDeviceException, IHasLicense<T> {
+        public T License { get; }
+        public InvalidDeviceException(T License) {
+            this.License = License;
+        }
+    }
+
 }

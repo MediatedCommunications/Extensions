@@ -188,7 +188,7 @@ namespace System
 
 
         public PathParser Combine(params string?[] Values) {
-            return Combine((IEnumerable<string?>)Values);
+            return Combine(Values.AsEnumerable());
         }
 
         public PathParser Combine(IEnumerable<string?> Values) {

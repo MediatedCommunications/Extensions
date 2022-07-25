@@ -25,6 +25,23 @@ namespace System.Text.Json {
             return ret;
         }
 
+        public object? Deserialize(string? Value, Type Type) {
+            var ret = default(object?);
+            if (Value.IsNotBlank()) {
+                ret = JsonSerializer.Deserialize(Value, Type, Options);
+            }
+            return ret;
+        }
+
+        public object? Deserialize(JsonDocument? Value, Type Type) {
+            var ret = default(object?);
+            if (Value is { }) {
+                ret = JsonSerializer.Deserialize(Value, Type, Options);
+            }
+            return ret;
+        }
+
+
         public TValue? TryDeserialize<TValue>(string? Value) {
             TryDeserialize(Value, out TValue? ret);
             return ret;

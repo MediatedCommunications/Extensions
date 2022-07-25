@@ -15,7 +15,7 @@ namespace System.Data {
 
         public abstract Task<DbConnection> ConnectAsync(string ConnectionString, CancellationToken Token = default);
 
-        public async Task<int> NonQueryAsync(string ConnectionString, string Query, CommandType CommandType = CommandType.Text, CancellationToken Token = default) {
+        public virtual async Task<int> NonQueryAsync(string ConnectionString, string Query, CommandType CommandType = CommandType.Text, CancellationToken Token = default) {
             using var V1 = await ConnectAsync(ConnectionString, Token)
                 .DefaultAwait()
                 ;
@@ -35,7 +35,7 @@ namespace System.Data {
         }
 
 
-        public async IAsyncEnumerable<T> ListAsync<T>(string ConnectionString, DataReaderParserFunc<T> Parser, string Query, [EnumeratorCancellation] CancellationToken Token = default) {
+        public virtual async IAsyncEnumerable<T> ListAsync<T>(string ConnectionString, DataReaderParserFunc<T> Parser, string Query, [EnumeratorCancellation] CancellationToken Token = default) {
 
             using var Connection = await ConnectAsync(ConnectionString, Token)
                 .DefaultAwait()
@@ -47,7 +47,7 @@ namespace System.Data {
 
         }
 
-        public async IAsyncEnumerable<T> ListAsync<T>(DbConnection Connection, DataReaderParserFunc<T> Parser, string Query, [EnumeratorCancellation] CancellationToken Token = default) {
+        public virtual async IAsyncEnumerable<T> ListAsync<T>(DbConnection Connection, DataReaderParserFunc<T> Parser, string Query, [EnumeratorCancellation] CancellationToken Token = default) {
 
             using var CMD = Connection.CreateCommand();
             CMD.CommandType = CommandType.Text;

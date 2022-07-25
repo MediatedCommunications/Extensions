@@ -16,14 +16,14 @@ namespace System {
 
         public PersonName() { }
 
-        public PersonName(string Last, string First, params string[] Middle) : this(Last, First, Middle.AsEnumerable()) {
+        public PersonName(string? Last, string? First, params string?[] Middle) : this(Last, First, Middle.AsEnumerable()) {
 
         }
 
-        public PersonName(string Last, string First, IEnumerable<string> Middle) {
-            this.First = First;
+        public PersonName(string? Last, string? First, IEnumerable<string?>? Middle) {
+            this.First = First.Coalesce();
             this.Middle = Middle.WhereIsNotBlank().ToImmutableArray();
-            this.Last = Last;
+            this.Last = Last.Coalesce();
         }
 
         public override string Full {

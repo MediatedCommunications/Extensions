@@ -5,4 +5,12 @@
         }
     }
 
+    public class InvalidUserException<T> : InvalidUserException, IHasLicense<T> {
+        public T License { get; }
+        public InvalidUserException(T License) {
+            this.License = License;
+        }
+    }
+
+
 }
