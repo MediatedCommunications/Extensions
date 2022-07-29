@@ -3,5 +3,4 @@
     {
         public static LicenseEncoderBase Default { get; } = new LicenseEncoder();
     }
-
 }

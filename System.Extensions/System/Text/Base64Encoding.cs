@@ -2,8 +2,10 @@
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace System.Text
-{
+namespace System.Text {
+
+
+
     public static class Base64Encoding {
         public static ImmutableHashSet<char> ValidCharacters { get; }
         public static ImmutableHashSet<char> IgnoredCharacters { get; }
@@ -140,7 +142,7 @@ namespace System.Text
             return ret;
         }
 
-        public static string ConvertToStringFormatted(byte[] Input, int LineLength = 64) {
+        public static string ConvertToStringFormatted(ReadOnlySpan<byte> Input, int LineLength = 64) {
             var Values = new List<string>();
             var RawValue = ConvertToString(Input);
             var Remaining = RawValue;
@@ -157,7 +159,7 @@ namespace System.Text
             return ret;
         }
 
-        public static string ConvertToString(byte[] Input) {
+        public static string ConvertToString(ReadOnlySpan<byte> Input) {
             var ret = Convert.ToBase64String(Input);
             return ret;
         }

@@ -16,6 +16,11 @@ namespace System.Text.Json {
                 JsonSerializer.Serialize(writer, value.Value, options);
             }
         }
+
+        public override void WriteAsPropertyName(Utf8JsonWriter writer, Optional<T> value, JsonSerializerOptions options) {
+            base.WriteAsPropertyName(writer, value, options);
+        }
+
     }
 
 

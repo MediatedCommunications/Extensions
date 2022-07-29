@@ -2,28 +2,35 @@
 using System.Text;
 
 namespace System.Security.Licensing {
+
     public class LicenseDecoder : LicenseDecoderBase {
         public LicenseDecoder() {
             this.Decompressor = Decompressor_Create();
             this.Decoding = Decoding_Create();
             this.Decryptor = Decryptor_Create();
+            this.ByteDecoder = ByteDecoder_Create();
         }
 
 
         protected Compressor Decompressor { get; }
         protected Encoding Decoding { get; }
         protected IDecryptor Decryptor { get; }
+        protected IByteDecoder ByteDecoder { get; }
 
         protected virtual Compressor Decompressor_Create() {
-            return Compressors.ZLib;
+            return LicenseFormatDefaults.Decompressor_Create();
         }
 
         protected virtual Encoding Decoding_Create() {
-            return Encoding.UTF8;
+            return LicenseFormatDefaults.Decoding_Create();
         }
 
         protected virtual IDecryptor Decryptor_Create() {
-            return AesEncryptor.Default;
+            return LicenseFormatDefaults.Decryptor_Create();
+        }
+
+        protected virtual IByteDecoder ByteDecoder_Create() {
+            return LicenseFormatDefaults.ByteDecoder_Create();
         }
 
         public override T? Decode<T>(string LicenseText)
@@ -52,13 +59,12 @@ namespace System.Security.Licensing {
             return Decompressor.Decompress(Input);
         }
 
-        protected virtual byte[] Encoding_Remove(string Input) {
-            var ret = Base64Encoding.ConvertFromStringFormatted(Input);
-            return ret;
+        protected byte[] Encoding_Remove(string Input) {
+            return ByteDecoder.Decode(Input);
         }
 
         protected virtual T? Serialization_Remove<T>(string Value) {
-            return System.Text.Json.JsonSerializer.Deserialize<T>(Value);
+            return LicenseFormatDefaults.Serialization_Remove<T>(Value);
         }
     }
     

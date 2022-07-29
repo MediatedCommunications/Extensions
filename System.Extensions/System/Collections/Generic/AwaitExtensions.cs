@@ -20,6 +20,17 @@ namespace System.Collections.Generic
             return This.ConfigureAwait(__ContinueOnThisThread);
         }
 
+        public static ConfiguredCancelableAsyncEnumerable<T> DefaultAwait<T>(this ConfiguredCancelableAsyncEnumerable<T> This) {
+            return This.ContinueOnAnyThread();
+        }
+
+        public static ConfiguredCancelableAsyncEnumerable<T> ContinueOnAnyThread<T>(this ConfiguredCancelableAsyncEnumerable<T> This) {
+            return This.ConfigureAwait(__ContinueOnAnyThread);
+        }
+
+        public static ConfiguredCancelableAsyncEnumerable<T> ContinueOnThisThread<T>(this ConfiguredCancelableAsyncEnumerable<T> This) {
+            return This.ConfigureAwait(__ContinueOnThisThread);
+        }
 
     }
 

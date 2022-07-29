@@ -6,7 +6,7 @@ namespace System
 {
     public record RetrySync<T> : RetryBase
     {
-        public Func<CancellationToken, T> Try { get; init; } = x => throw new MissingMethodException();
+        public Func<int, CancellationToken, T> Try { get; init; } = (x,y) => throw new MissingMethodException();
         public Func<CancellationToken, T> Default { get; init; } = x => throw new MissingMethodException();
 
         public Action<Exception, CancellationToken> Recover { get; init; } = (x, y) => { };
@@ -38,9 +38,7 @@ namespace System
             {
                 try
                 {
-                    Attempts += 1;
-
-                    var tret = Try(LinkedToken.Token);
+                    var tret = Try(Attempts, LinkedToken.Token);
 
 
                     Result_Success = true;
@@ -68,7 +66,7 @@ namespace System
                     }
 
                 }
-
+                Attempts += 1;
             }
 
             if (FailureException is { }) {

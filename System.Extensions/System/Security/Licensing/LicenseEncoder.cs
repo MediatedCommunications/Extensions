@@ -12,26 +12,32 @@ namespace System.Security.Licensing {
             this.Compressor = Compressor_Create();
             this.Encoding = Encoding_Create();
             this.Encryptor = Encryptor_Create();
+            this.ByteEncoder = ByteEncoder_Create();
         }
 
 
         protected Compressor Compressor { get; }
         protected Encoding Encoding { get; }
         protected IEncryptor Encryptor { get; }
+        protected IByteEncoder ByteEncoder { get; }
 
         protected virtual Compressor Compressor_Create()
         {
-            return Compressors.ZLib;
+            return LicenseFormatDefaults.Compressor_Create();
         }
 
         protected virtual Encoding Encoding_Create()
         {
-            return Encoding.UTF8;
+            return LicenseFormatDefaults.Encoding_Create();
         }
 
         protected virtual IEncryptor Encryptor_Create()
         {
-            return AesEncryptor.Default;
+            return LicenseFormatDefaults.Encryptor_Create();
+        }
+        
+        protected virtual IByteEncoder ByteEncoder_Create() {
+            return LicenseFormatDefaults.ByteEncoder_Create();
         }
 
         public override string Encode<T>(T License)
@@ -63,15 +69,14 @@ namespace System.Security.Licensing {
             return Compressor.Compress(Input);
         }
 
-        protected virtual string Encoding_Add(byte[] Input)
+        protected string Encoding_Add(byte[] Input)
         {
-            var ret = Base64Encoding.ConvertToStringFormatted(Input);
-            return ret;
+            return ByteEncoder.Encode(Input);
         }
 
         protected virtual string Serialization_Add<T>(T License)
         {
-            return System.Text.Json.JsonSerializer.Serialize(License);
+            return LicenseFormatDefaults.Serialization_Add(License);
         }
 
     }

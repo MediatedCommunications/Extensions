@@ -5,13 +5,6 @@ namespace System
 {
     public static class RetryAsyncExtensions
     {
-        public static RetryAsync<T> WithAction<T>(this RetryAsync<T> This, Func<CancellationToken, Task<T>> Value)
-        {
-            return This with
-            {
-                Try = Value,
-            };
-        }
 
         public static RetryAsync<T> DefaultIs<T>(this RetryAsync<T> This, Func<CancellationToken, Task<T>> Value)
         {
@@ -31,25 +24,29 @@ namespace System
             
             var OldTry = This.Try;
 
-            async Task<T?> NewTry(CancellationToken Token) {
+            async Task<T?> NewTry(int Attempt, CancellationToken Token) {
                 var tret = default(T?);
 
-                tret = await OldTry(Token)
+                tret = await OldTry(Attempt, Token)
                     .DefaultAwait()
                     ;
 
                 return tret;
+            }
 
+            async Task<T?> NewDefault(CancellationToken Token) {
+                return default;
             }
             
             var ret = new RetryAsync<T?>() {
                 DelayAfterRecover = This.DelayAfterRecover,
                 DelayBeforeRecover = This.DelayBeforeRecover,
                 OnFailure = This.OnFailure,
-                Default = x => Task.FromResult(default(T?)),
                 Recover = This.Recover,
                 MaxAttempts = This.MaxAttempts,
                 Token = This.Token,
+
+                Default = NewDefault,
                 Try = NewTry,
             };
 

@@ -6,7 +6,7 @@ namespace System {
 
 
     public record RetryAsync<T> : RetryBase {
-        public Func<CancellationToken, Task<T>> Try { get; init; } = x => throw new MissingMethodException();
+        public Func<int, CancellationToken, Task<T>> Try { get; init; } = (x,y) => throw new MissingMethodException();
         public Func<CancellationToken, Task<T>> Default { get; init; } = x => throw new MissingMethodException();
 
         public Func<Exception, int, CancellationToken, Task> Recover { get; init; } = (x, y, z) => Task.CompletedTask;
@@ -36,15 +36,14 @@ namespace System {
             var Result_Exception = default(Exception?);
             var Result_Value = default(T)!;
 
-            var Attempts = 0;
+            var Attempt = 0;
 
             var FailureException = default(ExceptionDispatchInfo);
 
-            while(!Result_Success && Attempts < MaxAttempts && LinkedToken.Token.ShouldContinue()) {
+            while(!Result_Success && Attempt < MaxAttempts && LinkedToken.Token.ShouldContinue()) {
                 try {
-                    Attempts += 1;
 
-                    var tret = await Try(LinkedToken.Token)
+                    var tret = await Try(Attempt, LinkedToken.Token)
                         .DefaultAwait()
                         ;
 
@@ -59,18 +58,18 @@ namespace System {
                 } catch (Exception ex) {
                     FailureException = ExceptionDispatchInfo.Capture(ex);
 
-                    if (Attempts != MaxAttempts) {
+                    if (Attempt != MaxAttempts) {
 
-                        var Delay1 = DelayBeforeRecover(Attempts);
+                        var Delay1 = DelayBeforeRecover(Attempt);
                         await SafeDelay.DelayAsync(Delay1, LinkedToken.Token)
                             .DefaultAwait()
                             ;
 
-                        await Recover(ex, Attempts, LinkedToken.Token)
+                        await Recover(ex, Attempt, LinkedToken.Token)
                             .DefaultAwait()
                             ;
 
-                        var Delay2 = DelayAfterRecover(Attempts);
+                        var Delay2 = DelayAfterRecover(Attempt);
                         await SafeDelay.DelayAsync(Delay2, LinkedToken.Token)
                             .DefaultAwait()
                             ;
@@ -78,6 +77,7 @@ namespace System {
 
                 }
 
+                Attempt += 1;
             }
 
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -17,6 +18,16 @@ namespace System.Dynamic {
 
             This.AddProperty(NewPath, Value.Value, Value.IsPresent);
 
+            return This;
+        }
+
+        public static ExpandoObject AddProperty<T>(this ExpandoObject This, Optional<T> Value, [CallerArgumentExpression("Value")] string? PropertyPath = default) {
+            if (PropertyPath.IsBlank()) {
+                throw new NullReferenceException();
+            } else {
+                This.AddProperty(PropertyPath, Value);
+            }
+            
             return This;
         }
 

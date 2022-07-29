@@ -13,7 +13,7 @@ namespace System.Threading.Tasks {
 
         public ImmutableDictionary<TId, TData> ById { get; private set; } = ImmutableDictionary<TId, TData>.Empty;
 
-        protected DictionaryAsyncInitializer(TContext Context, params AsyncInitializer[] AsyncInitializers) : base(Context, AsyncInitializers) {
+        protected DictionaryAsyncInitializer(TContext Context, params AsyncInitializer?[] AsyncInitializers) : base(Context, AsyncInitializers) {
         
         }
 
@@ -42,7 +42,7 @@ namespace System.Threading.Tasks {
 
         public ImmutableArray<TData> AsList { get; private set; } = ImmutableArray<TData>.Empty;        
 
-        protected ListAsyncInitializer(TContext Context, params AsyncInitializer[] AsyncInitializers) : base(Context, AsyncInitializers) {
+        protected ListAsyncInitializer(TContext Context, params AsyncInitializer?[] AsyncInitializers) : base(Context, AsyncInitializers) {
         
         }
 
@@ -63,7 +63,7 @@ namespace System.Threading.Tasks {
     public abstract class AsyncInitializer<TContext> : AsyncInitializer {
         protected TContext Options { get; }
 
-        public AsyncInitializer(TContext Context, params AsyncInitializer[] AsyncInitializers) : base(AsyncInitializers) {
+        public AsyncInitializer(TContext Context, params AsyncInitializer?[] AsyncInitializers) : base(AsyncInitializers) {
             this.Options = Context;
         }
     }
@@ -72,8 +72,8 @@ namespace System.Threading.Tasks {
 
         protected ImmutableArray<AsyncInitializer> AsyncInitializers { get; }
 
-        public AsyncInitializer(params AsyncInitializer[] AsyncInitializers) {
-            this.AsyncInitializers = AsyncInitializers.ToImmutableArray();
+        public AsyncInitializer(params AsyncInitializer?[] AsyncInitializers) {
+            this.AsyncInitializers = AsyncInitializers.WhereIsNotNull().ToImmutableArray();
         }
 
 
